@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Endixendi - Tools</title>
+
+  <!-- GŁÓWNY ARKUSZ STYLI -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- IKONKA STRONY (favicon) -->
+  <link rel="icon" href="assets/images/kolo.png" type="image/png">
+</head>
+<body>
+
+<!-- =========================
+     MENU (ładowane dynamicznie z menu.html)
+     ========================= -->
+<header>
+    <div id="menu-placeholder"></div>
+</header>
+
+<!-- =========================
+     MAIN CONTENT - główna zawartość strony
+     ========================= -->
+<main>
+
+  <!-- HERO TOOLS - nagłówek strony z opisem -->
+  <section id="tools-hero" class="mt-16">
+    <div class="card">
+      <h1>Tools — Narzędzia których używam Endixendi</h1>
+      <p class="lead">Przydatne programy do nagrywania, montażu i tworzenia grafiki. Wszystko w jednym miejscu!</p>
+    </div>
+  </section>
+  <!-- /HERO TOOLS -->
+
+  <!-- LISTA PROGRAMÓW -->
+  <section id="tools-list" class="card mt-22">
+    <h2>Programy</h2>
+
+    <!-- GRID Z KARTAMI PROGRAMÓW -->
+    <div class="grid full mt-16">
+
+      <!-- KARTA PROGRAMU -->
+      <div class="card">
+        <h3>OBS Studio</h3>
+        <p class="muted">Profesjonalne oprogramowanie do nagrywania i streamowania rozgrywki.</p>
+        <a class="btn" href="https://obsproject.com/" target="_blank" rel="noopener">Otwórz OBS</a>
+      </div>
+      <!-- /KARTA PROGRAMU -->
+
+      <div class="card">
+        <h3>DaVinci Resolve</h3>
+        <p class="muted">Potężny program do montażu wideo, korekcji kolorów i postprodukcji.</p>
+        <a class="btn" href="https://www.blackmagicdesign.com/pl/products/davinciresolve" target="_blank" rel="noopener">Otwórz DaVinci Resolve</a>
+      </div>
+
+      <div class="card">
+        <h3>Photopea</h3>
+        <p class="muted">Edytor grafiki online przypominający Photoshop, działa w przeglądarce.</p>
+        <a class="btn" href="https://www.photopea.com/" target="_blank" rel="noopener">Otwórz Photopea</a>
+      </div>
+
+      <div class="card">
+        <h3>Vectorpea</h3>
+        <p class="muted">Edytor grafiki wektorowej online, idealny do tworzenia logo i ilustracji.</p>
+        <a class="btn" href="https://www.vectorpea.com/" target="_blank" rel="noopener">Otwórz Vectorpea</a>
+      </div>
+
+    </div>
+    <!-- /GRID Z KARTAMI PROGRAMÓW -->
+  </section>
+  <!-- /LISTA PROGRAMÓW -->
+
+  <!-- PORADNIKI NA YOUTUBE -->
+  <section id="tools-youtube" class="card mt-22">
+    <h2>Poradniki na YouTube</h2>
+    <p class="muted">Wybierz film z playlisty poniżej.</p>
+
+    <!-- Link do playlisty na YouTube -->
+    <p class="mt-12">
+      <a href="https://www.youtube.com/playlist?list=PLYamA4_P1kCyv75qBLehcRAGPNgbJ2LYP" target="_blank" rel="noopener" class="inline-link">
+        Otwórz playlistę na YouTube
+      </a>
+    </p>
+    
+    <!-- Osadzona playlista YouTube -->
+    <iframe width="100%" height="480"
+      src="https://www.youtube.com/embed/videoseries?list=PLYamA4_P1kCyv75qBLehcRAGPNgbJ2LYP"
+      title="Poradniki Endixendi"
+      frameborder="0"
+      allow="autoplay; encrypted-media; fullscreen"
+      allowfullscreen>
+    </iframe>
+
+  </section>
+  <!-- /PORADNIKI NA YOUTUBE -->
+
+</main>
+<!-- /MAIN CONTENT -->
+
+<!-- =========================
+     FOOTER (ładowany dynamicznie z footer.html)
+     ========================= -->
+<div id="footer-placeholder"></div>
+<!-- /FOOTER -->
+
+<!-- =========================
+     SKRYPTY JS
+     ========================= -->
+<script src="assets/js/script.js"></script>
+</body>
+</html>
