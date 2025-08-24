@@ -2,7 +2,7 @@
    Zmienne globalne i reset
    ========================= */
 :root {
-  --bg: #0f1115;            /* Tło strony */
+  --bg: #0f1115;            /* Tło strony  #0f1115*/
   --card: #14171b;          /* Tło kart/sekcji */
   --muted: #98a0aa;         /* Kolor przygaszonego tekstu */
   --accent: #00aaff;        /* Kolor akcentu 1 (np. linki) */

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Endixendi - Tetris</title>
+
+  <!-- GŁÓWNY ARKUSZ STYLI -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/tetris.css">
+
+  <!-- IKONKA STRONY -->
+  <link rel="icon" href="assets/images/kolo.png" type="image/png">
+</head>
+<body>
+
+<!-- MENU -->
+<header>
+  <div id="menu-placeholder"></div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main>
+
+  <!-- HERO -->
+  <section id="tetris-hero" class="mt-16">
+    <div class="card">
+      <h1>Tetris</h1>
+      <p class="lead">Klasyczna gra Tetris w wersji przeglądarkowej 🎮</p>
+    </div>
+  </section>
+
+<section id="tetris-game" class="card mt-22">
+  <div class="tetris-container">
+
+    <!-- LEWA STRONA (wynik) -->
+    <aside class="side left">
+      <h2>Statystyki</h2>
+      <div class="stats">
+        <div>Wynik: <span id="score">0</span></div>
+        <div>Linie: <span id="lines">0</span></div>
+        <div>Poziom: <span id="level">1</span></div>
+      </div>
+    </aside>
+
+    <!-- ŚRODEK (plansza) -->
+    <div class="board-container">
+      <canvas id="board" width="300" height="600"></canvas>
+      <div class="overlay hidden" id="overlay">
+        <div class="modal">
+          <h2 id="overlay-title">Tetris</h2>
+          <p id="overlay-sub">Naciśnij Enter aby zacząć</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRAWA STRONA (reszta paneli) -->
+    <aside class="side right">
+	   <div class="mobile-controls mt-16">
+          <button data-action="left">⭠</button>
+          <button data-action="rotate">⭡</button>
+          <button data-action="right">⭢</button>
+          <button data-action="down">⭣</button>
+          <button data-action="drop">⭳</button>
+		  <button data-action="start">⏎</button>
+		  <button data-action="hold">C</button>
+      </div>
+      <div class="next-hold">
+        <div>
+          <h3>Następny</h3>
+          <canvas id="next" width="120" height="120"></canvas>
+        </div>
+        <div>
+          <h3>Trzymany</h3>
+          <canvas id="hold" width="120" height="120"></canvas>
+        </div>
+      </div>
+
+      <div class="mt-16">
+        <h3>Głośność muzyki</h3>
+        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.3">
+      </div>
+
+      <div class="controls mt-16">
+        <h3>Sterowanie</h3>
+        <ul>
+          <li>← / → – Przesuń</li>
+          <li>↑ / X – Obrót</li>
+          <li>Z – Obrót w lewo</li>
+          <li>↓ – Szybciej</li>
+          <li>Spacja – Rzuć</li>
+          <li>C – Trzymaj</li>
+          <li>Enter – Start</li>
+        </ul>
+      </div>
+    </aside>
+
+  </div>
+</section>
+
+
+</main>
+<!-- /MAIN -->
+
+<!-- FOOTER -->
+<div id="footer-placeholder"></div>
+
+<!-- SKRYPTY -->
+<script src="assets/js/tetris.js"></script>
+<script src="assets/js/script.js"></script>
+</body>
+</html>
