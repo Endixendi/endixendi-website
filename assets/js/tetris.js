@@ -363,4 +363,13 @@
   draw();
   drawMini(nctx, null);
   drawMini(hctx, null);
+  
+  // Suwak głośności
+  const volumeSlider = document.getElementById('volume');
+	if (volumeSlider) {
+	  volumeSlider.addEventListener('input', () => {
+		sounds.music.volume = volumeSlider.value;
+	  });
+	}
+
 })();
