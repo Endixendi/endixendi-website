@@ -1,0 +1,155 @@
+:root {
+  --primary-color: #06b6d4;
+  --primary-dark: #0284c7;
+}
+
+/* Ogólne */
+body {
+
+  /* text-align: center; */
+
+  /* dodane ograniczenie szerokości i wyśrodkowanie */
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* HERO */
+#dino-hero { margin: 20px 0; }
+
+/* SCOREBOARD */
+#scoreBoard {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* Kontener gry */
+.dino-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* LEWA KOLUMNA */
+.side.left {
+  flex: 1;
+  min-width: 200px;
+  text-align: left;
+}
+
+/* Plansza */
+.board-container {
+  -webkit-appearance: none;
+  position: relative;
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  /* border: 2px solid var(--primary-color); */
+  border-radius: 16px;
+  background: linear-gradient(to right, #06b6d4, #84cc16, #facc15);
+  padding: 2px;
+  max-width: 100%;
+}
+
+#gameCanvas {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  background: #87CEEB;
+}
+
+/* Overlay */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #06b6d4, #84cc16, #facc15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;  
+}
+.overlay.hidden { display: none; }
+.modal {
+  background: #14171b;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* Sterowanie mobilne */
+.mobile-controls {
+  display: none;
+  margin-top: 12px;
+  text-align: center;
+}
+
+/*
+  .mobile-controls button {
+    font-size: 1.2rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: var(--primary-color);
+    color: white;
+  }
+  .mobile-controls button:active {
+    transform: scale(0.95);
+    background: var(--primary-dark);
+  }
+*/  
+
+@media (max-width: 768px) {
+  .mobile-controls {
+    display: block;
+    position: absolute;
+    bottom: 60px;   /* nad ziemią */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+}
+
+#jumpBtn {
+	text-align: center;
+}
+
+/* Suwak */
+.volume-control input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  max-width: 250px;
+  height: 6px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #06b6d4, #84cc16, #facc15);
+  outline: none;
+}
+.volume-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #facc15;
+  border-radius: 50%;
+  border: 2px solid #0f172a;
+  cursor: pointer;
+}
+.volume-control input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #facc15;
+  border-radius: 50%;
+  border: 2px solid #0f172a;
+  cursor: pointer;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+  .dino-container { flex-direction: column; align-items: center; }
+  .mobile-controls { display: block; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); }
+  .mobile-controls button { font-size: 1rem; padding: 6px 12px; }
+  #gameCanvas { height: calc(50vw); }
+  .volume-control input[type="range"] { max-width: 90%; }
+}
