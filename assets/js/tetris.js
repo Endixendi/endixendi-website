@@ -14,7 +14,6 @@
   const overlay = document.getElementById('overlay');
   const overlayTitle = document.getElementById('overlay-title');
   const overlaySub = document.getElementById('overlay-sub');
-  const mobileControls = document.querySelector(".mobile-controls");
 
   // Ustawienia
   const COLS = 10, ROWS = 20, TILE = 30;
@@ -61,7 +60,6 @@
     type: null
   };
 
-  // Funkcje rysujące
   function draw() {
     ctx.fillStyle = '#0f1113';
     ctx.fillRect(0,0,board.width, board.height);
@@ -98,7 +96,6 @@
     }
   }
 
-  // Logika kolizji i ruchów
   function merge(arena, player){
     player.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
@@ -275,9 +272,6 @@
     lastTime=0; dropCounter=0;
     try { sounds.music.play(); } catch(e) {}
     requestAnimationFrame(update);
-
-    // pokaż przyciski dotykowe po starcie gry (jeśli dotyk)
-    if (isTouchDevice()) mobileControls.style.display = "block";
   }
 
   function gameEnd(){
@@ -287,9 +281,6 @@
     overlay.classList.remove('hidden');
     sounds.gameover.play();
     try { sounds.music.pause(); sounds.music.currentTime=0; } catch(e) {}
-
-    // ukryj przyciski po końcu gry
-    mobileControls.style.display = "none";
   }
 
   function togglePause(){
@@ -301,7 +292,6 @@
     if(!paused) requestAnimationFrame(update);
   }
 
-  // Klawisze PC
   window.addEventListener('keydown', (e)=>{
     if(e.code==='Enter'){ if(!running||gameOver) gameStart(); e.preventDefault(); }
     if(!running||paused||gameOver) { if(e.code==='KeyP') togglePause(); return; }
@@ -319,7 +309,24 @@
     }
   });
 
-  // Obsługa przycisków dotykowych
+  overlayTitle.textContent='Tetris';
+  overlaySub.textContent='Enter – rozpocznij';
+  overlay.classList.remove('hidden');
+  draw();
+  drawMini(nctx,null);
+  drawMini(hctx,null);
+
+   function gameLoop(time = 0) {
+    if (!running || paused || gameOver) return;
+    const delta = time - lastTime;
+    lastTime = time;
+    dropCounter += delta;
+    if (dropCounter > dropInterval) playerDrop();
+    draw();
+    requestAnimationFrame(gameLoop);
+  }
+
+  // Obsługa przycisków dotykowych / mobilnych
   document.querySelectorAll(".mobile-controls button").forEach(btn => {
     btn.addEventListener("click", () => {
       const action = btn.dataset.action;
@@ -352,6 +359,11 @@
     });
   });
 
+  // Startowy rysunek
+  draw();
+  drawMini(nctx, null);
+  drawMini(hctx, null);
+  
   // Suwak głośności
   const volumeSlider = document.getElementById('volume');
 	if (volumeSlider) {
@@ -359,19 +371,5 @@
 		sounds.music.volume = volumeSlider.value;
 	  });
 	}
-
-  // Wykrywanie urządzenia dotykowego
-  function isTouchDevice() {
-    return ("ontouchstart" in window) || navigator.maxTouchPoints > 0;
-  }
-
-  // Początek gry – domyślnie ukryj przyciski
-  overlayTitle.textContent='Tetris';
-  overlaySub.textContent='Enter – rozpocznij';
-  overlay.classList.remove('hidden');
-  mobileControls.style.display = "none"; // na starcie ukryte
-  draw();
-  drawMini(nctx,null);
-  drawMini(hctx,null);
 
 })();
