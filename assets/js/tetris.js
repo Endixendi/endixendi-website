@@ -36,12 +36,12 @@
 
   // Dźwięki
   const sounds = {
-    music: new Audio("assets/sounds/tetris/music.mp3"),
-    line: new Audio("assets/sounds/tetris/line.mp3"),
-    levelup: new Audio("assets/sounds/tetris/levelup.mp3"),
-    drop: new Audio("assets/sounds/tetris/drop.mp3"),
-    rotate: new Audio("assets/sounds/tetris/rotate.mp3"),      
-    gameover: new Audio("assets/sounds/tetris/gameover.mp3")
+    music: new Audio("assets/sounds/music.mp3"),
+    line: new Audio("assets/sounds/line.mp3"),
+    levelup: new Audio("assets/sounds/levelup.mp3"),
+    drop: new Audio("assets/sounds/drop.mp3"),
+    rotate: new Audio("assets/sounds/rotate.mp3"),      
+    gameover: new Audio("assets/sounds/gameover.mp3")
   };
   sounds.music.loop = true;
   sounds.music.volume = 0.3;

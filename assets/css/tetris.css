@@ -225,9 +225,8 @@ body {}
   transform: scale(0.95);
 }
 
-/*
 @media (max-width: 768px) {
   .mobile-controls {
     display: block;
   }
-} */
+}
