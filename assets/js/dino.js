@@ -11,11 +11,17 @@ const finalHighScoreEl = document.getElementById('finalHighScore');
 const restartBtn = document.getElementById('restartBtn');
 const volumeControl = document.getElementById("volumeControl");
 const jumpBtn = document.getElementById('jumpBtn');
+const mobileControls = document.querySelector(".mobile-controls");
 
-// Domyślnie ukrywamy przycisk skoku
-jumpBtn.style.display = "none";
+// --- Funkcja do sprawdzania urządzenia dotykowego ---
+function isMobile() {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+}
 
-// Dźwięki
+// Domyślnie ukrywamy przycisk
+mobileControls.style.display = "none";
+
+// --- Dźwięki ---
 const bgMusic = new Audio("assets/sounds/dino/bg-music.mp3");
 const jumpSound = new Audio("assets/sounds/dino/jump.mp3");
 const gameOverSound = new Audio("assets/sounds/dino/gameover.mp3");
@@ -172,8 +178,8 @@ function initGame() {
   bgMusic.currentTime = 0;
   bgMusic.play();
 
-  // Pokaż przycisk skoku
-  jumpBtn.style.display = "block";
+  // Pokaż przycisk tylko na urządzeniach dotykowych
+  if (isMobile()) mobileControls.style.display = "block";
 }
 
 function spawnObstacle() {
@@ -241,8 +247,8 @@ function gameOverHandler() {
   finalHighScoreEl.textContent = highScore;
   gameOverMenu.classList.remove("hidden");
 
-  // Ukryj przycisk skoku po Game Over
-  jumpBtn.style.display = "none";
+  // Ukryj przycisk na mobile
+  if (isMobile()) mobileControls.style.display = "none";
 }
 
 // --- Sterowanie ---
