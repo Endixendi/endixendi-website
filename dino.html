@@ -1,114 +1,116 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Endixendi - Dino</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Endixendi - Dino</title>
 
-<!-- CSS -->
-<link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/dino.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/dino.css">
 
-<!-- Favicon -->
-<link rel="icon" href="assets/images/kolo.png" type="image/png">
+  <!-- Favicon -->
+  <link rel="icon" href="assets/images/kolo.png" type="image/png">
 </head>
 <body>
 
-<!-- MENU -->
-<header>
-  <div id="menu-placeholder"></div>
-</header>
+  <!-- MENU -->
+  <header>
+    <div id="menu-placeholder"></div>
+  </header>
 
-<!-- MAIN CONTENT -->
-<main>
+  <!-- MAIN CONTENT -->
+  <main>
 
-<!-- HERO -->
-<section id="dino-hero" class="mt-16">
-  <div class="card">
-    <h1>Dino Game</h1>
-    <p class="lead">
-      Prosty kwadratowy Dino skacze przez przeszkody, aby zdobyć jak najwięcej punktów 🦖<br>
-      Gra inspirowana grą T-Rex w przeglądarce Chrome, gdy brak Internetu.
-    </p>
-  </div>
-</section>
-
-<!-- GRA -->
-<section id="dino-game" class="card mt-22">
-  <div class="dino-container">
-
-    <!-- LEWA STRONA (statystyki i sterowanie) -->
-    <aside class="side left">
-
-      <!-- Sterowanie -->
-      <div class="controls mt-16">
-        <h3>Sterowanie</h3>
-        <ul>
-          <li>Spacja – Skok</li>
-          <li>&uarr; – Skok</li>
-        </ul>
+    <!-- HERO SECTION -->
+    <section id="dino-hero" class="mt-16">
+      <div class="card">
+        <h1>Dino Game</h1>
+        <p class="lead">
+          Prosty kwadratowy Dino skacze przez przeszkody, aby zdobyć jak najwięcej punktów 🦖<br>
+          Gra inspirowana grą T-Rex w przeglądarce Chrome, gdy brak Internetu.
+        </p>
       </div>
-	  
-	  <!-- Głośność muzyki -->
-      <div class="volume-control mt-16">
-        <h3>Głośność muzyki</h3>
-        <input id="volumeControl" type="range" min="0" max="1" step="0.01" value="0.3">
+    </section>
+
+    <!-- GRA -->
+    <section id="dino-game" class="card mt-22">
+      <div class="dino-container">
+
+        <!-- LEWA STRONA (statystyki i sterowanie) -->
+        <aside class="side left">
+
+          <!-- Sterowanie -->
+          <div class="controls mt-16">
+            <h3>Sterowanie</h3>
+            <ul>
+              <li>Spacja – Skok</li>
+              <li>&uarr; – Skok</li>
+            </ul>
+          </div>
+        
+          <!-- Głośność muzyki -->
+          <div class="volume-control mt-16">
+            <h3>Głośność muzyki</h3>
+            <input id="volumeControl" type="range" min="0" max="1" step="0.01" value="0.3">
+          </div>
+
+        </aside>
+
+        <!-- ŚRODEK (plansza gry) -->
+        <div class="board-container">
+          
+          <!-- Canvas gry -->
+          <canvas id="gameCanvas"></canvas>
+
+          <!-- Sterowanie mobilne -->
+          <div class="mobile-controls mt-16">
+            <button id="jumpBtn" class="btn">&uarr; Skok</button>
+          </div>
+          
+          <!-- MENU START -->
+          <div class="overlay" id="menu">
+            <div class="modal">
+              <h2>Dino Game</h2>
+              <p>Sterowanie: Spacja</p>
+              <button id="startBtn" class="btn">Start</button>
+            </div>
+          </div>
+
+          <!-- MENU GAME OVER -->
+          <div class="overlay hidden" id="gameOverMenu">
+            <div class="modal">
+              <h2>Game Over!</h2>
+              <p>Wynik: <span id="finalScore">0</span></p>
+              <p>Rekord: <span id="finalHighScore">0</span></p>
+              <button id="restartBtn" class="btn">Zagraj ponownie</button>
+            </div>
+          </div>
+        </div>
       </div>
+    </section>
 
-
-    </aside>
-
-    <!-- ŚRODEK (plansza gry) -->
-    <div class="board-container">
-  <canvas id="gameCanvas"></canvas>
-
-      <!-- Sterowanie mobilne -->
-      <div class="mobile-controls mt-16">
-        <button id="jumpBtn" class="btn">&uarr; Skok</button>
-      </div>
-  <!-- MENU START -->
-  <div class="overlay" id="menu">
-    <div class="modal">
-      <h2>Dino Game</h2>
-      <p>Sterowanie: Spacja</p>
-      <button id="startBtn" class="btn">Start</button>
+    <!-- SCOREBOARD -->
+    <div id="scoreBoard" class="card mt-16">
+      Wynik: <span id="score">0</span> | Rekord: <span id="highScore">0</span>
     </div>
-  </div>
 
-  <!-- MENU GAME OVER -->
-  <div class="overlay hidden" id="gameOverMenu">
-    <div class="modal">
-      <h2>Game Over!</h2>
-      <p>Wynik: <span id="finalScore">0</span></p>
-      <p>Rekord: <span id="finalHighScore">0</span></p>
-      <button id="restartBtn" class="btn">Zagraj ponownie</button>
-    </div>
-  </div>
-  </div>
-</section>
+    <!-- INFORMACJE O MUZYCE I DŹWIĘKACH -->
+    <section id="credits" class="card mt-16">
+      <p>
+        <strong>Muzyka:</strong> Biblioteka YouTube - Stealth - Aakash Gandhi<br>
+        <strong>Dźwięki:</strong> pixabay.com - sfx_jump_07-80241, gameover-86548, level-up-05-326133
+      </p>
+    </section>
 
-<!-- SCOREBOARD -->
-<div id="scoreBoard" class="card mt-16">
-  Wynik: <span id="score">0</span> | Rekord: <span id="highScore">0</span>
-</div>
+  </main>
 
-<!-- INFORMACJE O MUZYCE I DŹWIĘKACH -->
-<section id="credits" class="card mt-16"><p>
-    <strong>Muzyka:</strong> Biblioteka YouTube - Stealth - Aakash Gandhi<br>
-    <strong>Dźwięki:</strong> pixabay.com - sfx_jump_07-80241, gameover-86548, level-up-05-326133
-  </p>
-</section>
-
-</main>
-
-<!-- STOPKA -->
-<footer>
+  <!-- STOPKA -->
   <div id="footer-placeholder"></div>
-</footer>
 
-<!-- JS -->
-<script src="assets/js/dino.js"></script>
-<script src="assets/js/script.js"></script>
+  <!-- JS -->
+  <script src="assets/js/dino.js"></script>
+  <script src="assets/js/script.js"></script>
 
 </body>
 </html>

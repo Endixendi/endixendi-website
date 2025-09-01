@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Endixendi - Shooter</title>
+
+  <!-- GŁÓWNY ARKUSZ STYLI -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/shooter.css">
+
+  <!-- IKONKA STRONY -->
+  <link rel="icon" href="assets/images/kolo.png" type="image/png">
+</head>
+<body>
+
+  <!-- MENU -->
+  <header>
+    <div id="menu-placeholder"></div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- HERO SECTION -->
+    <section id="shooter-hero" class="mt-16">
+      <div class="card">
+        <h1>Shooter Game</h1>
+        <p class="lead">Strzelaj do wrogich statków i zdobywaj jak najwięcej punktów! 🚀</p>
+      </div>
+    </section>
+
+    <!-- GRA -->
+    <section id="shooter-game" class="card mt-22">
+      <div class="shooter-container">
+        
+        <!-- Canvas gry -->
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- HUD - Heads Up Display -->
+        <div id="score">Wynik: 0</div>
+        <div id="healthBar">
+          <div id="healthFill"></div>
+        </div>
+
+        <!-- Menu startowe -->
+        <div id="menu">
+          <button id="startBtn" class="btn">Start</button>
+        </div>
+
+        <!-- Game Over Menu -->
+        <div id="gameOverMenu" class="hidden">
+          <h2>Game Over</h2>
+          <p>Wynik: <span id="finalScore">0</span></p>
+          <button id="restartBtn" class="btn">Zagraj ponownie</button>
+        </div>
+      </div>
+      
+      <!-- STEROWANIE MOBILNE -->
+      <div class="mobile-controls">
+        <button id="leftBtn" class="mobile-btn">&larr;</button>
+        <button id="shootBtn" class="mobile-btn">&bull;</button>
+        <button id="rightBtn" class="mobile-btn">&rarr;</button>
+      </div>
+    </section>
+    
+    <!-- STEROWANIE I GŁOŚNOŚĆ -->
+    <section id="controls" class="card mt-16">
+      <div class="controls-grid">
+        
+        <!-- Sekcja sterowania -->
+        <div class="controls-left">
+          <h3>Sterowanie</h3>
+          <ul>
+            <li>← / → – Przesuń</li>
+            <li>Spacja – Strzał</li>
+          </ul>
+        </div>
+        
+        <!-- Kontrola głośności -->
+        <div class="volume-control mt-16">
+          <h3>Głośność muzyki</h3>
+          <input id="volumeControl" type="range" min="0" max="1" step="0.01" value="0.3">
+        </div>
+      </div>
+    </section>
+
+    <!-- INFORMACJE O MUZYCE I DŹWIĘKACH -->
+    <section id="credits" class="card mt-16">
+      <p>
+        <strong>Muzyka:</strong> pixabay.com - retro-wave-style-track-59892.mp3<br>
+        <strong>Dźwięki:</strong> pixabay.com - explosion-9-340460, gameover-86548, laser-gun-81720, ui-designed-hit-modern-interface-impact-sweetener-01-230484
+      </p>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <div id="footer-placeholder"></div>
+
+  <!-- SKRYPTY -->
+  <script src="assets/js/shooter.js"></script>
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

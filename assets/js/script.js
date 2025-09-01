@@ -1,142 +1,97 @@
+/**
+ * Główny skrypt strony Endixendi
+ * Ładuje częściowe szablony, obsługuje menu i podstawowe funkcje
+ * @version 1.0
+ */
+
 (function () {
-  const MENU_PATH = "menu.html";     // Ścieżka do pliku z menu
-  const FOOTER_PATH = "footer.html"; // Ścieżka do pliku ze stopką
+  'use strict';
+  
+  // Ścieżki do plików częściowych
+  const MENU_PATH = "menu.html";
+  const FOOTER_PATH = "footer.html";
+  
+  // Stan aplikacji
+  const state = {
+    menuLoaded: false,
+    footerLoaded: false
+  };
 
   /* =========================
      Helper: wczytaj HTML do kontenera
      ========================= */
-  function loadHTML(targetId, path, cb) {
-    const target = document.getElementById(targetId);
-    if (!target) return Promise.resolve();
+  function loadHTML(targetId, path) {
+    return new Promise((resolve, reject) => {
+      const target = document.getElementById(targetId);
+      if (!target) {
+        resolve();
+        return;
+      }
 
-    return fetch(path)
-      .then((res) =>
-        res.ok ? res.text() : Promise.reject(`Fetch ${path} failed: ${res.status}`)
-      )
-      .then((html) => {
-        target.innerHTML = html;          // Wstawiamy HTML do kontenera
-        if (typeof cb === "function") cb(); // Jeśli podany callback, uruchom go
-      })
-      .catch((err) => console.error("Błąd ładowania:", path, err));
+      fetch(path)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Fetch ${path} failed: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(html => {
+          target.innerHTML = html;
+          resolve();
+        })
+        .catch(error => {
+          console.error("Błąd ładowania:", path, error);
+          reject(error);
+        });
+    });
   }
 
   /* =========================
      Ładowanie partiali (menu + footer)
      ========================= */
   function loadPartials() {
-    loadHTML("menu-placeholder", MENU_PATH, initMenuToggle); // wczytaj menu i zainicjuj toggle
-    loadHTML("footer-placeholder", FOOTER_PATH);             // wczytaj stopkę
-  }
-  document.addEventListener("DOMContentLoaded", loadPartials);
-
-  /* =========================
-     Redirecty (hash i ścieżki)
-     ========================= */
-  function maybeRedirect() {
-    if (
-      location.hash === "#social" ||   // np. link do #social
-      location.hash === "#media"  ||   // lub do #media
-      location.pathname.endsWith("/social") // lub ścieżka /social
-    ) {
-      // Przekierowanie na linktr.ee
-      window.location.replace("https://linktr.ee/endixendi");
-    }
-  }
-  maybeRedirect();
-  window.addEventListener("hashchange", maybeRedirect);
-
-  /* =========================
-     Obsługa przycisku Donate
-     ========================= */
-  function initDonate() {
-    const donateBtn = document.getElementById("donate-btn");
-    if (donateBtn) {
-      donateBtn.addEventListener("click", () => {
-        // Otwórz stronę donacji w nowej karcie
-        window.open("https://streamelements.com/endixendi/tip", "_blank");
-      });
-    }
-  }
-  document.addEventListener("DOMContentLoaded", initDonate);
-
-  /* =========================
-     Smooth scroll (delegacja zdarzeń)
-     =========================
-     Obsługuje:
-      - <a href="#pc">...</a>
-      - <a href="index.html#pc">...</a>
-      - <button data-scroll="#pc">...</button>
-     ========================= */
-  function initSmoothScrollDelegated() {
-    const normalizePath = (p) =>
-      p.replace(/\/index\.html$/i, "").replace(/\/$/, "");
-
-    document.addEventListener("click", function (e) {
-      // Szukamy klikniętego elementu, który jest linkiem lub ma data-scroll
-      const trigger = e.target.closest("a, [data-scroll]");
-      if (!trigger) return;
-
-      // 1) Priorytet: atrybut data-scroll (np. przyciski)
-      let hash = trigger.getAttribute("data-scroll");
-
-      // 2) Jeśli to <a>, wyciągamy hash z href
-      if (!hash && trigger.tagName.toLowerCase() === "a") {
-        const rawHref = trigger.getAttribute("href");
-        if (!rawHref || !rawHref.includes("#")) return; // brak kotwicy -> nic nie robimy
-
-        const url = new URL(rawHref, location.href);
-
-        // Scrollujemy tylko, jeśli link prowadzi na TĘ SAMĄ stronę
-        const samePage =
-          normalizePath(url.pathname) === normalizePath(location.pathname);
-        if (!samePage) return;
-
-        hash = url.hash; // np. "#pc"
-      }
-
-      if (!hash || hash === "#") return;
-
-      const target = document.querySelector(hash);
-      if (!target) return;
-
-      // Gładkie przewijanie do elementu
-      e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-
-      // Zamknij mobilne menu po kliknięciu linku
-      const mainNav = document.getElementById("main-nav");
-      if (mainNav && window.innerWidth <= 1200) {
-        mainNav.style.display = "none";
-      }
+    Promise.all([
+      loadHTML("menu-placeholder", MENU_PATH).then(() => {
+        state.menuLoaded = true;
+        initMenuToggle();
+      }),
+      loadHTML("footer-placeholder", FOOTER_PATH).then(() => {
+        state.footerLoaded = true;
+      })
+    ]).catch(error => {
+      console.error("Błąd podczas ładowania partiali:", error);
     });
   }
-  document.addEventListener("DOMContentLoaded", initSmoothScrollDelegated);
 
   /* =========================
-     Obsługa hamburgera (toggle menu)
-     =========================
-     Uruchamiana po załadowaniu menu.html
+     Inicjalizacja toggle menu (hamburger)
      ========================= */
   function initMenuToggle() {
-    const menuToggle = document.getElementById("menu-toggle"); // ikona ☰
-    const mainNav = document.getElementById("main-nav");       // całe menu
+    const menuToggle = document.getElementById("menu-toggle");
+    const mainNav = document.getElementById("main-nav");
+    
     if (!menuToggle || !mainNav) return;
 
     // Ustaw stan początkowy menu
-    if (window.innerWidth <= 1200) {
-      mainNav.style.display = "none";  // na mobile domyślnie ukryte
-    } else {
-      mainNav.style.display = "";      // na desktopie widoczne
-    }
+    const updateMenuVisibility = () => {
+      if (window.innerWidth <= 1200) {
+        mainNav.style.display = "none";
+      } else {
+        mainNav.style.display = "";
+      }
+    };
+
+    updateMenuVisibility();
 
     // Kliknięcie ikony hamburgera
     menuToggle.addEventListener("click", () => {
-      const computed = window.getComputedStyle(mainNav).display;
-      mainNav.style.display = computed === "none" ? "flex" : "none";
+      const isVisible = window.getComputedStyle(mainNav).display !== "none";
+      mainNav.style.display = isVisible ? "none" : "flex";
     });
 
     // Zamknij menu po kliknięciu linku (tylko na mobile)
-    mainNav.querySelectorAll("a").forEach((link) => {
+    const navLinks = mainNav.querySelectorAll("a");
+    navLinks.forEach(link => {
       link.addEventListener("click", () => {
         if (window.innerWidth <= 1200) {
           mainNav.style.display = "none";
@@ -145,12 +100,100 @@
     });
 
     // Reakcja na zmianę rozmiaru okna
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 1200) {
-        mainNav.style.display = ""; // desktop -> zawsze widoczne
-      } else if (window.getComputedStyle(mainNav).display !== "flex") {
-        mainNav.style.display = "none"; // mobile -> ukryte
+    window.addEventListener("resize", updateMenuVisibility);
+  }
+
+  /* =========================
+     Redirecty (hash i ścieżki)
+     ========================= */
+  function checkForRedirects() {
+    const shouldRedirect = (
+      location.hash === "#social" ||
+      location.hash === "#media" ||
+      location.pathname.endsWith("/social")
+    );
+    
+    if (shouldRedirect) {
+      window.location.replace("https://linktr.ee/endixendi");
+    }
+  }
+
+  /* =========================
+     Obsługa przycisku Donate
+     ========================= */
+  function initDonateButton() {
+    const donateBtn = document.getElementById("donate-btn");
+    if (donateBtn) {
+      donateBtn.addEventListener("click", () => {
+        window.open("https://streamelements.com/endixendi/tip", "_blank");
+      });
+    }
+  }
+
+  /* =========================
+     Smooth scroll (delegacja zdarzeń)
+     ========================= */
+  function initSmoothScroll() {
+    document.addEventListener("click", function (e) {
+      const trigger = e.target.closest("a, [data-scroll]");
+      if (!trigger) return;
+
+      // Pobierz cel scrollowania
+      let targetHash = trigger.getAttribute("data-scroll");
+      
+      // Dla linków <a>, sprawdź czy hash jest w bieżącej stronie
+      if (!targetHash && trigger.tagName === "A") {
+        const href = trigger.getAttribute("href");
+        if (!href || !href.includes("#")) return;
+        
+        try {
+          const url = new URL(href, window.location.href);
+          if (url.pathname !== window.location.pathname) return;
+          targetHash = url.hash;
+        } catch (error) {
+          console.error("Błąd parsowania URL:", error);
+          return;
+        }
+      }
+
+      if (!targetHash || targetHash === "#") return;
+
+      // Znajdź element docelowy
+      const targetElement = document.querySelector(targetHash);
+      if (!targetElement) return;
+
+      // Wykonaj płynne przewijanie
+      e.preventDefault();
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+      // Zamknij mobilne menu po kliknięciu
+      const mainNav = document.getElementById("main-nav");
+      if (mainNav && window.innerWidth <= 1200) {
+        mainNav.style.display = "none";
       }
     });
+  }
+
+  /* =========================
+     Inicjalizacja wszystkich komponentów
+     ========================= */
+  function init() {
+    loadPartials();
+    checkForRedirects();
+    initDonateButton();
+    initSmoothScroll();
+    
+    // Nasłuchuj zmian hash dla redirectów
+    window.addEventListener("hashchange", checkForRedirects);
+  }
+
+  // Uruchom inicjalizację gdy DOM jest gotowy
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
   }
 })();

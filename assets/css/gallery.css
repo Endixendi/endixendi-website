@@ -1,3 +1,7 @@
+/* =========================
+   GALLERY STYLES
+   ========================= */
+
 /* GALERIA ZDJĘĆ */
 .gallery-grid {
   display: grid;
@@ -8,13 +12,24 @@
 .gallery-item {
   overflow: hidden;
   border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-5px);
 }
 
 .gallery-item img {
   width: 100%;
   height: 256px;
-  object-fit: cover; /* przycina zdjęcie, ale zachowuje proporcje */
+  object-fit: cover;
   display: block;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item img:hover {
+  transform: scale(1.05);
 }
 
 .gallery-caption {
@@ -23,4 +38,6 @@
   margin-top: 6px;
   color: #666;
   background: linear-gradient(180deg, #07070a 0%, var(--bg) 100%);
+  padding: 8px;
+  border-radius: 0 0 8px 8px;
 }

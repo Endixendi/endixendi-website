@@ -32,7 +32,6 @@
       <h1>Witaj — jestem Endixendi</h1>
       <p class="lead">
         Nagrywam gameplaye i poradniki, dzieląc się swoją pasją do gier, technologii oraz wszystkiego, co związane z cyfrowym światem. Na mojej stronie znajdziesz filmy, sprzęt, który używam oraz wskazówki dotyczące tworzenia treści.
-		</br></br></br>
       </p>
 
       <!-- CTA BUTTONS (przewijają do sekcji) -->
@@ -90,8 +89,8 @@
   <!-- SECTION TWÓRCZOŚĆ -->
   <!-- ===================== -->
   <section id="tworczosc" class="card mt-22">
-    <h2>Twórczość — filmy</h2>
-    <p class="muted">Pierwszy materiał z kanału YouTube (@Endixendi) który zaczął moją przygodę z nagrywaniem to MTA.</p>
+	<h2>Twórczość — filmy</h2>
+    <p class="muted">Pierwszy materiał z kanału YouTube <a class="inline-link" href="https://www.youtube.com/@Endixendi">(@Endixendi)</a> który zaczął moją przygodę z nagrywaniem to MTA.</p>
 
     <!-- GALERIA FILMÓW -->
     <div class="videos" id="videos">
@@ -107,16 +106,17 @@
     <!-- /GALERIA FILMÓW -->
 
     <!-- PRZYCISK DO YOUTUBE -->
-    <a class="btn mt-12" href="https://www.youtube.com/@Endixendi" target="_blank" rel="noopener">Odwiedź mój kanał</a>
+    <!-- <a class="btn mt-12" href="https://www.youtube.com/@Endixendi" target="_blank" rel="noopener">Odwiedź mój kanał</a> -->
   </section>
   <!-- /SECTION TWÓRCZOŚĆ -->
 
   <!-- ===================== -->
   <!-- SECTION PC -->
   <!-- ===================== -->
-  <section id="pc" class="card mt-22">
+  <section id="pc" class="controls-left card mt-22">
     <h2>PC — Specyfikacja</h2>
-    <p class="muted">Poniżej pełna konfiguracja.</p>
+    <!--<p class="muted">Poniżej pełna konfiguracja.</p>-->
+	</br>
 
     <!-- TABELA ZE SPRZĘTEM PC -->
     <table class="specs" aria-label="Specyfikacja komputera">
@@ -146,7 +146,7 @@
           ➤ Seagate 500 GB – ST3500312CS<br>
           ➤ Seagate 500 GB – ST3500418AS<br>
       <!--➤ WD 320 GB – WD3200BPVT-80ZEST0<br>--> <!-- stary dysk, zakomentowany -->
-          ➤ Toshiba External USB 3.0 (przenośny)
+          ➤ Toshiba 1 TB – External USB 3.0 (przenośny)
         </td></tr>
 
         <!-- Reszta podzespołów -->
@@ -155,22 +155,21 @@
         <tr><td class="cat">Chłodzenie CPU</td><td>➤ ENDORFY Navis F360 ARGB, 3×120 mm</td></tr>
     </table>
 
-    <!-- URZĄDZENIA PERYFERYJNE -->
-    <h3 style="margin-top:18px">Urządzenia peryferyjne</h3>
-    <ul>
-      <li>Słuchawki: ENDORFY Viro Plus USB</li>
-      <li>Mikrofon: Endorfy Solum Streaming SM950</li>
-      <li>Mysz: GENESIS KRYPTON 770</li>
-      <li>Klawiatura: SPC Gear GK550 Omnis Kailh Brown RGB</li>
-      <!--<li>Podkładka: GENESIS CARBON 500 M FIRE; A4 Tech XGame X7-500MP</li>--> <!-- stara podkładka -->
-      <li>Fotel: HUZARO FORCE 6.0 Red Gaming Armchair</li>
-      <li>Biurko: Ultradesk LEVEL V2 LED RGB (Czarne) (elektryczna regulacja)</li>
-      <li>Podkładka: Ultradesk LEVEL V2 LED RGB (Razem z biurkiem)</li>
-      <li>Kamera: Logitech HD Pro C920</li>
-      <li>Tablet graficzny: XP-PEN Star G640</li>
-      <li>Gamepad: PowerA przewodowy Xbox Series / Xbox One</li>
-    </ul>
-    <!-- /URZĄDZENIA PERYFERYJNE -->
+	<!-- URZĄDZENIA PERYFERYJNE -->
+	<h3 style="margin-top:18px">Urządzenia peryferyjne</h3>
+	<ul>
+	  <li>Słuchawki: ENDORFY Viro Plus USB</li>
+	  <li>Mikrofon: Endorfy Solum Streaming SM950</li>
+	  <li>Mysz: GENESIS KRYPTON 770</li>
+	  <li>Klawiatura: SPC Gear GK550 Omnis Kailh Brown RGB</li>
+	  <li>Fotel: HUZARO FORCE 6.0 Red Gaming Armchair</li>
+	  <li>Biurko: Ultradesk LEVEL V2 LED RGB (Czarne) (elektryczna regulacja)</li>
+	  <li>Podkładka: Ultradesk LEVEL V2 LED RGB (Razem z biurkiem)</li>
+	  <li>Kamera: Logitech HD Pro C920</li>
+	  <li>Tablet graficzny: XP-PEN Star G640</li>
+	  <li>Gamepad: PowerA przewodowy Xbox Series / Xbox One</li>
+	</ul>
+	<!-- /URZĄDZENIA PERYFERYJNE -->
 
   </section>
   <!-- /SECTION PC -->
@@ -208,12 +207,19 @@
   <!-- SECTION INSTAGRAM -->
   <!-- ===================== -->
   <section id="ig" class="card mt-22">
-    <h2>Instagram — <a class="inline-link" href="https://www.instagram.com/endixendi/">@Endixendi</a></h2>
+    <h2>Instagram — <a class="inline-link" href="https://www.instagram.com/endixendi/">@Endixendi</a></h2></br>
 
     <!-- WIDGET Z POSTAMI (Snapwidget) -->
-    <iframe src="https://snapwidget.com/embed/1105116" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Posts from Instagram"></iframe>
+    <!-- <iframe src="https://snapwidget.com/embed/1105116" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Posts from Instagram"></iframe> -->
+	
+	<!-- LightWidget WIDGET -->
+	<script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
+	<iframe src="//lightwidget.com/widgets/04bcab8b0ac95f17946dff835ade8129.html" scrolling="no" allowtransparency="true" class="lightwidget-widget" style="width:100%;border:0;overflow:hidden;"></iframe>
+	<!-- /LightWidget WIDGET -->
+	
   </section>
   <!-- /SECTION INSTAGRAM -->
+
 
   <!-- ===================== -->
   <!-- SECTION SPOTIFY -->

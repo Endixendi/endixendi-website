@@ -1,3 +1,7 @@
+/* =========================
+   DINO GAME STYLES
+   ========================= */
+
 :root {
   --primary-color: #06b6d4;
   --primary-dark: #0284c7;
@@ -5,10 +9,6 @@
 
 /* Ogólne */
 body {
-
-  /* text-align: center; */
-
-  /* dodane ograniczenie szerokości i wyśrodkowanie */
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -47,7 +47,6 @@ body {
   flex: 2;
   display: flex;
   justify-content: center;
-  /* border: 2px solid var(--primary-color); */
   border-radius: 16px;
   background: linear-gradient(to right, #06b6d4, #84cc16, #facc15);
   padding: 2px;
@@ -86,38 +85,11 @@ body {
   text-align: center;
 }
 
-/*
-  .mobile-controls button {
-    font-size: 1.2rem;
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    background: var(--primary-color);
-    color: white;
-  }
-  .mobile-controls button:active {
-    transform: scale(0.95);
-    background: var(--primary-dark);
-  }
-*/  
-
-@media (max-width: 768px) {
-  .mobile-controls {
-    display: block;
-    position: absolute;
-    bottom: 60px;   /* nad ziemią */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-  }
-}
-
 #jumpBtn {
-	text-align: center;
+  text-align: center;
 }
 
-/* Suwak */
+/* Suwak głośności */
 .volume-control input[type="range"] {
   -webkit-appearance: none;
   width: 100%;
@@ -145,11 +117,30 @@ body {
   cursor: pointer;
 }
 
-/* Responsywność */
+/* =========================
+   RESPONSYWNOŚĆ
+   ========================= */
+
 @media (max-width: 768px) {
-  .dino-container { flex-direction: column; align-items: center; }
-  .mobile-controls { display: block; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); }
-  .mobile-controls button { font-size: 1rem; padding: 6px 12px; }
-  #gameCanvas { height: calc(50vw); }
-  .volume-control input[type="range"] { max-width: 90%; }
+  .dino-container { 
+    flex-direction: column; 
+    align-items: center; 
+  }
+  
+  .mobile-controls { 
+    display: block; 
+    position: absolute; 
+    bottom: 60px;
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 10; 
+  }
+  
+  #gameCanvas { 
+    height: calc(50vw); 
+  }
+  
+  .volume-control input[type="range"] { 
+    max-width: 90%; 
+  }
 }

@@ -12,20 +12,24 @@
   font-family: Inter, system-ui, -apple-system, Arial, sans-serif;
 }
 
-* { box-sizing: border-box; } /* Ułatwia kontrolę nad padding/margin */
+* { 
+  box-sizing: border-box;   /* Ułatwia kontrolę nad padding/margin */
+  margin: 0;
+  padding: 0;
+}
 
 body {
-  margin: 0;
   background: linear-gradient(180deg, #07070a 0%, var(--bg) 100%);
   color: #e6eef6;
   line-height: 1.5;
+  min-height: 100vh;
 }
 
 /* =========================
    Nagłówek i menu
    ========================= */
 header {
-  position: sticky; /* Zawsze przyklejony u góry */
+  position: sticky;         /* Zawsze przyklejony u góry */
   top: 0;
   background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));
   backdrop-filter: blur(6px); /* Rozmycie tła */
@@ -118,20 +122,6 @@ header {
 }
 
 /* =========================
-   Responsywność / mobile
-   ========================= */
-@media screen and (max-width: 1200px) {
-  #main-nav {
-    display: none;            /* Na mobile menu domyślnie ukryte */
-    flex-direction: column;   /* Linki w kolumnie */
-    gap: 12px;
-    width: 100%;
-  }
-  .menu-icon { display: block; } /* Ikona hamburgera widoczna */
-  .dropdown-content { position: relative; box-shadow: none; }
-}
-
-/* =========================
    Sekcja main
    ========================= */
 main {
@@ -148,13 +138,6 @@ main {
   grid-template-columns: 2fr 1fr; /* Lewa większa, prawa mniejsza */
   gap: 24px;
   align-items: start;
-}
-
-@media screen and (max-width: 1200px) {
-  .hero {
-    grid-template-columns: 1fr; /* Na telefonie jedna kolumna */
-    gap: 16px;
-  }
 }
 
 .hero > .card-container {
@@ -284,9 +267,6 @@ footer {
   padding: 20px;
   margin: 20px auto;          /* odstęp od treści i wyśrodkowanie */
   max-width: 500px;          /* szerokość jak reszta strony */
-  /* background: var(--card); */   /* ten sam kolor co karty */
-  border-radius: 12px;        /* zaokrąglone rogi */
-  /* box-shadow: 0 2px 8px rgba(0,0,0,0.3); */ /* lekki cień */
   color: var(--muted); 
   font-size: 14px;
 }
@@ -318,20 +298,6 @@ a.inline-link:hover { text-decoration: underline; }
 .mt-22 { margin-top: 22px; }
 
 /* =========================
-   Responsywność dodatkowa
-   ========================= */
-@media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; }
-  .nav { padding: 10px; flex-wrap: wrap; }
-  .brand .logo { width: 40px; height: 40px; }
-  .grid { grid-template-columns: 1fr; }
-  .video iframe { height: 200px; }
-  .snapwidget-widget { width: 100%; height: auto; aspect-ratio: 25 / 10; }
-}
-
-section { scroll-margin-top: 80px; } /* Odstęp od menu przy przewijaniu */
-
-/* =========================
    Menu dropdown (druga wersja)
    ========================= */
 .dropdown-content a {
@@ -346,4 +312,121 @@ section { scroll-margin-top: 80px; } /* Odstęp od menu przy przewijaniu */
 .dropdown-content a:hover {
   background: rgba(0, 170, 255, 0.1); /* lekkie podświetlenie */
   color: var(--accent);
+}
+
+/* =========================
+   Style list - spójne across wszystkich stron
+   ========================= */
+
+/* Bazowe style dla list */
+ul, ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+li {
+  margin: 6px 0;
+  line-height: 1.5;
+}
+
+/* Specyficzne style dla list w sekcjach specyfikacji */
+.specs + ul {
+  margin-top: 12px;
+}
+
+.specs + ul li {
+  position: relative;
+  padding-left: 8px;
+  list-style-type: none;
+}
+
+.specs + ul li:before {
+  content: "•";
+  position: absolute;
+  left: -16px;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+/* Style dla list w kontrolkach gier */
+.controls-left ul {
+  margin: 0;
+  padding-left: 18px;
+  list-style: none;
+}
+
+.controls-left li {
+  margin: 8px 0;
+  font-size: 16px;
+  position: relative;
+  padding-left: 8px;
+}
+
+.controls-left li:before {
+  content: "•";
+  position: absolute;
+  left: -12px;
+  color: var(--accent);
+}
+
+/* Style dla list w bocznych panelach */
+.side.left ul {
+  margin: 12px 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.side.left li {
+  margin: 8px 0;
+  position: relative;
+  padding-left: 8px;
+}
+
+.side.left li:before {
+  content: "•";
+  position: absolute;
+  left: -12px;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+/* =========================
+   Responsywność dodatkowa
+   ========================= */
+@media screen and (max-width: 1200px) {
+  #main-nav {
+    display: none;            /* Na mobile menu domyślnie ukryte */
+    flex-direction: column;   /* Linki w kolumnie */
+    gap: 12px;
+    width: 100%;
+  }
+  .menu-icon { display: block; } /* Ikona hamburgera widoczna */
+  .dropdown-content { position: relative; box-shadow: none; }
+  
+  .hero {
+    grid-template-columns: 1fr; /* Na telefonie jedna kolumna */
+    gap: 16px;
+  }
+  
+  .hero > .card-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .nav { padding: 10px; flex-wrap: wrap; }
+  .brand .logo { width: 40px; height: 40px; }
+  .grid { grid-template-columns: 1fr; }
+  .video iframe { height: 200px; }
+  .snapwidget-widget { width: 100%; height: auto; aspect-ratio: 25 / 10; }
+}
+
+section { scroll-margin-top: 80px; } /* Odstęp od menu przy przewijaniu */
+
+/* Efekty hover dla przycisków i linków */
+.btn:hover,
+a.btn:hover,
+.ghost:hover,
+a.inline-link:hover {
+  transition: all 0.2s ease-in-out;
 }
