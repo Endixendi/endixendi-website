@@ -9,7 +9,7 @@
 
 /* Ogólne */
 body {
-  max-width: 1200px;
+  /*max-width: 1200px;*/
   margin-left: auto;
   margin-right: auto;
 }
@@ -127,13 +127,30 @@ body {
     align-items: center; 
   }
   
-  .mobile-controls { 
-    display: block; 
-    position: absolute; 
-    bottom: 60px;
-    left: 50%; 
-    transform: translateX(-50%); 
-    z-index: 10; 
+  .mobile-controls {
+    display: block;
+    position: absolute;
+    bottom: 2px;      
+    left: 2px;
+    right: 2px;
+    width: auto;
+    margin: 0 !important;
+    z-index: 30;      
+  }
+  
+  #jumpBtn {
+    width: 100%;    
+    background: rgba(0, 0, 0, 0.25); 
+    border: none;
+    border-radius: 0 0 14px 14px;
+    color: white;
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    -webkit-tap-highlight-color: transparent;
   }
   
   #gameCanvas { 
