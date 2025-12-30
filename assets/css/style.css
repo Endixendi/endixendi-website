@@ -9,7 +9,9 @@
   --accent-2: #ffcc00;      /* Kolor akcentu 2 (np. gradienty) */
   --glass: rgba(255, 255, 255, 0.03); /* Efekt szkła */
   --maxw: 1100px;           /* Maksymalna szerokość kontenera */
+  --transition: 0.25s ease;
   font-family: Inter, system-ui, -apple-system, Arial, sans-serif;
+  
 }
 
 * { 
@@ -161,9 +163,24 @@ main {
   background: var(--card);
   padding: 18px;
   border-radius: 12px;
+  /* Łączymy bazowy cień i przezroczystą ramkę */
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  
+  /* KLUCZ: Wszystkie właściwości do animowania w jednej linii po przecinku */
+  transition: transform var(--transition), 
+              box-shadow var(--transition), 
+              border-color var(--transition);
 }
 
+.card:hover {
+  transform: translateY(-4px);
+  /* KLUCZ: Łączymy mocny ciemny cień z niebieską poświatą (oddzielone przecinkiem) */
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 
+              0 0 20px rgba(0, 170, 255, 0.15); 
+  
+  border-color: rgba(0, 170, 255, 0.4);
+}
 .hero h1 {
   margin: 0 0 8px;
   font-size: 28px;
@@ -231,11 +248,19 @@ table.specs th {
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
+/* Styl dla kategorii w tabeli specyfikacji */
 .cat {
-  background: linear-gradient(90deg, var(--accent), transparent);
+  /* Jasny gradient od lewej do przezroczystości */
+  background: linear-gradient(90deg, rgba(0, 170, 255, 0.15), transparent); 
+  
+  /* Kolor napisu - Twój jasny niebieski */
+  color: var(--accent); 
+  
+  /* Dodatkowe formatowanie */
   font-weight: 700;
-  color: #071017;
   padding-left: 12px;
+  text-transform: uppercase; /* Opcjonalnie: napisy wielkimi literami wyglądają profesjonalniej */
+  letter-spacing: 0.5px;
 }
 
 /* =========================
