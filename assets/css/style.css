@@ -292,11 +292,21 @@ table.specs th {
    Stopka
    ========================= */
 footer {
-  margin-top: 50px;
-  padding: 40px 20px;
-  background: linear-gradient(180deg, transparent, rgba(20, 23, 27, 0.99));
-  border-top: 1px solid var(--glass);
+  margin-top: 80px; /* Większy odstęp od treści */
+  padding: 60px 20px;
+  
+  /* Zmieniamy gradient na bardziej zdecydowany */
+  /* #1a1d23 to lekko jaśniejszy odcień Twojego --bg, co stworzy efekt wypukłości */
+  background: linear-gradient(180deg, #14171b 0%, #050505 100%);
+  
+  /* Wyraźniejsza linia oddzielająca z lekkim blaskiem */
+  border-top: 1px solid rgba(0, 170, 255, 0.1); 
+  
+  /* Cień rzucany "do góry", który sprawi, że stopka będzie widoczna na długiej stronie */
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+  
   text-align: center;
+  position: relative;
 }
 
 .footer-content {
