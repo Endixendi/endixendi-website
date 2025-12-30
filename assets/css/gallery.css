@@ -3,6 +3,7 @@
    ========================= */
 
 /* GALERIA ZDJĘĆ */
+/* Kontener galerii - 3 lub 4 kolumny zależnie od szerokości */
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -10,34 +11,35 @@
 }
 
 .gallery-item {
-  overflow: hidden;
-  border-radius: 12px;
-  transition: transform 0.3s ease;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  overflow: hidden; /* Ważne dla efektu zoomu obrazka */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform var(--transition), border-color var(--transition);
 }
 
 .gallery-item:hover {
-  transform: translateY(-5px);
+  border-color: var(--accent);
+  transform: translateY(-3px);
 }
 
 .gallery-item img {
   width: 100%;
-  height: 256px;
-  object-fit: cover;
+  aspect-ratio: 16 / 9; /* Zdjęcia zawsze mają ten sam kształt */
+  object-fit: cover;    /* Wypełnia przestrzeń bez zniekształceń */
   display: block;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
-.gallery-item img:hover {
-  transform: scale(1.05);
+.gallery-item:hover img {
+  transform: scale(1.1); /* Delikatne powiększenie zdjęcia w środku */
 }
 
 .gallery-caption {
+  padding: 10px;
+  font-size: 13px;
+  color: var(--muted);
   text-align: center;
-  font-size: 14px;
-  margin-top: 6px;
-  color: #666;
-  background: linear-gradient(180deg, #07070a 0%, var(--bg) 100%);
-  padding: 8px;
-  border-radius: 0 0 8px 8px;
+  font-weight: 500;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
