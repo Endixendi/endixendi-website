@@ -20,6 +20,10 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: linear-gradient(180deg, #07070a 0%, var(--bg) 100%);
   color: #e6eef6;
@@ -290,7 +294,7 @@ table.specs th {
 footer {
   margin-top: 50px;
   padding: 40px 20px;
-  background: linear-gradient(180deg, transparent, rgba(20, 23, 27, 0.8));
+  background: linear-gradient(180deg, transparent, rgba(20, 23, 27, 0.99));
   border-top: 1px solid var(--glass);
   text-align: center;
 }
