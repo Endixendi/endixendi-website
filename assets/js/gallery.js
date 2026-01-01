@@ -1,23 +1,23 @@
 /**
- * Galeria zdjęć Endixendi - Wersja Automatyczna pod GitHub Pages
+ * Galeria zdjęć
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. LISTA PLIKÓW (Tutaj dopisuj nowe zdjęcia)
+    // 1. LISTA PLIKÓW
     // Nazwa pliku bez rozszerzenia (zamiast spacji używaj _) będzie opisem pod zdjęciem
     const imageFiles = [
-        'Massey_Ferguson_+_Samasz.jpg',
-        'Żniwa_pełną_parą.jpg',
-        'Przejazd_przy_ulu.jpg',
-        'Orka_pola.jpg',
-        'Sprzęt_do_obornika.jpg',
-        'Sprzedajemy_belki_kiszonki.jpg',
-        'Żniwa_pszenicy.jpg',
-        'Głęboszowanie_pola.jpg',
-        'Samozbierająca_w_akcj_z_trawą.jpg',
-        'Samozbierająca_w_akcj_ze_słomą.jpg',
-        'Talerzowanie_pola.jpg',
-        'Siewy_na_polu.jpg'
+        'Massey_Ferguson_+_Samasz.webp',
+        'Żniwa_pełną_parą.webp',
+        'Przejazd_przy_ulu.webp',
+        'Orka_pola.webp',
+        'Sprzęt_do_obornika.webp',
+        'Sprzedajemy_belki_kiszonki.webp',
+        'Żniwa_pszenicy.webp',
+        'Głęboszowanie_pola.webp',
+        'Samozbierająca_w_akcj_z_trawą.webp',
+        'Samozbierająca_w_akcj_ze_słomą.webp',
+        'Talerzowanie_pola.webp',
+        'Siewy_na_polu.webp'
     ];
 
     const galleryContainer = document.getElementById('dynamic-gallery');
@@ -38,10 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
         
-        galleryItem.innerHTML = `
-            <img src="assets/images/gallery/${fileName}" alt="${description}" loading="lazy">
-            <p class="gallery-caption">${description}</p>
-        `;
+		galleryItem.innerHTML = `
+		<div class="img-loader"></div> <img src="assets/images/gallery/${fileName}" alt="${description}" loading="lazy" style="opacity: 0; transition: opacity 0.5s ease;" onload="this.style.opacity='1'">
+			<p class="gallery-caption">${description}</p>
+		`;		
+		
 
         // Obsługa kliknięcia (powiększenie)
         galleryItem.querySelector('img').addEventListener('click', function() {
