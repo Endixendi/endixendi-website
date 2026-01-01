@@ -1,49 +1,75 @@
 /* =========================
-   GALLERY STYLES
+   GALLERY STYLES - OPTIMIZED
    ========================= */
 
-/* GALERIA ZDJĘĆ */
-/* Kontener galerii - 3 lub 4 kolumny zależnie od szerokości */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
 }
 
 .gallery-item {
   background: rgba(255, 255, 255, 0.02);
-  border-radius: 10px;
-  overflow: hidden; /* Ważne dla efektu zoomu obrazka */
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: transform var(--transition), border-color var(--transition);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+  /* Isolation zapobiega glitchom przy zaokrąglonych rogach */
+  isolation: isolate; 
+  position: relative;
 }
 
-.gallery-item img {
-    background-color: #2c3e50; /* Ciemny kolor, który pokaże się przed zdjęciem */
-}
-
+/* Efekt delikatnego uniesienia całej karty */
 .gallery-item:hover {
   border-color: var(--accent);
-  transform: translateY(-3px);
+  transform: translateY(-5px);
 }
 
 .gallery-item img {
   width: 100%;
-  aspect-ratio: 16 / 9; /* Zdjęcia zawsze mają ten sam kształt */
-  object-fit: cover;    /* Wypełnia przestrzeń bez zniekształceń */
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   display: block;
-  transition: transform 0.5s ease;
+  background-color: #2c3e50;
+  
+  /* KLUCZ DO PŁYNNOŚCI */
+  will-change: transform; /* Informuje przeglądarkę o nadchodzącej animacji */
+  transform: translateZ(0); /* Wymusza akcelerację sprzętową (GPU) */
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* Płynne powiększenie zdjęcia wewnątrz */
 .gallery-item:hover img {
-  transform: scale(1.1); /* Delikatne powiększenie zdjęcia w środku */
+  transform: scale(1.1) translateZ(0);
 }
 
 .gallery-caption {
-  padding: 10px;
-  font-size: 13px;
+  padding: 12px;
+  font-size: 14px;
   color: var(--muted);
   text-align: center;
   font-weight: 500;
+  background: rgba(0, 0, 0, 0.2);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 2;
+}
+
+/* Loader wizualny przed załadowaniem zdjęcia */
+.img-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,0.1);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: none; /* Pokazuje się tylko gdy potrzebny */
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }

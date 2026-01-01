@@ -1,10 +1,4 @@
-/**
- * Galeria zdjęć
- */
-
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. LISTA PLIKÓW
-    // Nazwa pliku bez rozszerzenia (zamiast spacji używaj _) będzie opisem pod zdjęciem
     const imageFiles = [
         'Massey_Ferguson_+_Samasz.webp',
         'Żniwa_pełną_parą.webp',
@@ -21,77 +15,61 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const galleryContainer = document.getElementById('dynamic-gallery');
-    
     if (!galleryContainer) return;
 
-    // 2. GENEROWANIE GALERII
     imageFiles.forEach(fileName => {
-        // Tworzenie czytelnego opisu z nazwy pliku
-        const cleanName = fileName.split('.')[0]       // Usuwa .jpg / .png
-            .replace(/_/g, ' ')                        // Zamienia _ na spację
-            .replace(/-/g, ' ');                       // Zamienia - na spację
-        
-        // Pierwsza litera wielka (opcjonalnie)
+        const cleanName = fileName.split('.')[0].replace(/_/g, ' ').replace(/-/g, ' ');
         const description = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
 
-        // Tworzenie elementu galerii
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
         
-		galleryItem.innerHTML = `
-		<div class="img-loader"></div> <img src="assets/images/gallery/${fileName}" alt="${description}" loading="lazy" style="opacity: 0; transition: opacity 0.5s ease;" onload="this.style.opacity='1'">
-			<p class="gallery-caption">${description}</p>
-		`;		
-		
+        // Obrazek z obsługą płynnego wejścia (opacity)
+        galleryItem.innerHTML = `
+            <div class="img-loader"></div>
+            <img src="assets/images/gallery/${fileName}" 
+                 alt="${description}" 
+                 loading="lazy" 
+                 style="opacity: 0; transition: opacity 0.8s ease;">
+            <p class="gallery-caption">${description}</p>
+        `;
 
-        // Obsługa kliknięcia (powiększenie)
-        galleryItem.querySelector('img').addEventListener('click', function() {
+        const img = galleryItem.querySelector('img');
+
+        // Gdy obrazek się załaduje, ustawiamy opacity na 1
+        img.onload = () => {
+            img.style.opacity = '1';
+        };
+
+        // Obsługa kliknięcia (Overlay)
+        img.addEventListener('click', function() {
             createOverlay(this);
         });
 
         galleryContainer.appendChild(galleryItem);
     });
 
-    /**
-     * Funkcja powiększania obrazka (Overlay)
-     */
     function createOverlay(img) {
         const overlay = document.createElement('div');
-        
-        // Stylizacja overlay przez JS (aby nie zmieniać gallery.css)
         Object.assign(overlay.style, {
-            position: 'fixed',
-            top: '0',
-            left: '0',
-            width: '100%',
-            height: '100%',
-            background: 'rgba(0, 0, 0, 0.85)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            zIndex: '10000',
-            opacity: '0',
-            transition: 'opacity 0.3s ease'
+            position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
+            background: 'rgba(0, 0, 0, 0.9)', display: 'flex', alignItems: 'center',
+            justifyContent: 'center', cursor: 'pointer', zIndex: '10000',
+            opacity: '0', transition: 'opacity 0.3s ease'
         });
 
         const fullImg = document.createElement('img');
         fullImg.src = img.src;
         Object.assign(fullImg.style, {
-            maxWidth: '90%',
-            maxHeight: '90%',
-            objectFit: 'contain',
-            borderRadius: '5px',
-            boxShadow: '0 0 30px rgba(0,0,0,0.5)'
+            maxWidth: '90%', maxHeight: '90%', objectFit: 'contain',
+            borderRadius: '8px', boxShadow: '0 0 40px rgba(0,0,0,0.6)'
         });
 
         overlay.appendChild(fullImg);
         document.body.appendChild(overlay);
 
-        // Animacja pojawienia się
         setTimeout(() => overlay.style.opacity = '1', 10);
 
-        // Zamykanie
         const closeOverlay = () => {
             overlay.style.opacity = '0';
             setTimeout(() => overlay.remove(), 300);
@@ -99,10 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         overlay.addEventListener('click', closeOverlay);
-
-        const handleEsc = (e) => {
-            if (e.key === 'Escape') closeOverlay();
-        };
+        const handleEsc = (e) => { if (e.key === 'Escape') closeOverlay(); };
         document.addEventListener('keydown', handleEsc);
     }
 });
