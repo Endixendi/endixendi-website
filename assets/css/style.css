@@ -63,13 +63,7 @@ header {
   align-items: center;
 }
 
-.logo-img {
-  transition: transform 0.25s ease;
-}
 
-.logo a:hover .logo-img {
-  transform: scale(1.1);
-}
 
 .brand .logo {
   width: 44px;
