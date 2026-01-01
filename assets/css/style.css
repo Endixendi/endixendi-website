@@ -14,6 +14,7 @@
   
 }
 
+
 * { 
   box-sizing: border-box;   /* Ułatwia kontrolę nad padding/margin */
   margin: 0;
@@ -53,11 +54,21 @@ header {
   gap: 20px;
 }
 
+
+
 /* Brand (logo + nazwa) */
 .brand {
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+.logo-img {
+  transition: transform 0.25s ease;
+}
+
+.logo a:hover .logo-img {
+  transform: scale(1.1);
 }
 
 .brand .logo {

@@ -1,21 +1,23 @@
 <!-- ======================
      MENU GŁÓWNE STRONY
      ====================== -->
-
+<link rel="stylesheet" href="assets/css/style.css">
 <div class="nav">
   
   <!-- BRAND (logo + nazwa + podtytuł) -->
   <div class="brand">
-    <div class="logo">
-      <!-- Logo strony -->
-      <img src="assets/images/4.png" alt="Logo" class="logo-img">
-    </div>
-    <div>
-      <!-- Nazwa strony -->
-      <div class="brand-name">Endixendi</div>
-      <!-- Krótki opis / podtytuł -->
-      <div class="brand-subtitle">Gaming • Streaming • Poradniki • PC</div>
-    </div>
+	  <div class="logo">
+		<a href="https://linktr.ee/endixendi"
+		   target="_blank"
+		   rel="noopener noreferrer">
+		  <img src="assets/images/4.png" alt="Logo Endixendi" class="logo-img">
+		</a>
+	</div>
+
+	<div>
+		<div class="brand-name">Endixendi</div>
+		<div class="brand-subtitle">Gaming • Streaming • Poradniki • PC</div>
+	</div>
   </div>
   <!-- /BRAND -->
 
@@ -31,27 +33,41 @@
     <a href="index.html#pc">PC</a>
     <a href="index.html#o-mnie">O mnie</a>
     <a href="index.html#kontakt">Kontakt</a>
-
-    <!-- Dropdown (rozwijane menu) z narzędziami -->
-    <div class="dropdown">
-      <a href="javascript:void(0)" class="dropbtn">Narzędzia ▾</a>
-      <div class="dropdown-content">
-        <a href="tools.html">Programy</a>
-		<a href="gallery.html">Galeria</a>
-		<a href="tetris.html">Tetris</a>
-		<a href="dino.html">Dino</a>
-		<a href="shooter.html">Shooter</a>
-      </div>
-    </div>
-    <!-- /Dropdown Narzędzia -->
+	<a href="gallery.html">Galeria</a>
 
     <!-- Dropdown (rozwijane menu) z mediami -->
+	<div class="dropdown">
+	  <a href="javascript:void(0)" class="dropbtn">Sociale ▾</a>
+	  <div class="dropdown-content">
+
+		<!-- HUB -->
+		<a href="https://linktr.ee/endixendi" target="_blank">🌐 Social Media (wszystkie linki)</a>
+
+		<!-- GŁÓWNE PLATFORMY -->
+		<a href="https://www.youtube.com/c/Endixendi" target="_blank">🎥 YouTube</a>
+		<a href="https://www.twitch.tv/endixendi" target="_blank">🎮 Twitch</a>
+		<a href="https://www.tiktok.com/@endixendi" target="_blank">🎵 TikTok</a>
+		<a href="https://www.instagram.com/endixendi" target="_blank">📸 Instagram</a>
+
+		<!-- SPOŁECZNOŚĆ -->
+		<a href="https://discord.com/invite/MwGVnXWUaW" target="_blank">💬 Discord</a>
+
+		<!-- MUZYKA -->
+		<a href="index.html#spotify">🎧 Spotify</a>
+
+		<!-- WSPARCIE -->
+		<a href="https://streamelements.com/endixendi/tip" target="_blank">💰 Wsparcie</a>
+
+	  </div>
+	</div>
+	
+	<!-- Dropdown (rozwijane menu) z narzędziami -->
     <div class="dropdown">
-      <a href="index.html#media" class="dropbtn">Media ▾</a>
+      <a href="javascript:void(0)" class="dropbtn">Gry ▾</a>
       <div class="dropdown-content">
-		<a href="https://streamelements.com/endixendi/tip" target="_blank">Wsparcie $</a>
-        <a href="index.html#ig">Instagram</a>
-        <a href="index.html#spotify">Spotify</a>
+	    <a href="dino.html">🦖 Dino</a>
+		<a href="tetris.html">🧩 Tetris</a>
+		<a href="shooter.html">🔫 Shooter</a>
       </div>
     </div>
     <!-- /Dropdown Media -->
