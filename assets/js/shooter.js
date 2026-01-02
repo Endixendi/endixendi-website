@@ -28,6 +28,7 @@ const restartBtn = document.getElementById("restartBtn");
 
 // Kontrola dźwięku
 const volumeControl = document.getElementById("volumeControl");
+const volumeControl1 = document.getElementById("volumeControl1");
 
 // Dźwięki gry
 const sounds = {
@@ -60,9 +61,20 @@ const gameState = {
 sounds.bg.loop = true;
 sounds.bg.volume = 0.3;
 
+sounds.gameover.volume = 0.3;
+sounds.playerShoot.volume = 0.3;
+sounds.enemyShoot.volume = 0.3;
+sounds.explosion.volume = 0.3;
+sounds.hit.volume = 0.3;
+
 // Ustawienie początkowego poziomu głośności dla wszystkich dźwięków
 Object.values(sounds).forEach(sound => {
   sound.volume = 0.3;
+  sounds.gameover.volume = 0.3;
+  sounds.playerShoot.volume = 0.3;
+  sounds.enemyShoot.volume = 0.3;
+  sounds.explosion.volume = 0.3;
+  sounds.hit.volume = 0.3;
 });
 
 /**
@@ -392,13 +404,23 @@ window.addEventListener("load", () => {
   window.addEventListener("resize", resizeCanvas);
   resizeCanvas();
 
-  // Obsługa suwaka głośności
-  volumeControl.addEventListener("input", () => {
-    const volume = parseFloat(volumeControl.value);
-    Object.values(sounds).forEach(sound => {
-      sound.volume = volume;
-    });
-  });
+
+// Obsługa suwaka MUZYKI (tylko bg)
+volumeControl.addEventListener("input", () => {
+  const volume = parseFloat(volumeControl.value);
+  sounds.bg.volume = volume; // Zmieniamy tylko muzykę tła
+});
+
+// Obsługa suwaka EFEKTÓW (wszystko poza bg)
+volumeControl1.addEventListener("input", () => {
+  const volume = parseFloat(volumeControl1.value);
+  
+  sounds.gameover.volume = volume;
+  sounds.playerShoot.volume = volume;
+  sounds.enemyShoot.volume = volume;
+  sounds.explosion.volume = volume;
+  sounds.hit.volume = volume;
+});
 
   // Sterowanie klawiaturą
   window.addEventListener("keydown", (e) => { 

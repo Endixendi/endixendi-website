@@ -1,6 +1,6 @@
 /**
  * Gra Tetris - klasyczna gra logiczna
- * @version 1.1
+ * @version 1.3 - Poprawka audio
  */
 
 // Konfiguracja Canvas
@@ -52,8 +52,16 @@ const sounds = {
     rotate: new Audio("assets/sounds/tetris/rotate.mp3"),      
     gameover: new Audio("assets/sounds/tetris/gameover.mp3")
 };
+
+// KONFIGURACJA AUDIO
 sounds.music.loop = true;
-sounds.music.volume = 0.3;
+sounds.music.volume = 0.15;
+
+sounds.line.volume = 0.3;
+sounds.levelup.volume = 0.3;
+sounds.drop.volume = 0.3;
+sounds.rotate.volume = 0.3;
+sounds.gameover.volume = 0.3;
 
 // Stan gry
 let dropCounter = 0, dropInterval = 1000, lastTime = 0;
@@ -174,6 +182,8 @@ function playerRotate(dir) {
             return;
         }
     }
+    // RESET I PLAY DLA OBROTU
+    sounds.rotate.currentTime = 0;
     sounds.rotate.play();
 }
 
@@ -182,6 +192,11 @@ function playerDrop() {
     if (collide(ARENA, player)) {
         player.pos.y--;
         merge(ARENA, player);
+        
+        // DODANO: Dźwięk drop przy uderzeniu w dno (automatyczne lub ArrowDown)
+        sounds.drop.currentTime = 0;
+        sounds.drop.play();
+
         playerReset();
         arenaSweep();
         updateStats();
@@ -196,10 +211,14 @@ function hardDrop() {
     }
     player.pos.y--;
     merge(ARENA, player);
+
+    // RESET I PLAY DLA SPACJI
+    sounds.drop.currentTime = 0;
+    sounds.drop.play();
+
     playerReset();
     arenaSweep();
     updateStats();
-    sounds.drop.play();
 }
 
 function arenaSweep() {
@@ -216,10 +235,12 @@ function arenaSweep() {
     if (rowCount > 0) {
         score += [0, 100, 300, 500, 800][rowCount] * level;
         lines += rowCount;
+        sounds.line.currentTime = 0;
         sounds.line.play();
         if (lines >= level * 10) {
             level++;
             dropInterval = Math.max(120, 1000 - (level - 1) * 80);
+            sounds.levelup.currentTime = 0;
             sounds.levelup.play();
         }
     }
@@ -339,7 +360,6 @@ function togglePause() {
 
 // Obsługa klawiatury
 window.addEventListener('keydown', e => {
-    // Zapobieganie przewijaniu strony strzałkami i spacją
     if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code)) {
         e.preventDefault();
     }
@@ -365,7 +385,7 @@ window.addEventListener('keydown', e => {
     }
 });
 
-// PRZYWRÓCONA obsługa przycisków mobilnych/ekranowych
+// Obsługa przycisków mobilnych
 document.querySelectorAll(".mobile-controls button").forEach(btn => {
     btn.addEventListener("click", (e) => {
         const action = btn.dataset.action;
@@ -393,6 +413,17 @@ const volumeSlider = document.getElementById('volume');
 if (volumeSlider) {
     volumeSlider.addEventListener('input', () => {
         sounds.music.volume = volumeSlider.value;
+    });
+}
+
+const volumeSlider1 = document.getElementById('volume-effect');
+if (volumeSlider1) {
+    volumeSlider1.addEventListener('input', () => {
+		sounds.line.volume = volumeSlider1.value;
+		sounds.levelup.volume = volumeSlider1.value;
+		sounds.drop.volume = volumeSlider1.value;
+		sounds.rotate.volume = volumeSlider1.value;
+		sounds.gameover.volume = volumeSlider1.value;
     });
 }
 

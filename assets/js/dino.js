@@ -33,6 +33,10 @@ const milestoneSound = new Audio("assets/sounds/dino/milestone.mp3");
 bgMusic.loop = true;
 bgMusic.volume = 0.3;
 
+jumpSound.volume = 0.3;
+gameOverSound.volume = 0.3;
+milestoneSound.volume = 0.3;
+
 // Stan gry
 let player, obstacles, clouds, stars, frame, score, gameOver, gameSpeed;
 let highScore = localStorage.getItem("highScore") || 0;
@@ -345,6 +349,13 @@ window.addEventListener("load", () => {
   // Obsługa suwaka głośności
   volumeControl.addEventListener("input", () => {
     bgMusic.volume = volumeControl.value;
+  });
+    
+  // Obsługa suwaka głośności - efekty
+  volumeControl1.addEventListener('input', () => {
+    jumpSound.volume = volumeControl1.value;
+	gameOverSound.volume = volumeControl1.value;
+	milestoneSound.volume = volumeControl1.value;
   });
 
   // Sterowanie klawiaturą
