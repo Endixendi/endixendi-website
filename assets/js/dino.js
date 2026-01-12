@@ -24,10 +24,10 @@ const jumpBtn = document.getElementById('jumpBtn');
 jumpBtn.style.display = "none";
 
 // Dźwięki gry
-const bgMusic = new Audio("assets/sounds/dino/bg-music.mp3");
-const jumpSound = new Audio("assets/sounds/dino/jump.mp3");
-const gameOverSound = new Audio("assets/sounds/dino/gameover.mp3");
-const milestoneSound = new Audio("assets/sounds/dino/milestone.mp3");
+const bgMusic = new Audio("assets/sounds/dino/dino-bg.webm");
+const jumpSound = new Audio("assets/sounds/global/jump.webm");
+const gameOverSound = new Audio("assets/sounds/global/gameover-sad.webm");
+const milestoneSound = new Audio("assets/sounds/global/point.webm");
 
 // Konfiguracja dźwięków
 bgMusic.loop = true;

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Endixendi - Statki</title>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/battleship.css">
+  
+  <link rel="icon" href="assets/images/kolo.png" type="image/png">
+</head>
+<body>
+
+  <header>
+    <div id="menu-placeholder"></div> 
+    </header>
+
+  <main>
+    <section class="mt-16">
+      <div class="card">
+        <h1>Statki — Bitwa Morska</h1>
+        <p class="lead">Zmierz się z botem w klasycznej grze w statki. Strategia i szczęście w neonowym wydaniu.</p>
+      </div>
+    </section>
+
+    <section class="mt-22">
+      <div class="card game-wrapper">
+        
+        <div class="game-controls-bar">
+          <div class="status-indicator">
+            <span class="muted">Tura:</span> <span id="turn-status" class="highlight">Oczekiwanie...</span>
+          </div>
+          <div class="buttons">
+            <button id="btn-randomize" class="ghost">Losuj Ustawienie</button>
+            <button id="btn-start" class="btn">Start Gry</button>
+            <button id="btn-restart" class="ghost" style="display:none;">Restart</button>
+          </div>
+        </div>
+
+        <div class="boards-container mt-16">
+          
+          <div class="board-box">
+            <div class="board-header">
+              <h3>Ty</h3>
+              <div class="ships-preview" id="player-ships-info">Twoja flota</div>
+            </div>
+            <div id="player-grid" class="battleship-grid player-grid"></div>
+          </div>
+
+          <div class="board-box">
+             <div class="board-header">
+              <h3>Komputer</h3>
+              <div class="ships-preview" id="enemy-ships-info">Wróg ukryty</div>
+            </div>
+            <div id="computer-grid" class="battleship-grid enemy-grid locked"></div>
+          </div>
+
+        </div>
+
+        <div class="game-log-container mt-22">
+          <div class="log-header">Dziennik pokładowy</div>
+          <div id="game-log" class="log-content"></div>
+        </div>
+		
+		<div class="audio-settings mt-12">
+			<div class="volume-control">
+				<label class="muted">Muzyka:</label>
+				<input type="range" id="volume-music" min="0" max="1" step="0.1" value="0.1">
+			</div>
+		<div class="volume-control">
+			<label class="muted">Efekty:</label>
+			<input type="range" id="volume-effects" min="0" max="1" step="0.1" value="0.3">
+		</div>
+		</div>
+
+      </div>
+    </section>
+	
+	    <!-- INFORMACJE O MUZYCE I DŹWIĘKACH -->
+    <section id="credits" class="card mt-16">
+      <p>
+        <strong>Muzyka:</strong> pixabay.com<br>
+        <strong>Dźwięki:</strong> pixabay.com
+      </p>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/script.js"></script> <script src="assets/js/battleship.js"></script> </body>
+</html>

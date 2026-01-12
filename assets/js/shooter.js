@@ -32,12 +32,12 @@ const volumeControl1 = document.getElementById("volumeControl1");
 
 // Dźwięki gry
 const sounds = {
-  bg: new Audio("assets/sounds/shooter/retro-wave-style-track-59892.mp3"),
-  gameover: new Audio("assets/sounds/shooter/gameover-86548.mp3"),
-  playerShoot: new Audio("assets/sounds/shooter/laser-gun-81720.mp3"),
-  enemyShoot: new Audio("assets/sounds/shooter/laser-gun-81720-red.mp3"),
-  explosion: new Audio("assets/sounds/shooter/explosion-9-340460.mp3"),
-  hit: new Audio("assets/sounds/shooter/ui-designed-hit-modern-interface-impact-sweetener-01-230484.mp3")
+  bg: new Audio("assets/sounds/shooter/shooter-bg.webm"),
+  gameover: new Audio("assets/sounds/global/gameover-sad.webm"),
+  playerShoot: new Audio("assets/sounds/global/laser.webm"),
+  enemyShoot: new Audio("assets/sounds/global/laser.webm"),
+  explosion: new Audio("assets/sounds/global/explosion.webm"),
+  hit: new Audio("assets/sounds/global/hit.webm")
 };
 
 // Globalny stan gry

@@ -1,0 +1,213 @@
+/* =========================
+   Układ gry (Battleship Layout)
+   ========================= */
+
+/* Panel sterowania */
+.game-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.status-indicator .highlight {
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Kontener plansz */
+.boards-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.board-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.board-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--glass);
+  padding-bottom: 5px;
+}
+
+.board-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.ships-preview {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* =========================
+   Siatka (Grid)
+   ========================= */
+.battleship-grid {
+  display: grid;
+  /* 10 kolumn po 32px */
+  grid-template-columns: repeat(10, 32px); 
+  grid-template-rows: repeat(10, 32px);
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* Komórka */
+.cell {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  cursor: crosshair;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.cell:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Blokada planszy (gdy gra nieaktywna) */
+.enemy-grid.locked {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: grayscale(1);
+}
+
+/* =========================
+   Stany komórek (Statki, Trafienia, Pudła)
+   ========================= */
+
+/* Statek gracza (widoczny) */
+.player-grid .cell.ship {
+  background: rgba(0, 170, 255, 0.2); /* var(--accent) z przezroczystością */
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(0, 170, 255, 0.1);
+}
+
+/* Pudło (Miss) */
+.cell.miss::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px; height: 6px;
+  background-color: var(--muted);
+  border-radius: 50%;
+}
+
+/* Trafienie (Hit) */
+.cell.hit {
+  background: rgba(255, 77, 109, 0.15) !important;
+  border-color: #ff4d6d !important;
+  box-shadow: inset 0 0 15px rgba(255, 77, 109, 0.4);
+  animation: flashHit 0.3s ease-out;
+}
+
+.cell.hit::before {
+  content: '✕';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ff4d6d;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Zatopiony statek (Sunk) */
+.cell.sunk {
+  background: #ff4d6d !important; /* Czerwony */
+  border-color: #ff4d6d !important;
+  box-shadow: 0 0 15px rgba(255, 77, 109, 0.6);
+}
+.cell.sunk::before { color: #000; } /* Czarny X na czerwonym tle */
+
+@keyframes flashHit {
+  0% { background-color: #fff; }
+  100% { background-color: rgba(255, 77, 109, 0.15); }
+}
+
+/* =========================
+   Terminal Logów
+   ========================= */
+.game-log-container {
+  background: #000;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.log-header {
+  background: #1a1d23;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--muted);
+  border-bottom: 1px solid #333;
+  text-transform: uppercase;
+}
+
+.log-content {
+  height: 120px;
+  overflow-y: auto;
+  padding: 10px;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column-reverse; /* Nowe wpisy na dole, ale scrollujemy od dołu */
+}
+
+.log-entry { margin-bottom: 4px; }
+.log-entry.info { color: #888; }
+.log-entry.player { color: var(--accent); } /* Niebieski */
+.log-entry.enemy { color: #ff4d6d; }   /* Czerwony */
+.log-entry.victory { color: var(--accent-2); font-weight: bold; } /* Złoty */
+
+/* Responsywność */
+@media (max-width: 768px) {
+  .battleship-grid {
+    grid-template-columns: repeat(10, 26px);
+    grid-template-rows: repeat(10, 26px);
+  }
+  .cell { width: 26px; height: 26px; }
+  .boards-container { gap: 20px; }
+}
+
+/* Audio */
+.audio-settings {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+input[type="range"] {
+  accent-color: var(--accent);
+  cursor: pointer;
+  width: 80px;
+}
