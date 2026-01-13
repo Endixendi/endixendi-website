@@ -25,41 +25,36 @@
       </div>
     </section>
 
-    <section id="shooter-game" class="card mt-22">
-      <div class="shooter-container">
-        
-        <canvas id="gameCanvas"></canvas>
+	<section id="shooter-game" class="card mt-22">
+	  <div class="shooter-container">
+		<canvas id="gameCanvas"></canvas>
 
-        <div id="score">Wynik: 0</div>
+		<div id="score">Wynik: 0</div>
+		<div id="heatWrapper">
+			<div id="heatLabel">TEMPERATURA DZIAŁA</div>
+			<div id="heatBarContainer"><div id="heatFillBar"></div></div>
+		</div>
+		<div id="healthBar"><div id="healthFill"></div></div>
 
-        <div id="heatWrapper">
-            <div id="heatLabel">TEMPERATURA DZIAŁA</div>
-            <div id="heatBarContainer">
-                <div id="heatFillBar"></div>
-            </div>
-        </div>
-
-        <div id="healthBar">
-          <div id="healthFill"></div>
-        </div>
-
-        <div id="menu">
-          <button id="startBtn" class="btn">Start</button>
-        </div>
-
-        <div id="gameOverMenu" class="hidden">
-          <h2>Game Over</h2>
-          <p>Wynik: <span id="finalScore">0</span></p>
-          <button id="restartBtn" class="btn">Zagraj ponownie</button>
-        </div>
-      </div>
-      
-      <div class="mobile-controls">
-        <button id="leftBtn" class="mobile-btn">&larr;</button>
-        <button id="shootBtn" class="mobile-btn">&bull;</button>
-        <button id="rightBtn" class="mobile-btn">&rarr;</button>
-      </div>
-    </section>
+		<div id="menu"><button id="startBtn" class="btn">Start</button></div>
+		<div id="gameOverMenu" class="hidden">
+		  <h2>Game Over</h2>
+		  <p>Wynik: <span id="finalScore">0</span></p>
+		  <button id="restartBtn" class="btn">Zagraj ponownie</button>
+		</div>
+	  </div>
+	  
+		<div class="mobile-controls">
+		  <button id="mobileShootBtn" class="mobile-btn-shoot">STRZAŁ</button>
+		  
+		  <div id="touchSliderArea">
+			<div id="slider-label">STEROWANIE</div>
+			<div id="slider-track">
+			  <div id="sliderHandle">↔</div>
+			</div>
+		  </div>
+		</div>
+	</section>
     
     <section id="controls" class="card mt-16">
       <div class="controls-grid">
