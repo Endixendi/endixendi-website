@@ -27,16 +27,24 @@
     <section class="mt-22">
       <div class="card game-wrapper">
         
-        <div class="game-controls-bar">
-          <div class="status-indicator">
-            <span class="muted">Tura:</span> <span id="turn-status" class="highlight">Oczekiwanie...</span>
-          </div>
-          <div class="buttons">
-            <button id="btn-randomize" class="ghost">Losuj Ustawienie</button>
-            <button id="btn-start" class="btn">Start Gry</button>
-            <button id="btn-restart" class="ghost" style="display:none;">Restart</button>
-          </div>
-        </div>
+		<div class="game-controls-bar">
+		  <div class="status-indicator">
+			<span class="muted">Tura:</span> <span id="turn-status" class="highlight">Oczekiwanie...</span>
+		  </div>
+		  <div class="difficulty-box">
+			<label class="muted">Poziom:</label>
+			<select id="difficulty-select" class="ghost-select">
+			  <option value="easy">Łatwy</option>
+			  <option value="hard">Trudny</option>
+			  <option value="cheater">Cheater</option>
+			</select>
+		  </div>
+		  <div class="buttons">
+			<button id="btn-randomize" class="ghost">Losuj Ustawienie</button>
+			<button id="btn-start" class="btn">Start Gry</button>
+			<button id="btn-restart" class="ghost" style="display:none;">Restart</button>
+		  </div>
+		</div>
 
         <div class="boards-container mt-16">
           

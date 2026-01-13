@@ -211,3 +211,44 @@ input[type="range"] {
   cursor: pointer;
   width: 80px;
 }
+
+.difficulty-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ghost-select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.ghost-select option {
+    background: #1a1d23;
+    color: #fff;
+}
+
+.ghost-select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Animacja dla logów w trybie Cheater */
+@keyframes glitchText {
+    0% { text-shadow: 2px 0 red; }
+    50% { text-shadow: -2px 0 blue; }
+    100% { text-shadow: 2px 0 red; }
+}
+
+/* Animacja zadziała TYLKO gdy kontener logów ma klasę .mode-cheater */
+.mode-cheater .log-entry.enemy {
+    animation: glitchText 0.2s infinite;
+    font-weight: bold;
+    color: #ff0033 !important; /* Jeszcze ostrzejszy czerwony */
+}

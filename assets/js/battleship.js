@@ -13,6 +13,7 @@ const btnStart = document.getElementById('btn-start');
 const btnRestart = document.getElementById('btn-restart');
 const logContent = document.getElementById('game-log');
 const turnStatus = document.getElementById('turn-status');
+const difficultySelect = document.getElementById('difficulty-select');
 
 // Stan Gry
 let gameState = {
@@ -24,8 +25,9 @@ let gameState = {
     computerHits: 0,
     totalSegments: SHIPS_CONFIG.reduce((a, b) => a + b, 0),
     botQueue: [],
-    lastHit: null,      // Zapamiętuje ostatnie trafienie {x, y}
-    huntDirection: null // Zapamiętuje kierunek linii statku (np. 'v' dla pionu, 'h' dla poziomu)
+    lastHit: null,
+    huntDirection: null,
+    difficulty: 'easy' // NOWE: Domyślny poziom
 };
 
 // Dźwięki 
@@ -83,6 +85,9 @@ function resetData() {
     gameState.lastHit = null;
     gameState.huntDirection = null;
     gameState.playerTurn = true;
+	
+	logContent.classList.remove('mode-cheater'); 
+    difficultySelect.disabled = false;
 
     btnStart.style.display = 'inline-block';
     btnRestart.style.display = 'none';
@@ -92,6 +97,8 @@ function resetData() {
     
     document.querySelectorAll('.cell').forEach(c => c.className = 'cell');
     logContent.innerHTML = '';
+	
+	difficultySelect.disabled = false
 }
 
 function createEmptyBoard() {
@@ -205,23 +212,56 @@ function endTurn() {
 function botTurn() {
     if (!gameState.active) return;
 
-    let target;
-    
-    if (gameState.botQueue.length > 0) {
-        target = gameState.botQueue.shift();
-        if (gameState.playerShips[target.y][target.x] >= 2) { 
-            botTurn(); 
-            return; 
+    let target = null;
+    let cheatChance = 0;
+
+    // Definiujemy szanse na oszustwo dla każdego trybu
+    if (gameState.difficulty === 'hard') cheatChance = 0.3;    // 30% szans
+    if (gameState.difficulty === 'cheater') cheatChance = 0.7; // 70% szans
+
+    // --- LOGIKA OSZUKIWANIA ---
+    // Bot oszukuje tylko jeśli nie jest w trakcie zatapiania konkretnego statku (pusta kolejka)
+    if (gameState.botQueue.length === 0 && Math.random() < cheatChance) {
+        const playerShipCoordinates = [];
+        for (let y = 0; y < BOARD_SIZE; y++) {
+            for (let x = 0; x < BOARD_SIZE; x++) {
+                if (gameState.playerShips[y][x] === 1) {
+                    playerShipCoordinates.push({ x, y });
+                }
+            }
         }
-    } else {
-        gameState.lastHit = null;
-        gameState.huntDirection = null;
-        do {
-            target = {
-                x: Math.floor(Math.random() * BOARD_SIZE),
-                y: Math.floor(Math.random() * BOARD_SIZE)
-            };
-        } while (gameState.playerShips[target.y][target.x] >= 2);
+
+        if (playerShipCoordinates.length > 0) {
+            target = playerShipCoordinates[Math.floor(Math.random() * playerShipCoordinates.length)];
+            
+            // Inny komunikat dla trybu Cheater
+            if (gameState.difficulty === 'cheater') {
+                log("!!! SYSTEMY ZAKŁÓCONE: Wróg namierzył Twój sygnał !!!", "enemy");
+            } else {
+                log("Bot użył sonaru dalekiego zasięgu.", "enemy");
+            }
+        }
+    }
+
+    // Jeśli nie oszukał, używa standardowej logiki (losowanie lub kolejka sąsiadów)
+    if (!target) {
+        if (gameState.botQueue.length > 0) {
+            target = gameState.botQueue.shift();
+            // Jeśli pole już było ostrzelane, szukaj dalej
+            if (gameState.playerShips[target.y][target.x] >= 2) { 
+                botTurn(); 
+                return; 
+            }
+        } else {
+            gameState.lastHit = null;
+            gameState.huntDirection = null;
+            do {
+                target = {
+                    x: Math.floor(Math.random() * BOARD_SIZE),
+                    y: Math.floor(Math.random() * BOARD_SIZE)
+                };
+            } while (gameState.playerShips[target.y][target.x] >= 2);
+        }
     }
 
     const x = target.x;
@@ -365,18 +405,26 @@ btnRandomize.addEventListener('click', () => {
 
 btnStart.addEventListener('click', () => {
     gameState.active = true;
+    gameState.difficulty = difficultySelect.value; // Pobieramy wybrany poziom
+    
+    // --- NOWOŚĆ: Zarządzanie klasą wizualną logów ---
+    if (gameState.difficulty === 'cheater') {
+        logContent.classList.add('mode-cheater');
+    } else {
+        logContent.classList.remove('mode-cheater');
+    }
+    // -----------------------------------------------
+
     randomizeShips(gameState.computerShips);
     computerGrid.classList.remove('locked');
+    difficultySelect.disabled = true;
     btnRandomize.disabled = true;
     btnStart.style.display = 'none';
     
-    // Start muzyki
     audio.music.play().catch(e => console.log("Muzyka wymaga interakcji", e));
     
-    // Log wyświetli się teraz tylko RAZ
-    log("Systemy bojowe aktywne. Wybierz cel na radarze wroga.", "player");
+    log("Systemy bojowe aktywne. Wybierz cel.", "player");
     turnStatus.textContent = "TWÓJ RUCH";
-    turnStatus.style.color = "var(--accent)";
 });
 
 btnRestart.addEventListener('click', () => {
