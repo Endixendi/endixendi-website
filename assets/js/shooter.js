@@ -3,6 +3,7 @@
  * - Optymalizacja Delta Time
  * - Ostry HUD (HTML/CSS)
  * - System Przegrzewania Działa (5s kary)
+ * - FIX: Działające sterowanie mobilne
  */
 
 const GAME_CONFIG = {
@@ -34,6 +35,11 @@ const restartBtn = document.getElementById("restartBtn");
 const volumeControl = document.getElementById("volumeControl");
 const volumeControl1 = document.getElementById("volumeControl1");
 
+// Elementy sterowania mobilnego
+const mobileLeft = document.getElementById("leftBtn");
+const mobileRight = document.getElementById("rightBtn");
+const mobileShoot = document.getElementById("shootBtn");
+
 const sounds = {
   bg: new Audio("assets/sounds/shooter/shooter-bg.webm"),
   gameover: new Audio("assets/sounds/global/gameover-sad.webm"),
@@ -41,7 +47,7 @@ const sounds = {
   enemyShoot: new Audio("assets/sounds/global/laser.webm"),
   explosion: new Audio("assets/sounds/global/explosion.webm"),
   hit: new Audio("assets/sounds/global/hit.webm"),
-  overheat: new Audio("assets/sounds/global/point.webm") // Dźwięk przegrzania (opcjonalny)
+  overheat: new Audio("assets/sounds/global/point.webm") 
 };
 
 const gameState = {
@@ -58,7 +64,7 @@ const gameState = {
   
   gameOver: false,
   stars: [],
-  keys: {},
+  keys: {}, // Tutaj trafiają sygnały z klawiatury ORAZ z przycisków mobilnych
   lastTime: 0,
   lastPlayerShot: 0,
   enemySpawnTimer: 0,
@@ -163,17 +169,14 @@ function initGame(){
 }
 
 /**
- * Aktualizacja interfejsu (HTML) - zapewnia idealną ostrość
+ * Aktualizacja interfejsu (HTML)
  */
 function updateHUD(){ 
-  // 1. Wynik
   scoreEl.textContent = "Wynik: " + gameState.score; 
   
-  // 2. Zdrowie
   healthFill.style.height = gameState.health + "%"; 
   healthFill.style.background = gameState.health > 50 ? "limegreen" : gameState.health > 20 ? "orange" : "red"; 
 
-  // 3. Pasek Temperatury (Logic + Visuals)
   const heatPercent = Math.min(100, (gameState.heat / GAME_CONFIG.maxHeat) * 100);
   
   if (heatFillBar) {
@@ -181,15 +184,14 @@ function updateHUD(){
       
       if (gameState.isOverheated) {
           heatLabel.textContent = "PRZEGRZANIE! (Czekaj)";
-          heatLabel.style.color = "#ff4d4d"; // Czerwony tekst
-          heatFillBar.style.background = "red"; // Czerwony pasek
-          heatFillBar.style.boxShadow = "0 0 10px red"; // Efekt poświaty
+          heatLabel.style.color = "#ff4d4d"; 
+          heatFillBar.style.background = "red"; 
+          heatFillBar.style.boxShadow = "0 0 10px red"; 
       } else {
           heatLabel.textContent = "TEMPERATURA DZIAŁA";
           heatLabel.style.color = "white";
           heatFillBar.style.boxShadow = "none";
           
-          // Płynna zmiana koloru: Zielony -> Żółty -> Czerwony
           const r = Math.min(255, Math.floor(255 * (heatPercent / 100) * 2));
           const g = Math.min(255, Math.floor(255 * (1 - heatPercent / 100) * 2));
           heatFillBar.style.background = `rgb(${r}, ${g}, 0)`;
@@ -212,14 +214,12 @@ function gameLoop(currentTime){
 
   // LOGIKA TEMPERATURY
   if (gameState.isOverheated) {
-      // Jeśli przegrzany, odliczamy czas kary
       gameState.overheatTimer -= dt * 1000;
       if (gameState.overheatTimer <= 0) {
           gameState.isOverheated = false;
-          gameState.heat = 0; // Po karze działo jest zimne
+          gameState.heat = 0; 
       }
   } else {
-      // Jeśli nie przegrzany, działo stygnie
       gameState.heat = Math.max(0, gameState.heat - GAME_CONFIG.coolDownRate * dt);
   }
 
@@ -227,7 +227,7 @@ function gameLoop(currentTime){
   gameState.player.update(dt); 
   gameState.player.draw();
 
-  // STRZELANIE (Sprawdzamy: Klawisz + Cooldown + Czy nie przegrzane)
+  // STRZELANIE (Wspólne dla klawiatury i dotyku)
   gameState.lastPlayerShot += dt * 1000;
   if(gameState.keys[" "] && !gameState.isOverheated && gameState.lastPlayerShot >= GAME_CONFIG.playerShootCooldown) {
       shoot();
@@ -240,7 +240,6 @@ function gameLoop(currentTime){
     gameState.enemySpawnTimer = 0;
   }
 
-  // Logika pocisków i kolizji
   gameState.bullets.forEach((b) => {
     b.update(dt);
     gameState.enemies.forEach((e) => { 
@@ -249,7 +248,6 @@ function gameLoop(currentTime){
         gameState.score += 10; 
         sounds.explosion.currentTime = 0; sounds.explosion.play(); 
         
-        // Przyspieszanie gry
         if(gameState.score > 0 && gameState.score % 200 === 0) {
            gameState.currentEnemySpeed += 20;
            gameState.currentSpawnRate = Math.max(400, gameState.currentSpawnRate - 50);
@@ -259,14 +257,12 @@ function gameLoop(currentTime){
     if(b.y < -20) b.toRemove = true;
   });
 
-  // Wrogowie
   gameState.enemies.forEach((e) => {
     e.update(dt);
     if(detectCollision(e, gameState.player)){ e.toRemove = true; takeDamage(15); }
     if(e.y > canvas.height) { e.toRemove = true; takeDamage(5); }
   });
 
-  // Pociski wroga
   gameState.enemyBullets.forEach((b) => {
     b.y -= b.speed * dt;
     ctx.fillStyle = "red"; ctx.fillRect(b.x, b.y, b.width, b.height);
@@ -293,14 +289,10 @@ function shoot() {
   sounds.playerShoot.currentTime = 0; sounds.playerShoot.play();
   gameState.lastPlayerShot = 0;
 
-  // ZWIĘKSZANIE TEMPERATURY
   gameState.heat += GAME_CONFIG.heatPerShot;
-  
-  // SPRAWDZENIE PRZEGRZANIA
   if (gameState.heat >= GAME_CONFIG.maxHeat) {
       gameState.isOverheated = true;
       gameState.overheatTimer = GAME_CONFIG.overheatPenalty;
-      // Opcjonalnie: odtwórz dźwięk błędu/przegrzania
       if(sounds.overheat) sounds.overheat.play();
   }
 }
@@ -312,19 +304,52 @@ function endGame(){
   sounds.bg.pause(); sounds.gameover.play();
 }
 
-// Event Listeners
+// === EVENT LISTENERS (Klawiatura + Dotyk) ===
 window.addEventListener("load", () => {
   window.addEventListener("resize", resizeCanvas); resizeCanvas();
+  
   volumeControl.addEventListener("input", () => sounds.bg.volume = volumeControl.value);
   volumeControl1.addEventListener("input", () => {
     const v = volumeControl1.value;
     Object.keys(sounds).forEach(k => { if(k !== 'bg') sounds[k].volume = v; });
   });
+
+  // KLAWIATURA
   window.addEventListener("keydown", (e) => { 
     gameState.keys[e.key] = true; 
     if([" ", "ArrowLeft", "ArrowRight"].includes(e.key)) e.preventDefault();
   });
   window.addEventListener("keyup", (e) => gameState.keys[e.key] = false);
+
+  // START / RESTART
   startBtn.addEventListener("click", () => { initGame(); requestAnimationFrame(gameLoop); });
   restartBtn.addEventListener("click", () => { initGame(); requestAnimationFrame(gameLoop); });
+
+  // === OBSŁUGA DOTYKU (MOBILNA) ===
+  
+  // Funkcja pomocnicza do przypisywania przycisków
+  function setupMobileBtn(btn, key) {
+      if (!btn) return;
+      
+      // Dotyk (Touch)
+      btn.addEventListener("touchstart", (e) => {
+          e.preventDefault(); // Zapobiega powiększaniu/zaznaczaniu
+          gameState.keys[key] = true;
+      }, { passive: false });
+
+      btn.addEventListener("touchend", (e) => {
+          e.preventDefault();
+          gameState.keys[key] = false;
+      });
+
+      // Myszka (do testów na komputerze)
+      btn.addEventListener("mousedown", () => gameState.keys[key] = true);
+      btn.addEventListener("mouseup", () => gameState.keys[key] = false);
+      btn.addEventListener("mouseleave", () => gameState.keys[key] = false);
+  }
+
+  // Przypisanie akcji:
+  setupMobileBtn(mobileLeft, "ArrowLeft");   // Strzałka w lewo
+  setupMobileBtn(mobileRight, "ArrowRight"); // Strzałka w prawo
+  setupMobileBtn(mobileShoot, " ");          // Spacja (Strzał)
 });
