@@ -9,6 +9,8 @@
   align-items: center;
   margin: 0 auto;
   max-width: 800px;
+  /* Zabezpieczenie przed wychodzeniem elementów */
+  overflow: hidden; 
 }
 
 #gameCanvas {
@@ -21,7 +23,9 @@
   aspect-ratio: 4/3;
 }
 
-/* HUD - Heads Up Display */
+/* --- HUD ELEMENTY --- */
+
+/* 1. Wynik */
 #score {
   position: absolute;
   top: 16px;
@@ -29,10 +33,48 @@
   font-size: 18px;
   font-weight: bold;
   color: white;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.9); /* Mocniejszy cień */
   z-index: 10;
+  pointer-events: none;
 }
 
+/* 2. Pasek Temperatury (NOWOŚĆ) */
+#heatWrapper {
+  position: absolute;
+  top: 50px; /* Zaraz pod wynikiem */
+  left: 16px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#heatLabel {
+  color: white;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 13px;
+  text-shadow: 2px 2px 4px black;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+#heatBarContainer {
+  width: 140px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+#heatFillBar {
+  width: 0%;
+  height: 100%;
+  background: lime;
+  /* Płynna animacja ładowania i zmiany koloru */
+  transition: width 0.1s linear, background 0.3s ease;
+}
+
+/* 3. Pasek Zdrowia */
 #healthBar {
   position: absolute;
   top: 16px;
@@ -40,6 +82,7 @@
   width: 20px;
   height: 150px;
   background: rgba(85, 85, 85, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   overflow: hidden;
   z-index: 10;
@@ -59,10 +102,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  background: rgba(20, 23, 27, 0.9);
+  background: rgba(20, 23, 27, 0.95);
   padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  border: 1px solid #333;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
   z-index: 20;
 }
 
@@ -89,13 +133,16 @@
   height: 60px;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  background: linear-gradient(90deg, var(--accent, #06b6d4), var(--accent-2, #84cc16));
   color: #071017;
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.1s ease, opacity 0.2s ease;
+  /* Zapobieganie zaznaczaniu tekstu przy szybkim klikaniu */
+  user-select: none; 
+  -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-btn:active {
@@ -139,7 +186,7 @@
   content: "•";
   position: absolute;
   left: -12px;
-  color: var(--accent);
+  color: var(--accent, #06b6d4);
 }
 
 /* Suwak głośności */
@@ -163,15 +210,6 @@
   cursor: pointer;
 }
 
-.volume-control input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  background: #facc15;
-  border-radius: 50%;
-  border: 2px solid #0f172a;
-  cursor: pointer;
-}
-
 /* =========================
    RESPONSYWNOŚĆ
    ========================= */
@@ -183,6 +221,14 @@
   
   #score {
     font-size: 16px;
+  }
+
+  /* Dostosowanie paska temperatury na mniejszych ekranach */
+  #heatWrapper {
+    top: 45px;
+  }
+  #heatBarContainer {
+    width: 100px;
   }
   
   .controls-grid {

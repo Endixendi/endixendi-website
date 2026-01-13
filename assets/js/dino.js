@@ -1,10 +1,8 @@
 /**
- * Gra Dino - skaczący dinozaur omijający przeszkody
- * Inspirowana grą z przeglądarki Chrome
- * @version 1.0
+ * Gra Dino - wersja zoptymalizowana (Delta Time)
+ * Naprawiona prędkość dla monitorów
  */
 
-// Inicjalizacja canvas i kontekstu
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -18,33 +16,28 @@ const finalScoreEl = document.getElementById('finalScore');
 const finalHighScoreEl = document.getElementById('finalHighScore');
 const restartBtn = document.getElementById('restartBtn');
 const volumeControl = document.getElementById("volumeControl");
+const volumeControl1 = document.getElementById('volumeControl1');
 const jumpBtn = document.getElementById('jumpBtn');
 
-// Domyślnie ukrywamy przycisk skoku
 jumpBtn.style.display = "none";
 
-// Dźwięki gry
+// Dźwięki
 const bgMusic = new Audio("assets/sounds/dino/dino-bg.webm");
 const jumpSound = new Audio("assets/sounds/global/jump.webm");
 const gameOverSound = new Audio("assets/sounds/global/gameover-sad.webm");
 const milestoneSound = new Audio("assets/sounds/global/point.webm");
 
-// Konfiguracja dźwięków
 bgMusic.loop = true;
-bgMusic.volume = 0.3;
 
-jumpSound.volume = 0.3;
-gameOverSound.volume = 0.3;
-milestoneSound.volume = 0.3;
 
 // Stan gry
-let player, obstacles, clouds, stars, frame, score, gameOver, gameSpeed;
+let player, obstacles, clouds, stars, score, gameOver, gameSpeed;
+let lastTime = 0;
+let spawnTimer = 0;
+let scoreTimer = 0;
 let highScore = localStorage.getItem("highScore") || 0;
 highScoreEl.textContent = highScore;
 
-/**
- * Klasa Player - reprezentuje gracza (dino)
- */
 class Player {
   constructor() {
     this.width = 50;
@@ -52,36 +45,33 @@ class Player {
     this.x = 100;
     this.y = 0;
     this.dy = 0;
-    this.jumpForce = 15;
-    this.gravity = 0.8;
+    this.jumpForce = 850;   // Siła skoku
+    this.gravity = 2600;     // Grawitacja (dinozaur jest "cięższy")
     this.grounded = false;
   }
   
-  /**
-   * Rysuje gracza na canvas
-   */
   draw() {
     ctx.fillStyle = "green";
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
   
-  /**
-   * Aktualizuje pozycję gracza
-   */
-  update() {
-    this.y += this.dy;
-    if (!this.grounded) this.dy += this.gravity;
-    if (this.y + this.height >= canvas.height - 50) {
-      this.y = canvas.height - this.height - 50;
+  update(dt) {
+    if (!this.grounded) {
+      this.dy += this.gravity * dt;
+    }
+    this.y += this.dy * dt;
+
+    const groundLevel = canvas.height - this.height - 50;
+    if (this.y >= groundLevel) {
+      this.y = groundLevel;
       this.grounded = true;
       this.dy = 0;
-    } else this.grounded = false;
+    } else {
+      this.grounded = false;
+    }
     this.draw();
   }
   
-  /**
-   * Wykonuje skok gracza
-   */
   jump() {
     if (this.grounded) {
       this.dy = -this.jumpForce;
@@ -92,9 +82,6 @@ class Player {
   }
 }
 
-/**
- * Klasa Obstacle - reprezentuje przeszkody
- */
 class Obstacle {
   constructor(x, width, height, speed) {
     this.x = x;
@@ -104,38 +91,26 @@ class Obstacle {
     this.speed = speed;
   }
   
-  /**
-   * Rysuje przeszkodę na canvas
-   */
   draw() {
     ctx.fillStyle = "brown";
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
   
-  /**
-   * Aktualizuje pozycję przeszkody
-   */
-  update() {
-    this.x -= this.speed;
+  update(dt) {
+    this.x -= this.speed * dt;
     this.draw();
   }
 }
 
-/**
- * Klasa Cloud - reprezentuje chmury w tle
- */
 class Cloud {
   constructor(x, y) {
     this.x = x;
     this.y = y;
     this.width = 80;
     this.height = 40;
-    this.speed = 0.5;
+    this.speed = 60;
   }
   
-  /**
-   * Rysuje chmurę na canvas
-   */
   draw() {
     ctx.fillStyle = "rgba(200,200,200,0.4)";
     ctx.beginPath();
@@ -143,11 +118,8 @@ class Cloud {
     ctx.fill();
   }
   
-  /**
-   * Aktualizuje pozycję chmury
-   */
-  update() {
-    this.x -= this.speed;
+  update(dt) {
+    this.x -= this.speed * dt;
     if (this.x + this.width < 0) {
       this.x = canvas.width + this.width;
       this.y = Math.random() * (canvas.height / 2);
@@ -156,22 +128,16 @@ class Cloud {
   }
 }
 
-/**
- * Klasa Star - reprezentuje gwiazdy w tle
- */
 class Star {
   constructor(x, y, radius, speed) {
     this.x = x;
     this.y = y;
     this.radius = radius;
-    this.speed = speed;
+    this.speed = speed * 100;
   }
   
-  /**
-   * Aktualizuje pozycję gwiazdy
-   */
-  update() {
-    this.x -= this.speed;
+  update(dt) {
+    this.x -= this.speed * dt;
     if (this.x < 0) {
       this.x = canvas.width + this.radius;
       this.y = Math.random() * canvas.height;
@@ -179,9 +145,6 @@ class Star {
     this.draw();
   }
   
-  /**
-   * Rysuje gwiazdę na canvas
-   */
   draw() {
     ctx.fillStyle = "white";
     ctx.beginPath();
@@ -190,198 +153,156 @@ class Star {
   }
 }
 
-/**
- * Responsywny canvas - dostosowuje rozmiar do kontenera
- */
 function resizeCanvas() {
-  const containerWidth = document.querySelector(".board-container").offsetWidth;
-  canvas.width = containerWidth;
-  canvas.height = containerWidth / 2;
-  if (player) scaleEntities();
+  const container = document.querySelector(".board-container");
+  if (!container) return;
+  canvas.width = container.offsetWidth;
+  canvas.height = canvas.width / 2;
+  if (player) {
+    player.width = canvas.width * 0.0625;
+    player.height = canvas.height * 0.125;
+  }
 }
 
-/**
- * Skaluje entity gry do nowego rozmiaru canvas
- */
-function scaleEntities() {
-  player.width = canvas.width * 0.0625;
-  player.height = canvas.height * 0.125;
-  player.y = canvas.height - player.height - canvas.height * 0.125;
-  obstacles.forEach(o => {
-    o.height = o.width;
-    o.y = canvas.height - o.height - canvas.height * 0.125;
-  });
-}
-
-/**
- * Inicjalizuje grę - resetuje stan gry
- */
 function initGame() {
   player = new Player();
   obstacles = [];
   clouds = [new Cloud(canvas.width / 2, canvas.height / 4), new Cloud(canvas.width, canvas.height / 3)];
   stars = [];
   
-  // Tworzy gwiazdy w tle
   for (let i = 0; i < 150; i++) {
-    stars.push(new Star(
-      Math.random() * canvas.width,
-      Math.random() * canvas.height,
-      Math.random() * 1.5,
-      Math.random() * 0.3 + 0.1
-    ));
+    stars.push(new Star(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 1.5, Math.random() * 0.3 + 0.1));
   }
   
-  frame = 0;
   score = 0;
+  spawnTimer = 0;
+  scoreTimer = 0;
   gameOver = false;
-  gameSpeed = 6;
+  gameSpeed = 650; // Dynamiczny start
+  lastTime = performance.now();
+  
   bgMusic.currentTime = 0;
   bgMusic.play();
-
-  // Pokaż przycisk skoku
   jumpBtn.style.display = "block";
 }
 
-/**
- * Tworzy nową przeszkodę
- */
 function spawnObstacle() {
-  let size = Math.random() * 30 + 20;
+  let size = Math.random() * 30 + 25;
   obstacles.push(new Obstacle(canvas.width, size, size, gameSpeed));
 }
 
-/**
- * Wykrywa kolizję między dwoma obiektami
- * @param {Object} a - Pierwszy obiekt
- * @param {Object} b - Drugi obiekt
- * @returns {boolean} - Czy wystąpiła kolizja
- */
 function detectCollision(a, b) {
-  return a.x < b.x + b.width && 
-         a.x + a.width > b.x &&
-         a.y < b.y + b.height && 
-         a.height + a.y > b.y;
+  return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.height + a.y > b.y;
 }
 
-/**
- * Rysuje ziemię na canvas
- */
 function drawGround() {
   ctx.fillStyle = "#2e2e2e";
   ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
 }
 
-/**
- * Główna pętla animacji gry
- */
-function animate() {
+function animate(currentTime) {
   if (gameOver) return;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  const dt = (currentTime - lastTime) / 1000;
+  lastTime = currentTime;
 
-  // Tło
+  if (dt > 0.1) {
+    requestAnimationFrame(animate);
+    return;
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "#0a0a0a";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Aktualizuj i rysuj elementy gry
-  stars.forEach(star => star.update());
-  clouds.forEach(c => c.update());
+  stars.forEach(star => star.update(dt));
+  clouds.forEach(c => c.update(dt));
   drawGround();
-  player.update();
+  player.update(dt);
 
-  // Twórz przeszkody co 120 klatek
-  if (frame % 120 === 0) spawnObstacle();
+  // Spawnowanie oparte na czasie i prędkości (im szybciej, tym częściej, by zachować odstęp)
+  spawnTimer += dt;
+  let spawnInterval = Math.max(0.8, 1.8 - (gameSpeed / 1000)); 
+  if (spawnTimer >= spawnInterval) {
+    spawnObstacle();
+    spawnTimer = 0;
+  }
   
-  // Aktualizuj i sprawdzaj kolizje przeszkód
-  obstacles.forEach(o => {
-    o.update();
+  obstacles.forEach((o, index) => {
+    o.update(dt);
     if (detectCollision(player, o)) gameOverHandler();
+    if (o.x + o.width < 0) obstacles.splice(index, 1);
   });
 
-  // Aktualizuj wynik
-  score++;
-  scoreEl.textContent = score;
-  highScoreEl.textContent = highScore;
-
-  // Odtwórz dźwięk milestonu co 1000 punktów
-  if (score > 0 && score % 1000 === 0) {
-    milestoneSound.currentTime = 0;
-    milestoneSound.play();
+  // Punkty
+  scoreTimer += dt;
+  if (scoreTimer >= 0.05) { // Szybkie naliczanie wizualne
+    score += 5; 
+    scoreTimer = 0;
+    scoreEl.textContent = score;
+    
+    // Przyspieszenie co 1000 pkt
+    if (score > 0 && score % 1000 === 0) {
+      milestoneSound.currentTime = 0;
+      milestoneSound.play();
+      gameSpeed += 80; // Wyraźny skok prędkości
+    }
   }
 
-  // Zwiększ prędkość gry co 2000 punktów
-  if (score > 0 && score % 2000 === 0) gameSpeed++;
-
-  frame++;
   requestAnimationFrame(animate);
 }
 
-/**
- * Obsługuje koniec gry
- */
 function gameOverHandler() {
   gameOver = true;
   bgMusic.pause();
   gameOverSound.currentTime = 0;
   gameOverSound.play();
 
-  // Aktualizuj rekord jeśli został pobity
   if (score > highScore) {
     highScore = score;
     localStorage.setItem("highScore", highScore);
   }
 
-  // Aktualizuj menu game over
   finalScoreEl.textContent = score;
   finalHighScoreEl.textContent = highScore;
   gameOverMenu.classList.remove("hidden");
-
-  // Ukryj przycisk skoku po Game Over
   jumpBtn.style.display = "none";
 }
 
-// Inicjalizacja gry po załadowaniu strony
+// Listenery
 window.addEventListener("load", () => {
-  // Responsywny canvas
   window.addEventListener("resize", resizeCanvas);
   resizeCanvas();
 
-  // Obsługa suwaka głośności
-  volumeControl.addEventListener("input", () => {
-    bgMusic.volume = volumeControl.value;
-  });
-    
-  // Obsługa suwaka głośności - efekty
-  volumeControl1.addEventListener('input', () => {
-    jumpSound.volume = volumeControl1.value;
-	gameOverSound.volume = volumeControl1.value;
-	milestoneSound.volume = volumeControl1.value;
-  });
+  volumeControl.addEventListener("input", () => bgMusic.volume = volumeControl.value);
+  if (volumeControl1) {
+    volumeControl1.addEventListener('input', () => {
+      jumpSound.volume = volumeControl1.value;
+      gameOverSound.volume = volumeControl1.value;
+      milestoneSound.volume = volumeControl1.value;
+    });
+  }
 
-  // Sterowanie klawiaturą
   window.addEventListener("keydown", e => {
     if ((e.code === "Space" || e.code === "ArrowUp")) {
       e.preventDefault();
-      if (!gameOver) player.jump();
+      if (!gameOver && player) player.jump();
     }
   });
 
-  // Sterowanie przyciskiem mobilnym
   jumpBtn.addEventListener("click", () => {
-    if (!gameOver) player.jump();
+    if (!gameOver && player) player.jump();
   });
 
-  // Menu startowe
   startBtn.addEventListener("click", () => {
     menu.classList.add("hidden");
     initGame();
-    animate();
+    requestAnimationFrame(animate);
   });
 
-  // Restart gry
   restartBtn.addEventListener("click", () => {
     gameOverMenu.classList.add("hidden");
     initGame();
-    animate();
+    requestAnimationFrame(animate);
   });
 });
