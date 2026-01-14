@@ -175,7 +175,6 @@ body {
   background: #0f1115;
   border: 2px solid #333;
   border-radius: 12px;
-  touch-action: manipulation;
   cursor: pointer;
   text-transform: uppercase;
   transition: transform 0.1s;
@@ -223,4 +222,14 @@ body {
     padding: 8px;
     margin-top: 8px !important;
   }
+
+.board-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  background: linear-gradient(to right, #06b6d4, #84cc16, #facc15);
+  padding: 2px;
+  border-radius: 16px;
+}
+  
 }
