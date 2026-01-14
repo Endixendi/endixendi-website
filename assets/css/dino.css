@@ -1,43 +1,43 @@
 /* =========================
-   DINO GAME STYLES - FINAL FIX
+   DINO GAME STYLES
    ========================= */
 
 :root {
   --primary-color: #06b6d4;
+  --primary-dark: #0284c7;
   --bg-dark: #0f1115;
   --card-bg: #14171b;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-dark);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* SCOREBOARD */
 #scoreBoard {
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 12px;
   text-align: center;
-  padding: 10px;
-  color: white;
 }
 
-/* KONTENER GŁÓWNY */
+/* KONTENER GŁÓWNY GRY */
 .dino-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 12px;
   width: 100%;
-  max-width: 100vw;
-  overflow: hidden; /* Zapobiega przewijaniu na boki */
 }
 
-/* PLANSZA GRY */
+/* PLANSZA */
 .board-container {
   position: relative;
-  width: 95%; /* Zostawiamy margines po bokach */
+  width: 100%;
   max-width: 800px;
+  display: flex;
+  justify-content: center;
   border-radius: 16px;
   background: linear-gradient(to right, #06b6d4, #84cc16, #facc15);
   padding: 2px;
@@ -45,23 +45,23 @@ body {
 }
 
 #gameCanvas {
-  width: 100% !important;
-  height: auto !important;
+  width: 100%;
+  height: auto;
   border-radius: 14px;
   background: var(--bg-dark);
   display: block;
 }
 
-/* MODALE / OVERLAY */
+/* OVERLAY (MENU) */
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 14px;
-  z-index: 100;
+  z-index: 10;
 }
 .overlay.hidden { display: none; }
 .modal {
@@ -72,29 +72,10 @@ body {
   border: 1px solid var(--primary-color);
 }
 
-/* CIEMNY PRZYCISK SKOKU */
-.mobile-controls {
-  display: none;
-  width: 95%;
-  margin-top: 10px;
-}
-
-#jumpBtn {
-  width: 100%;
-  padding: 15px;
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: white;
-  background: #1a1d23;
-  border: 2px solid #333;
-  border-radius: 12px;
-  text-transform: uppercase;
-  touch-action: manipulation;
-}
-
-/* PANEL STEROWANIA POD GRĄ */
+/* PANEL POD GRĄ */
 .game-footer-controls {
-  width: 95%;
+  width: 100%;
+  max-width: 800px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -103,37 +84,55 @@ body {
   padding: 15px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 16px;
-  margin-top: 15px;
+  box-sizing: border-box;
 }
 
-.controls-info h3 { margin: 0; color: var(--primary-color); font-size: 0.9rem; }
-.volume-settings { display: flex; flex-direction: column; gap: 10px; min-width: 200px; }
-.volume-item { display: flex; flex-direction: column; align-items: center; }
-.volume-item label { font-size: 15px; color: #ccc; margin-bottom: 4px; }
+.controls-info h3 {
+  margin: 0;
+  color: var(--primary-color);
+  font-size: 1rem;
+}
 
-/* --- SUWAKI: ABSOLUTNE WYŚRODKOWANIE --- */
+.volume-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.volume-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.volume-item label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ccc;
+  text-align: center;
+}
+
+/* --- POPRAWIONE SUWAKI (IDEALNE CENTROWANIE) --- */
 
 .volume-settings input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 20px; /* Wysokość całego elementu */
   background: transparent;
-  outline: none;
-  display: flex;
-  align-items: center; /* To powinno wycentrować kropkę w pionie */
+  height: 20px; /* Obszar dotyku */
+  cursor: pointer;
 }
 
-/* Linia (Track) */
+/* Linia suwaka */
 .volume-settings input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   height: 6px;
   background: linear-gradient(to right, #06b6d4, #84cc16, #facc15);
   border-radius: 3px;
-  border: none;
 }
 
-/* Kropka (Thumb) - wymuszenie pozycji */
+/* Kropka suwaka - Chrome/Safari */
 .volume-settings input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   height: 18px;
@@ -141,39 +140,87 @@ body {
   background: #facc15;
   border: 2px solid #0f172a;
   border-radius: 50%;
-  margin-top: -6px; /* Dokładna korekta dla linii 6px */
-  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  /* Klucz do centrowania: kropka 18px na linii 6px */
+  margin-top: -6px; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 
-/* Firefox Fix */
+/* Kropka suwaka - Firefox */
 .volume-settings input[type="range"]::-moz-range-thumb {
-  height: 18px; width: 18px; background: #facc15; border-radius: 50%; border: 2px solid #0f172a;
+  height: 18px;
+  width: 18px;
+  background: #facc15;
+  border: 2px solid #0f172a;
+  border-radius: 50%;
 }
 .volume-settings input[type="range"]::-moz-range-track {
-  height: 6px; background: linear-gradient(to right, #06b6d4, #84cc16, #facc15); border-radius: 3px;
+  height: 6px;
+  background: linear-gradient(to right, #06b6d4, #84cc16, #facc15);
+  border-radius: 3px;
+}
+
+/* --- CIEMNY PRZYCISK SKOKU --- */
+.mobile-controls {
+  display: none;
+  width: 100%;
+  max-width: 800px;
+}
+
+#jumpBtn {
+  width: 100%;
+  padding: 14px; /* Zmniejszony z 18px */
+  font-weight: 800;
+  font-size: 1rem;
+  color: white;
+  background: #0f1115;
+  border: 2px solid #333;
+  border-radius: 12px;
+  touch-action: manipulation;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.1s;
+}
+
+#jumpBtn:active {
+  transform: scale(0.97);
+  background: #1a1d23;
 }
 
 /* =========================
-   SPECJALNE USTAWIENIA DLA TELEFONU
+   RESPONSYWNOŚĆ (FIX ZOOM)
    ========================= */
 
 @media (max-width: 768px) {
+  /* Zmniejszamy odstępy sekcji Hero, aby gra była wyżej */
+  #dino-hero.mt-16 { margin-top: 5px !important; }
+  #dino-hero .card { padding: 10px; }
+  #dino-hero h1 { font-size: 1.5rem; margin-bottom: 5px; }
+  #dino-hero p { font-size: 0.8rem; }
 
-  .mobile-controls { display: block; }
+  .mobile-controls {
+    display: block;
+    margin-top: 5px;
+  }
 
   .game-footer-controls {
     flex-direction: column;
     padding: 10px;
+    gap: 10px;
+  }
+
+  .volume-settings {
     width: 100%;
   }
 
-  /* Zmniejszamy wysokość planszy, by "oddalić" widok */
+  /* KLUCZ DO "WIDZENIA WIĘCEJ": Ograniczenie wysokości canvasu */
   #gameCanvas {
-    max-height: 1000px; 
+    max-height: 40vh; /* Zmniejszone z 50vh, by gra była mniejsza/dalej */
   }
 
-  /* Powiększamy obszar suwaków, by łatwiej było trafić palcem */
-  .volume-settings input[type="range"] {
-    height: 30px; 
+  /* Zmniejszenie scoreboardu na mobile */
+  #scoreBoard {
+    font-size: 14px;
+    padding: 8px;
+    margin-top: 8px !important;
   }
 }
