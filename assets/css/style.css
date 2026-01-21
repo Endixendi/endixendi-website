@@ -11,7 +11,6 @@
   --maxw: 1100px;           /* Maksymalna szerokość kontenera */
   --transition: 0.25s ease;
   font-family: Inter, system-ui, -apple-system, Arial, sans-serif;
-  
 }
 
 * { 
@@ -42,6 +41,41 @@ header {
   z-index: 50;
   border-bottom: 1px solid rgba(255,255,255,0.03);
   padding: 10px 20px;
+}
+
+/* Kontener loadera - przykrywa cały ekran */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #07070a; /* Kolor Twojego tła */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Musi być nad wszystkim innym */
+  transition: opacity 0.5s ease; /* Płynne znikanie */
+}
+
+/* Animacja kręcenia logo */
+.loader-logo {
+  width: 300px;
+  height: 300px;
+  animation: spin 5s linear infinite;
+  object-fit: contain; 									/* Dodatkowo warto dodać to, aby logo było ostre */
+  filter: drop-shadow(0 0 15px rgba(0, 170, 255, 0.5)); /* Efekt niebieskiej poświaty pasującej do Twojego akcentu */
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Klasa do ukrycia loadera przez JS */
+.loader-hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .nav {
@@ -167,11 +201,8 @@ main {
   background: var(--card);
   padding: 18px;
   border-radius: 12px;
-  /* Łączymy bazowy cień i przezroczystą ramkę */
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  
-  /* KLUCZ: Wszystkie właściwości do animowania w jednej linii po przecinku */
   transition: transform var(--transition), 
               box-shadow var(--transition), 
               border-color var(--transition);
@@ -179,11 +210,11 @@ main {
 
 .card:hover {
   transform: translateY(-4px);
-  /* KLUCZ: Łączymy mocny ciemny cień z niebieską poświatą (oddzielone przecinkiem) */
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 
               0 0 20px rgba(0, 170, 255, 0.15); 
-  
-  border-color: rgba(0, 170, 255, 0.4);
+  /* Zmiana: używamy zmiennej --accent zamiast stałego koloru */
+  border-color: var(--accent); 
+  opacity: 1;
 }
 .hero h1 {
   margin: 0 0 8px;
@@ -206,6 +237,22 @@ a.btn {
   transition: opacity 0.2s ease-in-out;
   display: inline-block;
   text-decoration: none;
+  text-align: center;
+}
+
+/* Efekt po naciśnięciu (kliknięciu) przycisku */
+.btn:active,
+a.btn:active,
+.ghost:active {
+  transform: scale(0.96); /* Lekkie zmniejszenie (efekt wciśnięcia) */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* Zmniejszenie cienia, by przycisk wydawał się bliżej tła */
+  opacity: 0.9; /* Delikatna zmiana przezroczystości */
+}
+
+/* Opcjonalnie: Płynność powrotu */
+.btn, a.btn, .ghost {
+  /* Dodajemy transform do listy animowanych właściwości, jeśli go tam nie było */
+  transition: transform 0.1s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn:hover,
@@ -254,16 +301,11 @@ table.specs th {
 
 /* Styl dla kategorii w tabeli specyfikacji */
 .cat {
-  /* Jasny gradient od lewej do przezroczystości */
   background: linear-gradient(90deg, rgba(0, 170, 255, 0.15), transparent); 
-  
-  /* Kolor napisu - Twój jasny niebieski */
   color: var(--accent); 
-  
-  /* Dodatkowe formatowanie */
   font-weight: 700;
   padding-left: 12px;
-  text-transform: uppercase; /* Opcjonalnie: napisy wielkimi literami wyglądają profesjonalniej */
+  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
@@ -274,6 +316,7 @@ table.specs th {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 12px;
+  margin-top: 20px; 
 }
 
 .video iframe {
@@ -292,19 +335,11 @@ table.specs th {
    Stopka
    ========================= */
 footer {
-  margin-top: 80px; /* Większy odstęp od treści */
+  margin-top: 80px; 
   padding: 60px 20px;
-  
-  /* Zmieniamy gradient na bardziej zdecydowany */
-  /* #1a1d23 to lekko jaśniejszy odcień Twojego --bg, co stworzy efekt wypukłości */
   background: linear-gradient(180deg, #14171b 0%, #050505 100%);
-  
-  /* Wyraźniejsza linia oddzielająca z lekkim blaskiem */
   border-top: 1px solid rgba(0, 170, 255, 0.1); 
-  
-  /* Cień rzucany "do góry", który sprawi, że stopka będzie widoczna na długiej stronie */
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
-  
   text-align: center;
   position: relative;
 }
@@ -315,14 +350,13 @@ footer {
   position: relative;
 }
 
-/* Przycisk powrotu do góry */
 .back-to-top {
   display: inline-block;
   width: 40px;
   height: 40px;
   line-height: 40px;
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border); /* uwaga: zmienna --border nie była zdefiniowana w :root, ale zostawiam jak było */
   color: var(--accent);
   border-radius: 50%;
   text-decoration: none;
@@ -373,7 +407,6 @@ footer {
   color: var(--accent);
 }
 
-/* Responsywność dla stopki */
 @media (max-width: 600px) {
   .footer-bottom {
     flex-direction: column;
@@ -390,8 +423,9 @@ footer {
 .snapwidget-widget {
   border: none;
   overflow: hidden;
-  width: 950px;
-  height: 380px;
+  width: 100%; /* Zmieniono z 950px na 100% aby pasowało do kontenera */
+  height: 380px; /* Wysokość domyślna, można dostosować */
+  margin-top: 20px;
 }
 
 /* =========================
@@ -423,15 +457,13 @@ a.inline-link:hover { text-decoration: underline; }
 }
 
 .dropdown-content a:hover {
-  background: rgba(0, 170, 255, 0.1); /* lekkie podświetlenie */
+  background: rgba(0, 170, 255, 0.1);
   color: var(--accent);
 }
 
 /* =========================
-   Style list - spójne across wszystkich stron
+   Style list
    ========================= */
-
-/* Bazowe style dla list */
 ul, ol {
   margin: 12px 0;
   padding-left: 24px;
@@ -442,7 +474,6 @@ li {
   line-height: 1.5;
 }
 
-/* Specyficzne style dla list w sekcjach specyfikacji */
 .specs + ul {
   margin-top: 12px;
 }
@@ -461,7 +492,6 @@ li {
   font-weight: bold;
 }
 
-/* Style dla list w kontrolkach gier */
 .controls-left ul {
   margin: 0;
   padding-left: 18px;
@@ -482,7 +512,6 @@ li {
   color: var(--accent);
 }
 
-/* Style dla list w bocznych panelach */
 .side.left ul {
   margin: 12px 0;
   padding-left: 20px;
@@ -508,16 +537,16 @@ li {
    ========================= */
 @media screen and (max-width: 1200px) {
   #main-nav {
-    display: none;            /* Na mobile menu domyślnie ukryte */
-    flex-direction: column;   /* Linki w kolumnie */
+    display: none;            
+    flex-direction: column;   
     gap: 12px;
     width: 100%;
   }
-  .menu-icon { display: block; } /* Ikona hamburgera widoczna */
+  .menu-icon { display: block; }
   .dropdown-content { position: relative; box-shadow: none; }
   
   .hero {
-    grid-template-columns: 1fr; /* Na telefonie jedna kolumna */
+    grid-template-columns: 1fr; 
     gap: 16px;
   }
   
@@ -531,12 +560,13 @@ li {
   .brand .logo { width: 40px; height: 40px; }
   .grid { grid-template-columns: 1fr; }
   .video iframe { height: 200px; }
+  /* Snapwidget responsywność */
   .snapwidget-widget { width: 100%; height: auto; aspect-ratio: 25 / 10; }
 }
 
-section { scroll-margin-top: 80px; } /* Odstęp od menu przy przewijaniu */
+section { scroll-margin-top: 80px; }
 
-/* Efekty hover dla przycisków i linków */
+/* Efekty hover */
 .btn:hover,
 a.btn:hover,
 .ghost:hover,
@@ -544,3 +574,117 @@ a.inline-link:hover {
   transition: all 0.2s ease-in-out;
 }
 
+/* =========================
+   NOWE KLASY (CLEANUP INDEX.HTML)
+   ========================= */
+
+/* Prawa kolumna w sekcji Hero oraz okna te trzy u góry */
+.hero-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  height: 100%;
+}
+
+/* Link do Discorda */
+.discord-link {
+  color: var(--accent);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color var(--transition);
+}
+
+.discord-link:hover {
+  color: #fff;
+}
+
+.discord-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Przycisk YouTube na całą szerokość */
+.btn-full-width {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 15px !important;
+}
+
+/* Widget Spotify */
+.spotify-embed {
+  border-radius: 12px;
+  border: none;
+  margin-top: 20px;
+}
+
+/* Styl dla nowej karty z kodem QR */
+.qr-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrowanie nagłówka i tekstu */
+  text-align: center;
+}
+
+.qr-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.qr-code-large {
+  width: 150px;
+  height: auto;
+  border-radius: 12px;
+  border: 3px solid var(--accent); /* kolory pod święta */
+  padding: 10px;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.qr-code-large:hover {
+  transform: scale(1.08); /* Efekt powiększenia przy najechaniu */
+}
+
+.margin-special {
+   margin-top: 15px !important;
+}
+
+/* --- SYSTEM SEZONOWY --- */
+.seasonal-particle {
+    position: fixed;
+    top: -30px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* Motywy kolorystyczne */
+body.theme-winter { --accent: #ffffff; --accent-2: #add8e6; }
+body.theme-spring { --accent: #4ade80; --accent-2: #facc15; }
+body.theme-summer { --accent: #fbbf24; --accent-2: #f87171; }
+body.theme-autumn { --accent: #fb923c; --accent-2: #78350f; }
+body.theme-patriotic { --accent: #ffffff; --accent-2: #ff4d4d; }
+body.theme-birthday { --accent: #f472b6; --accent-2: #22d3ee; }
+body.theme-youtube { --accent: #ff1606; --accent-2: #ffffff; }
+body.theme-new { --accent: #ffff06; --accent-2: #ffa12c; }
+
+/* Przycisk wyłączania (domyślnie ukryty) */
+#toggle-effects-btn {
+    display: none;
+}
+
+body.effects-off .seasonal-particle {
+    display: none !important;
+}
