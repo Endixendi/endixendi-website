@@ -1,197 +1,206 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Oficjalna strona Endixendi — znajdziesz tu informacje, linki do social media oraz pełną specyfikację mojego komputera.">
-  <meta name="keywords" content="Endixendi, strona internetowa, PC, specyfikacja komputera, portfolio, blog">
-  <title>Endixendi — Gaming, Streaming, Poradniki, PC</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Oficjalna strona Endixendi — znajdziesz tu informacje, linki do social media oraz pełną specyfikację mojego komputera.">
+    <meta name="keywords" content="Endixendi, strona internetowa, PC, specyfikacja komputera, portfolio, blog">
+    <title>Endixendi — Gaming, Streaming, Poradniki, PC</title>
 
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="icon" href="assets/images/kolo.png" type="image/png">
-
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="assets/images/kolo.png" type="image/png">
 </head>
 <body>
 
-	<div id="loader">
-	  <img src="assets/images/kolo.png" alt="Loading..." class="loader-logo">
-	</div>
-
-
-	<header>
-		<div id="menu-placeholder"></div>
-	</header>
-
-<main>
-
-  <section id="home" class="hero">
-
-    <div class="card hero-sidebar">
-      <h1>Witaj — jestem Endixendi</h1>
-      <p class="lead">
-        Nagrywam gameplaye i poradniki, dzieląc się swoją pasją do gier, technologii oraz wszystkiego, co związane z cyfrowym światem. Na mojej stronie znajdziesz filmy, sprzęt, który używam oraz wskazówki dotyczące tworzenia treści.
-      </p>
-
-      <div class="cta">
-        <button class="btn" data-scroll="#tworczosc">Zobacz filmy</button>
-        <button class="ghost" data-scroll="#pc">Mój PC</button>
-		<button class="btn" id="toggle-effects-btn" onclick="toggleEffects()">Włącz/Wyłącz efekty sezonowe</button>
-      </div>
-      <div class="grid full mt-16">
-        <div class="card hero-sidebar">
-          <h3>Social Media</h3>
-          <p class="muted">Wszystkie moje linki w jednym miejscu.</p>
-          <p><a class="inline-link" href="https://linktr.ee/endixendi" target="_blank" rel="noopener">linktr.ee/endixendi</a></p>
-        </div>
-        <div class="card hero-sidebar">
-          <h3>Najświeższe filmy</h3>
-          <p class="muted">Kliknij aby odwiedzić mój kanał.</p>
-          <p><a class="inline-link" href="https://www.youtube.com/c/Endixendi?sub_confirmation=1" target="_blank" rel="noopener">YouTube — Endixendi</a></p>
-        </div>
-      </div>
-      </div>
-    <div class="hero-sidebar">
-
-      <aside class="card hero-sidebar">
-        <h3>Krótko o mnie</h3>
-        <p class="muted">Pasjonat informatyki i absolwent tego kierunku. Uwielbiam gry, więc nagrywanie filmów, shortów i tworzenie grafiki komputerowej to dla mnie przyjemność.</p>
-        <a class="btn mt-12" href="#o-mnie">Więcej</a>
-      </aside>
-
-      <aside class="card hero-sidebar">
-        <h3>Discord</h3>
-        <p class="muted">Dołącz do mojej społeczności na Discordzie.</p>
-        <p>
-          <a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener" class="discord-link">
-            <img src="assets/images/ECv2.png" alt="Logo Discord" class="discord-icon">
-            EndiCord
-          </a>
-        </p>
-      </aside>
-
+    <div id="loader">
+        <img src="assets/images/kolo.png" alt="Loading..." class="loader-logo">
     </div>
-    </section>
-  <section id="tworczosc" class="card mt-22">
-	<h2>Twórczość — filmy</h2>
-    <p class="muted">Pierwszy materiał z kanału YouTube <a class="inline-link" href="https://www.youtube.com/c/Endixendi?sub_confirmation=1">(@Endixendi)</a> który zaczął moją przygodę z nagrywaniem to MTA.</p>
 
-    <div class="videos" id="videos">
-      <div class="video card">
-        <iframe src="https://www.youtube.com/embed/eXZwitHgwZM" title="YouTube video" allowfullscreen></iframe>
-        <div class="video-title">Poznaj Moją Twórczość</div>
-      </div>
-      <div class="video card">
-        <iframe src="https://www.youtube.com/embed/lqi6XXv5g10" title="YouTube video" allowfullscreen></iframe>
-        <div class="video-title">Pierwszy Film Który Zachęcił Mnie Do Nagrywania</div>
-      </div>
-    </div>
-    <a class="mt-12 btn-full-width btn" href="https://www.youtube.com/c/Endixendi?sub_confirmation=1" target="_blank" rel="noopener">Odwiedź mój kanał: Endixendi</a>
-  </section>
-  <section id="pc" class="controls-left card mt-22">
-    <h2>PC — Specyfikacja</h2>
-    
-    <table class="specs" aria-label="Specyfikacja komputera">
-        <tr><td class="cat">Procesor (CPU)</td><td>➤ AMD Ryzen 7 5700X</td></tr>
-        <tr><td class="cat">Karta graficzna (GPU)</td><td>➤ ASUS GeForce RTX 4060 Dual EVO OC, 8 GB</td></tr>
-        <tr><td class="cat">Płyta główna</td><td>➤ ASUS ROG STRIX B550-F GAMING</td></tr>
-        <tr><td class="cat">Pamięć RAM</td><td>➤ Kingston Fury Renegade, 2×16 GB, 3600 MHz, CL16</td></tr>
-        <tr><td class="cat">Zasilacz</td><td>➤ Zalman ZM600-GSII, 600 W, 120 mm, ATX, 80Plus</td></tr>
-        <tr><td class="cat">Obudowa</td><td>➤ ENDORFY Arx 700 Air</td></tr>
+    <header>
+        <div id="menu-placeholder"></div>
+    </header>
 
-        <tr><td class="cat">Dyski SSD M.2 2280 NVMe</td><td>
-	  	  ➤ LEXAR NM790 2TB SSD – odczyt 7400 MB/s, zapis 6500 MB/s<br>
-          ➤ WD Blue SN580 1 TB – odczyt 4150 MB/s, zapis 4150 MB/s<br>
-          ➤ Kingston A2000 500 GB – odczyt 2200 MB/a, zapis 2000 MB/s<br>
-          ➤ Adata XPG SX8200 PRO 256 GB – odczyt 3500 MB/s, zapis 1200 MB/s<br>
-        </td></tr>
+    <main>
 
-		<tr><td class="cat">Dyski SSD SATA</td><td>
-		  ➤ GOODRAM 120GB 2,5" SATA SSD CL100 gen.3 – odczyt 500 MB/a, zapis 360 MB/s
-        </td></tr>
+        <section id="home" class="hero">
+            <div class="card hero-sidebar">
+                <h1>Witaj — jestem Endixendi</h1>
+                <p class="lead">
+                    Nagrywam gameplaye i poradniki, dzieląc się swoją pasją do gier, technologii oraz wszystkiego, co związane z cyfrowym światem. Na mojej stronie znajdziesz filmy, sprzęt, który używam oraz wskazówki dotyczące tworzenia treści.
+                </p>
 
-        <tr><td class="cat">Dyski HDD</td><td>
-          ➤ Seagate 1 TB – ST1000DM010-2EP102<br>
-          ➤ Seagate 500 GB – ST3500312CS<br>
-          ➤ Seagate 500 GB – ST3500418AS<br>
-          ➤ Toshiba 1 TB – External USB 3.0 (przenośny)
-        </td></tr>
+                <div class="cta">
+                    <button class="btn" data-scroll="#tworczosc">Zobacz filmy</button>
+                    <button class="ghost" data-scroll="#pc">Mój PC</button>
+                    <button class="btn" id="toggle-effects-btn" onclick="toggleEffects()">Włącz/Wyłącz efekty sezonowe</button>
+                </div>
 
-        <tr><td class="cat">System operacyjny</td><td>➤ Windows 11 HOME (64-bit)</td></tr>
-        <tr><td class="cat">Monitory</td><td>
-		➤ Monitor LG UltraGear 27GS75Q-B 27" 2K IPS 180Hz (O/C 200Hz) 1ms Gamingowy<br>
-		➤ Monitor LG UltraGear 27GS75Q-B 27" 2K IPS 180Hz (O/C 200Hz) 1ms Gamingowy<br>
-		➤ TV 4K 60Hz Hisense</td></tr>
-        <tr><td class="cat">Chłodzenie CPU</td><td>➤ ENDORFY Navis F360 ARGB, 3×120 mm</td></tr>
-    </table>
+                <div class="grid full mt-16">
+                    <div class="card hero-sidebar">
+                        <h3>Social Media</h3>
+                        <p class="muted">Wszystkie moje linki w jednym miejscu.</p>
+                        <p><a class="inline-link" href="https://linktr.ee/endixendi" target="_blank" rel="noopener">linktr.ee/endixendi</a></p>
+                    </div>
+                    <div class="card hero-sidebar">
+                        <h3>Najświeższe filmy</h3>
+                        <p class="muted">Kliknij aby odwiedzić mój kanał.</p>
+                        <p><a class="inline-link" href="https://www.youtube.com/c/Endixendi?sub_confirmation=1" target="_blank" rel="noopener">YouTube — Endixendi</a></p>
+                    </div>
+                </div>
+            </div>
 
-	<h3 class="mt-18">Urządzenia peryferyjne</h3>
-	<ul>
-	  <li>Słuchawki: ENDORFY Viro Plus USB</li>
-	  <li>Mikrofon: Endorfy Solum Streaming SM950</li>
-	  <li>Mysz: Logitech G502 X Lightspeed czarna</li>
-	  <li>Klawiatura: SPC Gear GK550 Omnis Kailh Brown RGB</li>
-	  <li>Fotel: HUZARO FORCE 6.0 Red Gaming Armchair</li>
-	  <li>Biurko: Ultradesk LEVEL V2 LED RGB (Czarne) (elektryczna regulacja)</li>
-	  <li>Podkładka: Ultradesk LEVEL V2 LED RGB (Razem z biurkiem)</li>
-	  <li>Kamera: Logitech HD Pro C920</li>
-	  <li>Tablet graficzny: XP-PEN Star G640</li>
-	  <li>Gamepad: PowerA przewodowy Xbox Series / Xbox One</li>
-	  <li>Gamepad: Kontroler do gier NO DRIFT ManbaOne z interaktywnym ekranem</li>
-	</ul>
-	</section>
-  <section id="o-mnie" class="card mt-22">
-    <h2>O mnie</h2>
-	<p>
-	Filmy na moim kanale YouTube „Endixendi” zacząłem publikować hobbystycznie w 2014 roku. Moja pierwsza seria z MTA szybko zdobyła popularność i wciąż wspominam ten czas z ogromnym sentymentem. Choć obowiązki szkolne i później studia chwilowo ograniczyły moją aktywność, pasja do gier i tworzenia treści nigdy nie zgasła.
-	</p>
-	<p>
-	Dziś nadal nagrywam gameplaye, tworzę poradniki i dzielę się wiedzą z zakresu gier oraz technologii. Studia informatyczne pozwalają mi rozwijać techniczne umiejętności, które wykorzystuję przy tworzeniu materiałów, a jednocześnie są kolejnym sposobem na realizację mojej pasji.
-	</p>
-	<p>
-	Mój kanał i społeczność są dla mnie bardzo ważne – chcę dzielić się doświadczeniem, inspirować innych i razem rozwijać miejsce, gdzie pasja do gier łączy ludzi w Polsce i na całym świecie.
-	</p>
-  </section>
-<section id="kontakt" class="grid mt-22">
-  <div class="card">
-    <h2>Kontakt</h2>
-    <p>Email: <a class="inline-link" href="mailto:kontakt.endixendi@gmail.com">kontakt.endixendi@gmail.com</a></p>
-    <p>Discord: <a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener" class="inline-link">Endixendi</a></p>
-    <p>Social Media: <a class="inline-link" href="https://linktr.ee/endixendi" target="_blank" rel="noopener">linktr.ee/endixendi</a></p>
-    
-    <button class="btn btn-full-width margin-special" id="donate-btn">Donate</button>
-  </div>
+            <div class="hero-sidebar">
+                <aside class="card hero-sidebar">
+                    <h3>Krótko o mnie</h3>
+                    <p class="muted">Pasjonat informatyki i absolwent tego kierunku. Uwielbiam gry, więc nagrywanie filmów, shortów i tworzenie grafiki komputerowej to dla mnie przyjemność.</p>
+                    <a class="btn mt-12" href="#o-mnie">Więcej</a>
+                </aside>
 
-  <div class="card qr-card">
-    <h3>Skrót mobilny</h3>
-    <p class="muted">Zeskanuj, aby otworzyć linki na telefonie</p>
-    <div class="qr-wrapper">
-      <img src="assets/images/qr-mobile.webp" alt="Kod QR Linktree" class="qr-code-large">
-    </div>
-  </div>
-</section>
-  <section id="ig" class="card mt-22">
-    <h2>Instagram — <a class="inline-link" href="https://www.instagram.com/endixendi/">@Endixendi</a></h2>
-    
-    <script src="https://snapwidget.com/js/snapwidget.js"></script>
-	<iframe src="https://snapwidget.com/embed/1105116" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Posts from Instagram"></iframe>
-	
-  </section>
-  <section id="spotify" class="card mt-22">
-    <h2>Playlista Spotify</h2>
-    <p>Moja autorska playlista — muzyka, którą sam wybrałem i polecam!</p>
+                <aside class="card hero-sidebar">
+                    <h3>Discord</h3>
+                    <p class="muted">Dołącz do mojej społeczności na Discordzie.</p>
+                    <p>
+                        <a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener" class="discord-link">
+                            <img src="assets/images/ECv2.png" alt="Logo Discord" class="discord-icon">
+                            EndiCord
+                        </a>
+                    </p>
+                </aside>
+            </div>
+        </section>
 
-    <iframe
-      class="spotify-embed"
-      src="https://open.spotify.com/embed/playlist/2qrALXJZta6M1PdaW8QRCE?utm_source=generator"
-      width="100%"
-      height="352"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy">
-    </iframe>
-  </section>
-  </main>
-<div id="footer-placeholder"></div>
+        <section id="tworczosc" class="card mt-22">
+            <h2>Twórczość — filmy</h2>
+            <p class="muted">Pierwszy materiał z kanału YouTube <a class="inline-link" href="https://www.youtube.com/c/Endixendi?sub_confirmation=1">(@Endixendi)</a> który zaczął moją przygodę z nagrywaniem to MTA.</p>
 
-<script src="assets/js/script.js"></script>
+            <div class="videos" id="videos">
+                <div class="video card">
+                    <iframe src="https://www.youtube.com/embed/eXZwitHgwZM" title="YouTube video" allowfullscreen></iframe>
+                    <div class="video-title">Poznaj Moją Twórczość</div>
+                </div>
+                <div class="video card">
+                    <iframe src="https://www.youtube.com/embed/lqi6XXv5g10" title="YouTube video" allowfullscreen></iframe>
+                    <div class="video-title">Pierwszy Film Który Zachęcił Mnie Do Nagrywania</div>
+                </div>
+            </div>
+            <a class="mt-12 btn-full-width btn" href="https://www.youtube.com/c/Endixendi?sub_confirmation=1" target="_blank" rel="noopener">Odwiedź mój kanał: Endixendi</a>
+        </section>
+
+        <section id="pc" class="controls-left card mt-22">
+            <h2>PC — Specyfikacja</h2>
+            
+            <table class="specs" aria-label="Specyfikacja komputera">
+                <tr><td class="cat">Procesor (CPU)</td><td>➤ AMD Ryzen 7 5700X</td></tr>
+                <tr><td class="cat">Karta graficzna (GPU)</td><td>➤ ASUS GeForce RTX 4060 Dual EVO OC, 8 GB</td></tr>
+                <tr><td class="cat">Płyta główna</td><td>➤ ASUS ROG STRIX B550-F GAMING</td></tr>
+                <tr><td class="cat">Pamięć RAM</td><td>➤ Kingston Fury Renegade, 2×16 GB, 3600 MHz, CL16</td></tr>
+                <tr><td class="cat">Zasilacz</td><td>➤ Zalman ZM600-GSII, 600 W, 120 mm, ATX, 80Plus</td></tr>
+                <tr><td class="cat">Obudowa</td><td>➤ ENDORFY Arx 700 Air</td></tr>
+
+                <tr>
+                    <td class="cat">Dyski SSD M.2 2280 NVMe</td>
+                    <td>
+                        ➤ LEXAR NM790 2TB SSD – odczyt 7400 MB/s, zapis 6500 MB/s<br>
+                        ➤ WD Blue SN580 1 TB – odczyt 4150 MB/s, zapis 4150 MB/s<br>
+                        ➤ Kingston A2000 500 GB – odczyt 2200 MB/a, zapis 2000 MB/s<br>
+                        ➤ Adata XPG SX8200 PRO 256 GB – odczyt 3500 MB/s, zapis 1200 MB/s
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="cat">Dyski SSD SATA</td>
+                    <td>
+                        ➤ GOODRAM 120GB 2,5" SATA SSD CL100 gen.3 – odczyt 500 MB/a, zapis 360 MB/s
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="cat">Dyski HDD</td>
+                    <td>
+                        ➤ Seagate 1 TB – ST1000DM010-2EP102<br>
+                        ➤ Seagate 500 GB – ST3500312CS<br>
+                        ➤ Seagate 500 GB – ST3500418AS<br>
+                        ➤ Toshiba 1 TB – External USB 3.0 (przenośny)
+                    </td>
+                </tr>
+
+                <tr><td class="cat">System operacyjny</td><td>➤ Windows 11 HOME (64-bit)</td></tr>
+                <tr>
+                    <td class="cat">Monitory</td>
+                    <td>
+                        ➤ Monitor LG UltraGear 27GS75Q-B 27" 2K IPS 180Hz (O/C 200Hz) 1ms Gamingowy<br>
+                        ➤ Monitor LG UltraGear 27GS75Q-B 27" 2K IPS 180Hz (O/C 200Hz) 1ms Gamingowy<br>
+                        ➤ TV 4K 60Hz Hisense
+                    </td>
+                </tr>
+                <tr><td class="cat">Chłodzenie CPU</td><td>➤ ENDORFY Navis F360 ARGB, 3×120 mm</td></tr>
+            </table>
+
+            <h3 class="mt-18">Urządzenia peryferyjne</h3>
+            <ul>
+                <li>Słuchawki: ENDORFY Viro Plus USB</li>
+                <li>Mikrofon: Endorfy Solum Streaming SM950</li>
+                <li>Mysz: Logitech G502 X Lightspeed czarna</li>
+                <li>Klawiatura: SPC Gear GK550 Omnis Kailh Brown RGB</li>
+                <li>Fotel: HUZARO FORCE 6.0 Red Gaming Armchair</li>
+                <li>Biurko: Ultradesk LEVEL V2 LED RGB (Czarne) (elektryczna regulacja)</li>
+                <li>Podkładka: Ultradesk LEVEL V2 LED RGB (Razem z biurkiem)</li>
+                <li>Kamera: Logitech HD Pro C920</li>
+                <li>Tablet graficzny: XP-PEN Star G640</li>
+                <li>Gamepad: PowerA przewodowy Xbox Series / Xbox One</li>
+                <li>Gamepad: Kontroler do gier NO DRIFT ManbaOne z interaktywnym ekranem</li>
+            </ul>
+        </section>
+
+        <section id="o-mnie" class="card mt-22">
+            <h2>O mnie</h2>
+            <p>
+                Filmy na moim kanale YouTube „Endixendi” zacząłem publikować hobbystycznie w 2014 roku. Moja pierwsza seria z MTA szybko zdobyła popularność i wciąż wspominam ten czas z ogromnym sentymentem. Choć obowiązki szkolne i później studia chwilowo ograniczyły moją aktywność, pasja do gier i tworzenia treści nigdy nie zgasła.
+            </p>
+            <p>
+                Dziś nadal nagrywam gameplaye, tworzę poradniki i dzielę się wiedzą z zakresu gier oraz technologii. Studia informatyczne pozwalają mi rozwijać techniczne umiejętności, które wykorzystuję przy tworzeniu materiałów, a jednocześnie są kolejnym sposobem na realizację mojej pasji.
+            </p>
+            <p>
+                Mój kanał i społeczność są dla mnie bardzo ważne – chcę dzielić się doświadczeniem, inspirować innych i razem rozwijać miejsce, gdzie pasja do gier łączy ludzi w Polsce i na całym świecie.
+            </p>
+        </section>
+
+        <section id="kontakt" class="grid mt-22">
+            <div class="card">
+                <h2>Kontakt</h2>
+                <p>Email: <a class="inline-link" href="mailto:kontakt.endixendi@gmail.com">kontakt.endixendi@gmail.com</a></p>
+                <p>Discord: <a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener" class="inline-link">Endixendi</a></p>
+                <p>Social Media: <a class="inline-link" href="https://linktr.ee/endixendi" target="_blank" rel="noopener">linktr.ee/endixendi</a></p>
+                
+                <button class="btn btn-full-width margin-special" id="donate-btn">Donate</button>
+            </div>
+
+            <div class="card qr-card">
+                <h3>Skrót mobilny</h3>
+                <p class="muted">Zeskanuj, aby otworzyć linki na telefonie</p>
+                <div class="qr-wrapper">
+                    <img src="assets/images/qr-mobile.webp" alt="Kod QR Linktree" class="qr-code-large">
+                </div>
+            </div>
+        </section>
+
+        <section id="ig" class="card mt-22">
+            <h2>Instagram — <a class="inline-link" href="https://www.instagram.com/endixendi/">@Endixendi</a></h2>
+            <script src="https://snapwidget.com/js/snapwidget.js"></script>
+            <iframe src="https://snapwidget.com/embed/1105116" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Posts from Instagram"></iframe>
+        </section>
+
+        <section id="spotify" class="card mt-22">
+            <h2>Playlista Spotify</h2>
+            <p>Muzyka, którą sam wybrałem i polecam!</p>
+            <iframe class="spotify-embed" src="https://open.spotify.com/embed/playlist/2qrALXJZta6M1PdaW8QRCE?utm_source=generator" width="100%" height="352" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </section>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/js/script.js"></script>
+
 </body>
 </html>
