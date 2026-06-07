@@ -16,7 +16,7 @@ const turnStatus = document.getElementById('turn-status');
 const difficultySelect = document.getElementById('difficulty-select');
 
 // Stan Gry
-let gameState = {
+const gameState = {
     active: false,
     playerTurn: true,
     playerShips: [],    
@@ -85,8 +85,8 @@ function resetData() {
     gameState.lastHit = null;
     gameState.huntDirection = null;
     gameState.playerTurn = true;
-	
-	logContent.classList.remove('mode-cheater'); 
+    
+    logContent.classList.remove('mode-cheater'); 
     difficultySelect.disabled = false;
 
     btnStart.style.display = 'inline-block';
@@ -97,8 +97,8 @@ function resetData() {
     
     document.querySelectorAll('.cell').forEach(c => c.className = 'cell');
     logContent.innerHTML = '';
-	
-	difficultySelect.disabled = false
+    
+    difficultySelect.disabled = false;
 }
 
 function createEmptyBoard() {
@@ -125,16 +125,18 @@ function createGrid(container, owner) {
 /* --- LOGIKA ROZMIESZCZANIA --- */
 
 function randomizeShips(board) {
-    for(let y=0; y<BOARD_SIZE; y++) board[y].fill(0);
+    for (let y = 0; y < BOARD_SIZE; y++) {
+        board[y].fill(0);
+    }
 
     SHIPS_CONFIG.forEach(size => {
         let placed = false;
-        while(!placed) {
+        while (!placed) {
             const horizontal = Math.random() < 0.5;
             const x = Math.floor(Math.random() * BOARD_SIZE);
             const y = Math.floor(Math.random() * BOARD_SIZE);
             
-            if(canPlace(board, x, y, size, horizontal)) {
+            if (canPlace(board, x, y, size, horizontal)) {
                 place(board, x, y, size, horizontal);
                 placed = true;
             }
@@ -161,8 +163,11 @@ function canPlace(board, x, y, size, horizontal) {
 
 function place(board, x, y, size, horizontal) {
     for (let i = 0; i < size; i++) {
-        if (horizontal) board[y][x + i] = 1;
-        else board[y + i][x] = 1;
+        if (horizontal) {
+            board[y][x + i] = 1;
+        } else {
+            board[y + i][x] = 1;
+        }
     }
 }
 
@@ -245,13 +250,13 @@ function botTurn() {
 
     // Jeśli nie oszukał, używa standardowej logiki (losowanie lub kolejka sąsiadów)
     if (!target) {
+        // Czyścimy kolejkę z pól, które zostały już wcześniej ostrzelane przez losowe strzały lub oszustwa
+        while (gameState.botQueue.length > 0 && gameState.playerShips[gameState.botQueue[0].y][gameState.botQueue[0].x] >= 2) {
+            gameState.botQueue.shift();
+        }
+
         if (gameState.botQueue.length > 0) {
             target = gameState.botQueue.shift();
-            // Jeśli pole już było ostrzelane, szukaj dalej
-            if (gameState.playerShips[target.y][target.x] >= 2) { 
-                botTurn(); 
-                return; 
-            }
         } else {
             gameState.lastHit = null;
             gameState.huntDirection = null;
@@ -269,7 +274,7 @@ function botTurn() {
     const isHit = (gameState.playerShips[y][x] === 1);
     gameState.playerShips[y][x] = isHit ? 3 : 2;
 
-    const cellIndex = y * 10 + x;
+    const cellIndex = y * BOARD_SIZE + x;
     const cell = playerGrid.children[cellIndex];
     updateVisuals(cell, isHit);
 
@@ -279,9 +284,11 @@ function botTurn() {
         playAudio('hit');
         
         addSmartNeighbors(x, y);
-        gameState.lastHit = {x, y};
+        gameState.lastHit = { x, y };
         checkWin();
-        if (gameState.active) setTimeout(botTurn, 1000); 
+        if (gameState.active) {
+            setTimeout(botTurn, 1000);
+        }
     } else {
         log("Wróg spudłował.", "info");
         playAudio('splash');
@@ -291,13 +298,16 @@ function botTurn() {
 
 function addSmartNeighbors(x, y) {
     const directions = [
-        {x: 0, y: -1, type: 'v'}, {x: 0, y: 1, type: 'v'},
-        {x: -1, y: 0, type: 'h'}, {x: 1, y: 0, type: 'h'}
+        { x: 0, y: -1, type: 'v' }, { x: 0, y: 1, type: 'v' },
+        { x: -1, y: 0, type: 'h' }, { x: 1, y: 0, type: 'h' }
     ];
 
     if (gameState.lastHit) {
-        if (gameState.lastHit.x === x) gameState.huntDirection = 'v';
-        else if (gameState.lastHit.y === y) gameState.huntDirection = 'h';
+        if (gameState.lastHit.x === x) {
+            gameState.huntDirection = 'v';
+        } else if (gameState.lastHit.y === y) {
+            gameState.huntDirection = 'h';
+        }
     }
 
     if (gameState.huntDirection) {
@@ -314,7 +324,7 @@ function addSmartNeighbors(x, y) {
         if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE) {
             if (gameState.playerShips[ny][nx] < 2 && isAreaClearForBot(nx, ny)) {
                 if (!gameState.botQueue.some(q => q.x === nx && q.y === ny)) {
-                    gameState.botQueue.unshift({x: nx, y: ny});
+                    gameState.botQueue.unshift({ x: nx, y: ny });
                 }
             }
         }
@@ -323,8 +333,8 @@ function addSmartNeighbors(x, y) {
 
 function isAreaClearForBot(x, y) {
     const diagonals = [
-        {x: x-1, y: y-1}, {x: x+1, y: y-1},
-        {x: x-1, y: y+1}, {x: x+1, y: y+1}
+        { x: x - 1, y: y - 1 }, { x: x + 1, y: y - 1 },
+        { x: x - 1, y: y + 1 }, { x: x + 1, y: y + 1 }
     ];
 
     for (let d of diagonals) {
@@ -338,14 +348,17 @@ function isAreaClearForBot(x, y) {
 /* --- UTILS --- */
 
 function updateVisuals(cell, isHit) {
-    if (isHit) cell.classList.add('hit');
-    else cell.classList.add('miss');
+    if (isHit) {
+        cell.classList.add('hit');
+    } else {
+        cell.classList.add('miss');
+    }
 }
 
 function renderGrid(container, boardData, showShips) {
     Array.from(container.children).forEach((cell, i) => {
-        const x = i % 10;
-        const y = Math.floor(i / 10);
+        const x = i % BOARD_SIZE;
+        const y = Math.floor(i / BOARD_SIZE);
         const val = boardData[y][x];
         
         cell.className = 'cell';
@@ -370,7 +383,7 @@ function endGame(playerWon) {
     
     log(playerWon ? "GRATULACJE! Wroga flota zniszczona." : "MAYDAY! Nasza flota poszła na dno.", "victory");
     
-    if(playerWon) playAudio('win');
+    if (playerWon) playAudio('win');
     else playAudio('lose');
 
     btnStart.style.display = 'none';
@@ -388,11 +401,13 @@ function log(msg, type) {
 
 function playAudio(type) {
     try {
-        if(audio[type]) {
+        if (audio[type]) {
             audio[type].currentTime = 0;
             audio[type].play();
         }
-    } catch(e) { console.log("Audio error", e); }
+    } catch (e) { 
+        console.log("Audio error", e); 
+    }
 }
 
 /* --- LISTENERY --- */
