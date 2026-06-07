@@ -35,11 +35,21 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         const img = galleryItem.querySelector('img');
+        const loader = galleryItem.querySelector('.img-loader');
 
         // Gdy obrazek się załaduje, ustawiamy opacity na 1
-        img.onload = () => {
+        const handleImageLoad = () => {
             img.style.opacity = '1';
+            if (loader) {
+                loader.style.display = 'none';
+            }
         };
+
+        if (img.complete) {
+            handleImageLoad();
+        } else {
+            img.onload = handleImageLoad;
+        }
 
         // Obsługa kliknięcia (Overlay)
         img.addEventListener('click', function() {
@@ -68,16 +78,25 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.appendChild(fullImg);
         document.body.appendChild(overlay);
 
-        setTimeout(() => overlay.style.opacity = '1', 10);
+        setTimeout(() => {
+            overlay.style.opacity = '1';
+        }, 10);
 
         const closeOverlay = () => {
             overlay.style.opacity = '0';
-            setTimeout(() => overlay.remove(), 300);
+            setTimeout(() => {
+                overlay.remove();
+            }, 300);
             document.removeEventListener('keydown', handleEsc);
         };
 
+        const handleEsc = (e) => { 
+            if (e.key === 'Escape') {
+                closeOverlay(); 
+            }
+        };
+
         overlay.addEventListener('click', closeOverlay);
-        const handleEsc = (e) => { if (e.key === 'Escape') closeOverlay(); };
         document.addEventListener('keydown', handleEsc);
     }
 });
