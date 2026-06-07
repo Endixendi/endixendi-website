@@ -3,6 +3,10 @@
  * Ładuje częściowe szablony, obsługuje menu i podstawowe funkcje
  */
 
+// Globalna zmienna dla interwału cząsteczek, aby była dostępna wszędzie
+let particleInterval = null;
+let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
+
 (function () {
     'use strict';
   
@@ -188,7 +192,7 @@
         // Nasłuchuj zmian hash dla redirectów
         window.addEventListener("hashchange", checkForRedirects);
 
-        // Podpięcie przycisku przełączania efektów sezonowych, jeśli istnieje
+        // Przycisk przełączania przypięty nasłuchiwaczem zdarzeń (dodatkowe zabezpieczenie)
         const toggleBtn = document.getElementById('toggle-effects-btn');
         if (toggleBtn) {
             toggleBtn.addEventListener('click', toggleEffects);
@@ -214,8 +218,6 @@ function getEaster(year) {
           day = ((h + l - 7 * m + 114) % 31) + 1;
     return new Date(year, month - 1, day);
 }
-
-let particleInterval;
 
 function initSeasonalSystem() {
     const now = new Date();
@@ -253,19 +255,15 @@ function initSeasonalSystem() {
     
     // --- PORY ROKU (Jeśli nie ma święta) ---
     else {
-        // Wiosna: 21 marca (03) - 20 czerwca (06)
         if ((month === 3 && day >= 21) || month === 4 || month === 5 || (month === 6 && day < 21)) {
             eventInfo = { theme: "theme-spring", icon: "🌱", active: true };
         }
-        // Lato: 21 czerwca (06) - 22 września (09)
         else if ((month === 6 && day >= 21) || month === 7 || month === 8 || (month === 9 && day < 23)) {
             eventInfo = { theme: "theme-summer", icon: "☀️", active: true };
         }
-        // Jesień: 23 września (09) - 20 grudnia (12)
         else if ((month === 9 && day >= 23) || month === 10 || month === 11 || (month === 12 && day < 21)) {
             eventInfo = { theme: "theme-autumn", icon: "🍂", active: true };
         }
-        // Zima: 21 grudnia (12) - 20 marca (03)
         else if ((month === 12 && day >= 21) || month === 1 || month === 2 || (month === 3 && day < 21)) {
             eventInfo = { theme: "theme-winter", icon: "❄️", active: true };
         }
@@ -274,22 +272,27 @@ function initSeasonalSystem() {
     // Aplikowanie motywu
     if (eventInfo.active) {
         document.body.classList.add(eventInfo.theme);
-        // Pokaż przycisk wyłączania
+        currentSeasonalIcon = eventInfo.icon; // Zapamiętaj ikonę globalnie
+
+        // Zawsze upewnij się, że przycisk przełączania jest widoczny
         const toggleBtn = document.getElementById('toggle-effects-btn');
         if (toggleBtn) {
             toggleBtn.style.display = 'block';
         }
 
-        // Sprawdź czy użytkownik wcześniej nie wyłączył
+        // Sprawdź czy użytkownik wcześniej nie wyłączył efektów
         if (localStorage.getItem('effects-disabled') === 'true') {
             document.body.classList.add('effects-off');
         } else {
-            startParticles(eventInfo.icon);
+            startParticles(currentSeasonalIcon);
         }
     }
 }
 
 function startParticles(icon) {
+    // Jeśli generator już działa, najpierw go zresetuj
+    if (particleInterval) clearInterval(particleInterval);
+
     particleInterval = setInterval(() => {
         if (document.body.classList.contains('effects-off')) return;
         const p = document.createElement('div');
@@ -305,10 +308,26 @@ function startParticles(icon) {
     }, 400);
 }
 
+// Funkcja przełączająca
 function toggleEffects() {
     const isOff = document.body.classList.toggle('effects-off');
     localStorage.setItem('effects-disabled', isOff);
+
+    if (isOff) {
+        // Natychmiast zatrzymaj interwał i wyczyść z ekranu stare ikony
+        if (particleInterval) {
+            clearInterval(particleInterval);
+            particleInterval = null;
+        }
+        document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
+    } else {
+        // Jeśli włączono ponownie, odpal natychmiast generator z zapamiętaną ikoną
+        startParticles(currentSeasonalIcon);
+    }
 }
+
+// Przypisanie do obiektu window, aby instrukcja onclick="..." w HTML bezbłędnie ją wywołała
+window.toggleEffects = toggleEffects;
 
 // Loader
 window.addEventListener('load', () => {
