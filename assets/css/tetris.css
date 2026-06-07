@@ -1,6 +1,6 @@
-/* =================================================**
-** TETRIS ULTIMATE STYLE - 2026 EDITION             **
-** =================================================*/
+/* ==========================================================================
+   TETRIS
+   ========================================================================== */
 
 :root {
     --accent-neon: #06b6d4;  /* Turkusowy */
@@ -9,7 +9,9 @@
     --border-glow: rgba(6, 182, 212, 0.3);
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 #tetris-game {
     display: flex;
@@ -21,7 +23,10 @@
     background: radial-gradient(circle at center, #1a202c 0%, #0a0e14 100%);
 }
 
-/* GŁÓWNY UKŁAD */
+/* ==========================================================================
+   Główny układ (Layout)
+   ========================================================================== */
+
 .tetris-container {
     display: grid;
     grid-template-columns: 220px 340px 220px;
@@ -30,7 +35,10 @@
     max-width: 1000px;
 }
 
-/* PLANSZA (BOARD) */
+/* ==========================================================================
+   Plansza (Board)
+   ========================================================================== */
+
 .board-container {
     position: relative;
     background: var(--panel-dark);
@@ -53,13 +61,16 @@
     height: auto;
 }
 
-/* STATYSTYKI I PANELE BOCZNE */
+/* ==========================================================================
+   Statystyki i panele boczne
+   ========================================================================== */
+
 .side {
     background: var(--panel-dark);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     padding: 16px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 #tetris-game .side h2 {
@@ -82,16 +93,20 @@
     color: #e2e8f0;
 }
 
-/* NEXT & HOLD */
-#next, #hold {
+/* Next & Hold */
+#next, 
+#hold {
     background: #05070a;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     margin: 0 auto;
     display: block;
 }
 
-/* PRZYCISKI MOBILNE (3D STYLE) */
+/* ==========================================================================
+   Przyciski mobilne (3D Style)
+   ========================================================================== */
+
 .mobile-controls {
     display: none;
     grid-template-columns: repeat(3, 1fr);
@@ -118,7 +133,10 @@
     box-shadow: 0 2px 0 #854d0e;
 }
 
-/* SLIDER GŁOŚNOŚCI */
+/* ==========================================================================
+   Suwaki głośności i Overlays
+   ========================================================================== */
+
 #tetris-game input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
@@ -139,7 +157,7 @@
     box-shadow: 0 0 10px var(--gold);
 }
 
-/* OVERLAY (GAME OVER) */
+/* Overlay (Game over) */
 .overlay {
     position: absolute;
     inset: 0;
@@ -160,12 +178,13 @@
     box-shadow: 0 0 30px rgba(250, 204, 21, 0.3);
 }
 
-.hidden { display: none !important; }
+.hidden {
+    display: none !important;
+}
 
-
-/* =========================
-   RESPONSYWNOŚĆ 
-   ========================= */
+/* ==========================================================================
+   Responsywność (Media Queries)
+   ========================================================================== */
 
 @media (max-width: 850px) {
     .tetris-container {
@@ -174,7 +193,7 @@
         gap: 10px;
     }
 
-    /* 1. STATYSTYKI NA GÓRĘ (Etykieta nad liczbą) */
+    /* 1. Statystyki na górę (Etykieta nad liczbą) */
     .side.left {
         order: 1;
         width: 100%;
@@ -210,9 +229,11 @@
         margin-top: 4px;
     }
 
-    .side.left h2 { display: none; }
+    .side.left h2 {
+        display: none;
+    }
 
-    /* 2. PLANSZA */
+    /* 2. Plansza gry */
     .board-container {
         order: 2;
         width: 100%;
@@ -220,7 +241,7 @@
         margin: 0 auto;
     }
 
-    /* 3. STEROWANIE I PANELE POD SPODEM */
+    /* 3. Sterowanie i panele pod spodem */
     .side.right {
         order: 3;
         background: transparent;
@@ -228,10 +249,10 @@
         padding: 0 10px 40px 10px;
     }
 
-    /* SIATKA PRZYCISKÓW - UKŁAD 3-3-1 */
+    /* Siatka przycisków - układ 3-3-1 */
     .mobile-controls {
         display: grid !important;
-        grid-template-columns: repeat(3, 1fr); /* 3 równe kolumny */
+        grid-template-columns: repeat(3, 1fr);
         gap: 12px;
         margin-bottom: 30px;
         max-width: 320px;
@@ -244,9 +265,9 @@
         font-size: 1.5rem;
     }
 
-    /* WYŚRODKOWANIE PRZYCISKU HOLD (DIAMENTU) */
+    /* Wyśrodkowanie przycisku HOLD (diamentu) */
     .mobile-controls button[data-action="hold"] {
-        grid-column: 2; /* Wymusza pozycję w drugiej (środkowej) kolumnie */
+        grid-column: 2;
     }
 
     /* Przywrócenie widoczności Next, Hold i Audio */
@@ -278,7 +299,11 @@
         margin-bottom: 5px;
     }
 
-    #next, #hold { width: 100px; height: 100px; }
+    #next, 
+    #hold {
+        width: 100px;
+        height: 100px;
+    }
 
     .side.right h5 {
         text-align: center;
@@ -288,5 +313,7 @@
         text-transform: uppercase;
     }
 
-    .controls-left { display: none; } /* Ukrywamy zbędny tekst sterowania */
+    .controls-left {
+        display: none;  /* Ukrywamy zbędny tekst sterowania */
+    } 
 }
