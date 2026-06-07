@@ -256,14 +256,19 @@ function initSeasonalSystem() {
     
     // --- PORY ROKU (Jeśli nie ma święta) ---
     else {
-        if ((month === 3 && day >= 21) || month === 4 || month === 5 || (month === 6 && day < 21)) 
+        // Sprawdzamy, czy jest któryś z dni przesilenia
+        if (month === 3 && day === 21) {
             eventInfo = { theme: "theme-spring", icon: "🌱", active: true };
-        else if ((month === 6 && day >= 21) || month === 7 || month === 8 || (month === 9 && day < 23)) 
+        } else if (month === 6 && day === 21) {
             eventInfo = { theme: "theme-summer", icon: "☀️", active: true };
-        else if ((month === 9 && day >= 23) || month === 10 || month === 11 || (month === 12 && day < 21)) 
+        } else if (month === 9 && day === 23) {
             eventInfo = { theme: "theme-autumn", icon: "🍂", active: true };
-        else if ((month === 12 && day >= 21) || month === 1 || month === 2 || (month === 3 && day < 21))
+        } else if (month === 12 && day === 21) {
             eventInfo = { theme: "theme-winter", icon: "❄️", active: true };
+        } else {
+            // Jeśli nie jest świętem i nie jest dniem przesilenia
+            console.log("Dzisiaj nie ma żadnego święta ani pory roku, więc zostawiamy wygląd fabryczny.");
+        }
     }
 
     // Aplikowanie motywu
