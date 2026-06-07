@@ -1,663 +1,685 @@
-/* =========================
-   Zmienne globalne i reset
-   ========================= */
+/* ==========================================================================
+   Zmienne globalne
+   ========================================================================== */
+
 :root {
-  --bg: #0f1115;            /* Tło strony  #0f1115*/
-  --card: #14171b;          /* Tło kart/sekcji */
-  --muted: #98a0aa;         /* Kolor przygaszonego tekstu */
-  --accent: #00aaff;        /* Kolor akcentu 1 (np. linki) */
-  --accent-2: #ffcc00;      /* Kolor akcentu 2 (np. gradienty) */
-  --glass: rgba(255, 255, 255, 0.03); /* Efekt szkła */
-  --maxw: 1100px;           /* Maksymalna szerokość kontenera */
-  --transition: 0.25s ease;
-  font-family: Inter, system-ui, -apple-system, Arial, sans-serif;
+    --bg: #0f1115;            /* Tło strony  #0f1115*/
+    --card: #14171b;          /* Tło kart/sekcji */
+    --muted: #98a0aa;         /* Kolor przygaszonego tekstu */
+    --accent: #00aaff;        /* Kolor akcentu 1 (np. linki) */
+    --accent-2: #ffcc00;      /* Kolor akcentu 2 (np. gradienty) */
+    --border: rgba(255, 255, 255, 0.06); /* Zdefiniowana brakująca zmienna granicy kart */
+    --glass: rgba(255, 255, 255, 0.03); /* Efekt szkła */
+    --maxw: 1100px;           /* Maksymalna szerokość kontenera */
+    --transition: 0.25s ease;
+    font-family: Inter, system-ui, -apple-system, Arial, sans-serif;
 }
 
 * { 
-  box-sizing: border-box;   /* Ułatwia kontrolę nad padding/margin */
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;   /* Ułatwia kontrolę nad padding/margin */
+    margin: 0;
+    padding: 0;
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
-  background: linear-gradient(180deg, #07070a 0%, var(--bg) 100%);
-  color: #e6eef6;
-  line-height: 1.5;
-  min-height: 100vh;
+    background: linear-gradient(180deg, #07070a 0%, var(--bg) 100%);
+    color: #e6eef6;
+    line-height: 1.5;
+    min-height: 100vh;
 }
 
-/* =========================
+/* ==========================================================================
    Nagłówek i menu
-   ========================= */
+   ========================================================================== */
+
 header {
-  position: sticky;         /* Zawsze przyklejony u góry */
-  top: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));
-  backdrop-filter: blur(6px); /* Rozmycie tła */
-  z-index: 50;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-  padding: 10px 20px;
+    position: sticky;         /* Zawsze przyklejony u góry */
+    top: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.15));
+    backdrop-filter: blur(6px); /* Rozmycie tła */
+    z-index: 50;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 10px 20px;
 }
 
 /* Kontener loadera - przykrywa cały ekran */
 #loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #07070a; /* Kolor Twojego tła */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999; /* Musi być nad wszystkim innym */
-  transition: opacity 0.5s ease; /* Płynne znikanie */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #07070a; /* Kolor Twojego tła */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Musi być nad wszystkim innym */
+    transition: opacity 0.5s ease; /* Płynne znikanie */
 }
 
 /* Animacja kręcenia logo */
 .loader-logo {
-  width: 300px;
-  height: 300px;
-  animation: spin 5s linear infinite;
-  object-fit: contain; 									/* Dodatkowo warto dodać to, aby logo było ostre */
-  filter: drop-shadow(0 0 15px rgba(0, 170, 255, 0.5)); /* Efekt niebieskiej poświaty pasującej do Twojego akcentu */
+    width: 300px;
+    height: 300px;
+    animation: spin 5s linear infinite;
+    object-fit: contain;                                     /* Dodatkowo warto dodać to, aby logo było ostre */
+    filter: drop-shadow(0 0 15px rgba(0, 170, 255, 0.5)); /* Efekt niebieskiej poświaty pasującej do Twojego akcentu */
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from { 
+        transform: rotate(0deg); 
+    }
+    to { 
+        transform: rotate(360deg); 
+    }
 }
 
 /* Klasa do ukrycia loadera przez JS */
 .loader-hidden {
-  opacity: 0;
-  pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .nav {
-  max-width: var(--maxw);
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between; /* brand po lewej, menu po prawej */
-  align-items: center;
-  gap: 20px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between; /* brand po lewej, menu po prawej */
+    align-items: center;
+    gap: 20px;
 }
 
 /* Brand (logo + nazwa) */
 .brand {
-  display: flex;
-  gap: 12px;
-  align-items: center;
+    display: flex;
+    gap: 12px;
+    align-items: center;
 }
 
 .brand .logo {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  overflow: hidden;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .logo-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Obrazek nie zniekształca się */
-  border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Obrazek nie zniekształca się */
+    border-radius: 8px;
 }
 
-.brand-name { font-weight: 800; } /* Pogrubiona nazwa */
-.brand-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.brand-name { 
+    font-weight: 800; 
+} /* Pogrubiona nazwa */
 
-/* =========================
+.brand-subtitle { 
+    font-size: 12px; 
+    color: var(--muted); 
+    margin-top: 2px; 
+}
+
+/* ==========================================================================
    Linki w menu
-   ========================= */
+   ========================================================================== */
+
 #main-nav {
-  display: flex;
-  gap: 18px;
-  align-items: center;
+    display: flex;
+    gap: 18px;
+    align-items: center;
 }
 
 #main-nav a {
-  text-decoration: none;
-  color: var(--muted);
-  font-weight: 600;
-  transition: color 0.2s ease-in-out;
+    text-decoration: none;
+    color: var(--muted);
+    font-weight: 600;
+    transition: color 0.2s ease-in-out;
 }
 
-#main-nav a:hover { color: var(--accent); }
+#main-nav a:hover { 
+    color: var(--accent); 
+}
 
-/* =========================
+/* ==========================================================================
    Dropdown menu
-   ========================= */
-.dropdown { position: relative; display: inline-block; }
+   ========================================================================== */
+
+.dropdown { 
+    position: relative; 
+    display: inline-block; 
+}
 
 .dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: var(--card);
-  min-width: 160px;
-  border-radius: 8px;
-  top: 100%;
-  left: 0;
-  padding: 8px 0;
-  z-index: 100;
+    display: none;
+    position: absolute;
+    background-color: var(--card);
+    min-width: 160px;
+    border-radius: 8px;
+    top: 100%;
+    left: 0;
+    padding: 8px 0;
+    z-index: 100;
 }
 
-.dropdown:hover .dropdown-content { display: block; }
+.dropdown:hover .dropdown-content { 
+    display: block; 
+}
 
-/* =========================
+/* ==========================================================================
    Hamburger (mobile)
-   ========================= */
+   ========================================================================== */
+
 .menu-icon {
-  display: none;
-  font-size: 24px;
-  cursor: pointer;
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
 }
 
-/* =========================
+/* ==========================================================================
    Sekcja main
-   ========================= */
+   ========================================================================== */
+
 main {
-  max-width: var(--maxw);
-  margin: 28px auto;
-  padding: 0 16px;
+    max-width: var(--maxw);
+    margin: 28px auto;
+    padding: 0 16px;
 }
 
-/* =========================
+/* ==========================================================================
    Sekcja hero (baner + boczne)
-   ========================= */
+   ========================================================================== */
+
 .hero {
-  display: grid;
-  grid-template-columns: 2fr 1fr; /* Lewa większa, prawa mniejsza */
-  gap: 24px;
-  align-items: start;
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Lewa większa, prawa mniejsza */
+    gap: 24px;
+    align-items: start;
 }
 
 .hero > .card-container {
-  flex: 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Dwie karty w rzędzie */
-  gap: 16px;
+    flex: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dwie karty w rzędzie */
+    gap: 16px;
 }
 
-.hero > aside { flex: 1; }
+.hero > aside { 
+    flex: 1; 
+}
 
 .hero > * {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
-/* =========================
+/* ==========================================================================
    Karty i przyciski
-   ========================= */
+   ========================================================================== */
+
 .card {
-  background: var(--card);
-  padding: 18px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: transform var(--transition), 
-              box-shadow var(--transition), 
-              border-color var(--transition);
+    background: var(--card);
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: transform var(--transition), 
+                box-shadow var(--transition), 
+                border-color var(--transition);
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 
-              0 0 20px rgba(0, 170, 255, 0.15); 
-  /* Zmiana: używamy zmiennej --accent zamiast stałego koloru */
-  border-color: var(--accent); 
-  opacity: 1;
+    transform: translateY(-4px);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 
+                0 0 20px rgba(0, 170, 255, 0.15); 
+    /* Zmiana: używamy zmiennej --accent zamiast stałego koloru */
+    border-color: var(--accent); 
+    opacity: 1;
 }
+
 .hero h1 {
-  margin: 0 0 8px;
-  font-size: 28px;
+    margin: 0 0 8px;
+    font-size: 28px;
 }
 
-.lead { color: var(--muted); margin-bottom: 12px; }
+.lead { 
+    color: var(--muted); 
+    margin-bottom: 12px; 
+}
 
-.cta { display: flex; gap: 10px; }
+.cta { 
+    display: flex; 
+    gap: 10px; 
+}
 
 .btn,
 a.btn {
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  border: none;
-  padding: 10px 14px;
-  border-radius: 10px;
-  color: #071017;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.2s ease-in-out;
-  display: inline-block;
-  text-decoration: none;
-  text-align: center;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    color: #071017;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    /* Dodajemy transform do listy animowanych właściwości, jeśli go tam nie było */
+    transition: transform 0.1s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Efekt po naciśnięciu (kliknięciu) przycisku */
 .btn:active,
 a.btn:active,
 .ghost:active {
-  transform: scale(0.96); /* Lekkie zmniejszenie (efekt wciśnięcia) */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* Zmniejszenie cienia, by przycisk wydawał się bliżej tła */
-  opacity: 0.9; /* Delikatna zmiana przezroczystości */
+    transform: scale(0.96); /* Lekkie zmniejszenie (efekt wciśnięcia) */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* Zmniejszenie cienia, by przycisk wydawał się bliżej tła */
+    opacity: 0.9; /* Delikatna zmiana przezroczystości */
 }
 
-/* Opcjonalnie: Płynność powrotu */
-.btn, a.btn, .ghost {
-  /* Dodajemy transform do listy animowanych właściwości, jeśli go tam nie było */
-  transition: transform 0.1s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+/* Efekty hover zunifikowane pod kątem wydajności przejść */
+.btn:hover,
+a.btn:hover,
+.ghost:hover,
+a.inline-link:hover {
+    transition: all 0.2s ease-in-out;
 }
 
 .btn:hover,
-a.btn:hover { opacity: 0.85; }
+a.btn:hover { 
+    opacity: 0.85; 
+}
 
 .btn.mt-12,
-a.btn.mt-12 { margin-top: 12px; }
+a.btn.mt-12 { 
+    margin-top: 12px; 
+}
 
 .ghost {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  color: var(--muted);
-  padding: 10px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--muted);
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.1s ease, border-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease;
 }
 
-.ghost:hover { border-color: var(--accent); color: var(--accent); }
+.ghost:hover { 
+    border-color: var(--accent); 
+    color: var(--accent); 
+}
 
-/* =========================
+/* ==========================================================================
    Grid dla innych sekcji
-   ========================= */
+   ========================================================================== */
+
 .grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 18px;
 }
 
-.full { grid-column: 1/-1; } /* Element na całą szerokość */
+.full { 
+    grid-column: 1 / -1; 
+} /* Element na całą szerokość */
 
-/* =========================
+/* ==========================================================================
    Tabela specyfikacji
-   ========================= */
+   ========================================================================== */
+
 table.specs {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 table.specs td,
 table.specs th {
-  padding: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-}
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+} cleavage
 
 /* Styl dla kategorii w tabeli specyfikacji */
 .cat {
-  background: linear-gradient(90deg, rgba(0, 170, 255, 0.15), transparent); 
-  color: var(--accent); 
-  font-weight: 700;
-  padding-left: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+    background: linear-gradient(90deg, rgba(0, 170, 255, 0.15), transparent); 
+    color: var(--accent); 
+    font-weight: 700;
+    padding-left: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* =========================
+/* ==========================================================================
    Sekcja wideo
-   ========================= */
+   ========================================================================== */
+
 .videos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 12px;
-  margin-top: 20px; 
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 20px; 
 }
 
 .video iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 8px;
-  border: 0;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    border: 0;
 }
 
 .video-title {
-  margin-top: 8px;
-  font-weight: bold;
+    margin-top: 8px;
+    font-weight: bold;
 }
 
-/* =========================
+/* ==========================================================================
    Stopka
-   ========================= */
+   ========================================================================== */
+
 footer {
-  margin-top: 80px; 
-  padding: 60px 20px;
-  background: linear-gradient(180deg, #14171b 0%, #050505 100%);
-  border-top: 1px solid rgba(0, 170, 255, 0.1); 
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  position: relative;
+    margin-top: 80px; 
+    padding: 60px 20px;
+    background: linear-gradient(180deg, #14171b 0%, #050505 100%);
+    border-top: 1px solid rgba(0, 170, 255, 0.1); 
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    position: relative;
 }
 
 .footer-content {
-  max-width: var(--maxw);
-  margin: 0 auto;
-  position: relative;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    position: relative;
 }
 
 .back-to-top {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  background: var(--card);
-  border: 1px solid var(--border); /* uwaga: zmienna --border nie była zdefiniowana w :root, ale zostawiam jak było */
-  color: var(--accent);
-  border-radius: 50%;
-  text-decoration: none;
-  font-weight: bold;
-  margin-bottom: 20px;
-  transition: all var(--transition);
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    border-radius: 50%;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 20px;
+    transition: all var(--transition);
 }
 
 .back-to-top:hover {
-  border-color: var(--accent);
-  transform: translateY(-5px);
-  box-shadow: 0 0 15px rgba(0, 170, 255, 0.2);
+    border-color: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(0, 170, 255, 0.2);
 }
 
 .footer-brand .brand-name {
-  display: block;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: 1px;
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
 }
 
 .footer-divider {
-  border: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--glass), transparent);
-  margin: 25px 0;
+    border: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--glass), transparent);
+    margin: 25px 0;
 }
 
 .footer-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  color: var(--muted);
-  font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    color: var(--muted);
+    font-size: 13px;
 }
 
 .footer-links a {
-  color: var(--muted);
-  text-decoration: none;
-  margin-left: 15px;
-  transition: color var(--transition);
+    color: var(--muted);
+    text-decoration: none;
+    margin-left: 15px;
+    transition: color var(--transition);
 }
 
 .footer-links a:hover {
-  color: var(--accent);
+    color: var(--accent);
 }
 
 @media (max-width: 600px) {
-  .footer-bottom {
-    flex-direction: column;
-    text-align: center;
-  }
-  .footer-links a {
-    margin: 0 10px;
-  }
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+    .footer-links a {
+        margin: 0 10px;
+    }
 }
 
-/* =========================
+/* ==========================================================================
    Instagram / Snapwidget
-   ========================= */
+   ========================================================================== */
+
 .snapwidget-widget {
-  border: none;
-  overflow: hidden;
-  width: 100%; /* Zmieniono z 950px na 100% aby pasowało do kontenera */
-  height: 380px; /* Wysokość domyślna, można dostosować */
-  margin-top: 20px;
+    border: none;
+    overflow: hidden;
+    width: 100%; /* Zmieniono z 950px na 100% aby pasowało do kontenera */
+    height: 380px; /* Wysokość domyślna, można dostosować */
+    margin-top: 20px;
 }
 
-/* =========================
+/* ==========================================================================
    Klasy pomocnicze
-   ========================= */
-.muted { color: var(--muted); }
+   ========================================================================== */
+
+.muted { 
+    color: var(--muted); 
+}
 
 a.inline-link {
-  color: var(--accent);
-  text-decoration: none;
+    color: var(--accent);
+    text-decoration: none;
 }
-a.inline-link:hover { text-decoration: underline; }
+
+a.inline-link:hover { 
+    text-decoration: underline; 
+}
 
 .mt-12 { margin-top: 12px; }
 .mt-16 { margin-top: 16px; }
 .mt-18 { margin-top: 18px; }
 .mt-22 { margin-top: 22px; }
 
-/* =========================
+/* ==========================================================================
    Menu dropdown (druga wersja)
-   ========================= */
+   ========================================================================== */
+
 .dropdown-content a {
-  display: block;
-  padding: 8px 16px;
-  color: var(--muted);
-  text-decoration: none;
-  font-weight: 600;
-  transition: background 0.2s ease-in-out;
+    display: block;
+    padding: 8px 16px;
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s ease-in-out;
 }
 
 .dropdown-content a:hover {
-  background: rgba(0, 170, 255, 0.1);
-  color: var(--accent);
+    background: rgba(0, 170, 255, 0.1);
+    color: var(--accent);
 }
 
-/* =========================
+/* ==========================================================================
    Style list
-   ========================= */
+   ========================================================================== */
+
 ul, ol {
-  margin: 12px 0;
-  padding-left: 24px;
+    margin: 12px 0;
+    padding-left: 24px;
 }
 
 li {
-  margin: 6px 0;
-  line-height: 1.5;
+    margin: 6px 0;
+    line-height: 1.5;
 }
 
 .specs + ul {
-  margin-top: 12px;
+    margin-top: 12px;
 }
 
 .specs + ul li {
-  position: relative;
-  padding-left: 8px;
-  list-style-type: none;
+    position: relative;
+    padding-left: 8px;
+    list-style-type: none;
 }
 
 .specs + ul li:before {
-  content: "•";
-  position: absolute;
-  left: -16px;
-  color: var(--accent);
-  font-weight: bold;
+    content: "•";
+    position: absolute;
+    left: -16px;
+    color: var(--accent);
+    font-weight: bold;
 }
 
 .controls-left ul {
-  margin: 0;
-  padding-left: 18px;
-  list-style: none;
+    margin: 0;
+    padding-left: 18px;
+    list-style: none;
 }
 
 .controls-left li {
-  margin: 8px 0;
-  font-size: 16px;
-  position: relative;
-  padding-left: 8px;
+    margin: 8px 0;
+    font-size: 16px;
+    position: relative;
+    padding-left: 8px;
 }
 
 .controls-left li:before {
-  content: "•";
-  position: absolute;
-  left: -12px;
-  color: var(--accent);
+    content: "•";
+    position: absolute;
+    left: -12px;
+    color: var(--accent);
 }
 
 .side.left ul {
-  margin: 12px 0;
-  padding-left: 20px;
-  list-style: none;
+    margin: 12px 0;
+    padding-left: 20px;
+    list-style: none;
 }
 
 .side.left li {
-  margin: 8px 0;
-  position: relative;
-  padding-left: 8px;
+    margin: 8px 0;
+    position: relative;
+    padding-left: 8px;
 }
 
 .side.left li:before {
-  content: "•";
-  position: absolute;
-  left: -12px;
-  color: var(--accent);
-  font-weight: bold;
+    content: "•";
+    position: absolute;
+    left: -12px;
+    color: var(--accent);
+    font-weight: bold;
 }
 
-/* =========================
-   Responsywność dodatkowa
-   ========================= */
-@media screen and (max-width: 1200px) {
-  #main-nav {
-    display: none;            
-    flex-direction: column;   
-    gap: 12px;
-    width: 100%;
-  }
-  .menu-icon { display: block; }
-  .dropdown-content { position: relative; box-shadow: none; }
-  
-  .hero {
-    grid-template-columns: 1fr; 
-    gap: 16px;
-  }
-  
-  .hero > .card-container {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 900px) {
-  .nav { padding: 10px; flex-wrap: wrap; }
-  .brand .logo { width: 40px; height: 40px; }
-  .grid { grid-template-columns: 1fr; }
-  .video iframe { height: 200px; }
-  /* Snapwidget responsywność */
-  .snapwidget-widget { width: 100%; height: auto; aspect-ratio: 25 / 10; }
-}
-
-section { scroll-margin-top: 80px; }
-
-/* Efekty hover */
-.btn:hover,
-a.btn:hover,
-.ghost:hover,
-a.inline-link:hover {
-  transition: all 0.2s ease-in-out;
-}
-
-/* =========================
+/* ==========================================================================
    NOWE KLASY (CLEANUP INDEX.HTML)
-   ========================= */
+   ========================================================================== */
 
 /* Prawa kolumna w sekcji Hero oraz okna te trzy u góry */
 .hero-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  flex: 1;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+    height: 100%;
 }
 
 /* Link do Discorda */
 .discord-link {
-  color: var(--accent);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: color var(--transition);
+    color: var(--accent);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color var(--transition);
 }
 
 .discord-link:hover {
-  color: #fff;
+    color: #fff;
 }
 
 .discord-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  object-fit: cover;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 /* Przycisk YouTube na całą szerokość */
 .btn-full-width {
-  width: 100%;
-  max-width: 100%;
-  display: flex;
-  justify-content: space-around;
-  padding: 15px !important;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px !important;
 }
 
 /* Widget Spotify */
 .spotify-embed {
-  border-radius: 12px;
-  border: none;
-  margin-top: 20px;
+    border-radius: 12px;
+    border: none;
+    margin-top: 20px;
 }
 
 /* Styl dla nowej karty z kodem QR */
 .qr-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centrowanie nagłówka i tekstu */
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrowanie nagłówka i tekstu */
+    text-align: center;
 }
 
 .qr-wrapper {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
 }
 
 .qr-code-large {
-  width: 150px;
-  height: auto;
-  border-radius: 12px;
-  border: 3px solid var(--accent); /* kolory pod święta */
-  padding: 10px;
-  transition: transform var(--transition), border-color var(--transition);
+    width: 150px;
+    height: auto;
+    border-radius: 12px;
+    border: 3px solid var(--accent); /* kolory pod święta */
+    padding: 10px;
+    transition: transform var(--transition), border-color var(--transition);
 }
 
 .qr-code-large:hover {
-  transform: scale(1.08); /* Efekt powiększenia przy najechaniu */
+    transform: scale(1.08); /* Efekt powiększenia przy najechaniu */
 }
 
 .margin-special {
-   margin-top: 15px !important;
+    margin-top: 15px !important;
 }
 
-/* --- SYSTEM SEZONOWY --- */
+/* ==========================================================================
+   SYSTEM SEZONOWY
+   ========================================================================== */
+
 .seasonal-particle {
     position: fixed;
     top: -30px;
@@ -667,18 +689,20 @@ a.inline-link:hover {
 }
 
 @keyframes fall {
-    to { transform: translateY(110vh) rotate(360deg); }
+    to { 
+        transform: translateY(110vh) rotate(360deg); 
+    }
 }
 
 /* Motywy kolorystyczne */
-body.theme-winter { --accent: #ffffff; --accent-2: #add8e6; }
-body.theme-spring { --accent: #4ade80; --accent-2: #facc15; }
-body.theme-summer { --accent: #fbbf24; --accent-2: #f87171; }
-body.theme-autumn { --accent: #fb923c; --accent-2: #78350f; }
-body.theme-patriotic { --accent: #ffffff; --accent-2: #ff4d4d; }
-body.theme-birthday { --accent: #f472b6; --accent-2: #22d3ee; }
-body.theme-youtube { --accent: #ff1606; --accent-2: #ffffff; }
-body.theme-new { --accent: #ffff06; --accent-2: #ffa12c; }
+body.theme-winter     { --accent: #ffffff; --accent-2: #add8e6; }
+body.theme-spring     { --accent: #4ade80; --accent-2: #facc15; }
+body.theme-summer     { --accent: #fbbf24; --accent-2: #f87171; }
+body.theme-autumn     { --accent: #fb923c; --accent-2: #78350f; }
+body.theme-patriotic  { --accent: #ffffff; --accent-2: #ff4d4d; }
+body.theme-birthday   { --accent: #f472b6; --accent-2: #22d3ee; }
+body.theme-youtube    { --accent: #ff1606; --accent-2: #ffffff; }
+body.theme-new        { --accent: #ffff06; --accent-2: #ffa12c; }
 
 /* Przycisk wyłączania (domyślnie ukryty) */
 #toggle-effects-btn {
@@ -687,4 +711,66 @@ body.theme-new { --accent: #ffff06; --accent-2: #ffa12c; }
 
 body.effects-off .seasonal-particle {
     display: none !important;
+}
+
+/* ==========================================================================
+   Responsywność i Media Queries
+   ========================================================================== */
+
+section { 
+    scroll-margin-top: 80px; 
+}
+
+@media screen and (max-width: 1200px) {
+    #main-nav {
+        display: none;            
+        flex-direction: column;   
+        gap: 12px;
+        width: 100%;
+    }
+    
+    .menu-icon { 
+        display: block; 
+    }
+    
+    .dropdown-content { 
+        position: relative; 
+        box-shadow: none; 
+    }
+    
+    .hero {
+        grid-template-columns: 1fr; 
+        gap: 16px;
+    }
+    
+    .hero > .card-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .nav { 
+        padding: 10px; 
+        flex-wrap: wrap; 
+    }
+    
+    .brand .logo { 
+        width: 40px; 
+        height: 40px; 
+    }
+    
+    .grid { 
+        grid-template-columns: 1fr; 
+    }
+    
+    .video iframe { 
+        height: 200px; 
+    }
+    
+    /* Snapwidget responsywność */
+    .snapwidget-widget { 
+        width: 100%; 
+        height: auto; 
+        aspect-ratio: 25 / 10; 
+    }
 }
