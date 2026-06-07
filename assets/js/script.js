@@ -286,7 +286,7 @@ function initSeasonalSystem() {
     const redBtn = document.getElementById("red-theme-btn");
     const toggleBtn = document.getElementById('toggle-effects-btn');
     
-    // Na start ukrywamy przycisk efektów (pokażemy go tylko, jeśli motyw/święto tego wymaga)
+    // Na start ukrywamy przycisk efektów (pokażemy go tylko, jeśli jest autentyczne święto)
     if (toggleBtn) toggleBtn.style.display = 'none';
 
     // === SPRAWDZANIE CZERWONEGO MOTYWU NA KAŻDEJ PODSTRONIE ===
@@ -295,29 +295,16 @@ function initSeasonalSystem() {
         
         if (redBtn) redBtn.textContent = "Wygląd fabryczny";
         
-        // Pokazujemy przycisk wyłączania efektów na czerwonym motywie
-        if (toggleBtn) toggleBtn.style.display = 'block';
-
-        if (localStorage.getItem('effects-disabled') === 'true') {
-            document.body.classList.add('effects-off');
-            if (toggleBtn) toggleBtn.innerText = "Włącz efekty";
-            // Zabezpieczenie: jeśli wyłączone, upewnijmy się że czyszczone są stare śmieci
-            if (particleInterval) { clearInterval(particleInterval); particleInterval = null; }
-            document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
-        } else {
-            document.body.classList.remove('effects-off');
-            if (toggleBtn) toggleBtn.innerText = "Wyłącz efekty";
-
-            let defaultIcon = "😎";
-            if (month >= 3 && month <= 5) defaultIcon = "🌱";
-            if (month >= 6 && month <= 8) defaultIcon = "☀️";
-            if (month >= 9 && month <= 11) defaultIcon = "🍂";
-            
-            currentSeasonalIcon = defaultIcon;
-            startParticles(currentSeasonalIcon);
+        // ZABEZPIECZENIE: Zwykła zmiana koloru nie ma efektów, 
+        // więc chowamy przycisk i upewniamy się, że stary stoper cząsteczek jest wyłączony.
+        if (toggleBtn) toggleBtn.style.display = 'none';
+        if (particleInterval) { 
+            clearInterval(particleInterval); 
+            particleInterval = null; 
         }
+        document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
         
-        return; // Przerywamy dalsze sprawdzanie – czerwony styl jest nadrzędny
+        return; // Przerywamy dalsze sprawdzanie – ręczny czerwony styl blokuje efekty kalendarzowe
     } else {
         if (redBtn) redBtn.textContent = "Włącz czerwony styl";
     }
@@ -360,11 +347,12 @@ function initSeasonalSystem() {
         }
     }
 
-    // Aplikowanie motywu sezonowego
+    // Aplikowanie motywu sezonowego (Tylko dla wykrytych specjalnych dat!)
     if (eventInfo.active) {
         document.body.classList.add(eventInfo.theme);
         currentSeasonalIcon = eventInfo.icon;
 
+        // Pokazujemy przycisk wyłączania efektów, bo to jest prawdziwe święto z kalendarza
         if (toggleBtn) toggleBtn.style.display = 'block';
 
         if (localStorage.getItem('effects-disabled') === 'true') {
