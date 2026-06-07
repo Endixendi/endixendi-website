@@ -1,6 +1,5 @@
 /**
- * Gra Tetris - klasyczna gra logiczna
- * @version 1.3 - Poprawka audio
+ * Gra Tetris
  */
 
 // Konfiguracja Canvas
@@ -69,6 +68,7 @@ let score = 0, lines = 0, level = 1;
 let queue = [];
 let held = null, canHold = true;
 let paused = false, running = false, gameOver = false;
+let animationFrameId = null;
 
 const player = {
     pos: {x: 0, y: 0},
@@ -184,7 +184,7 @@ function playerRotate(dir) {
     }
     // RESET I PLAY DLA OBROTU
     sounds.rotate.currentTime = 0;
-    sounds.rotate.play();
+    sounds.rotate.play().catch(() => {});
 }
 
 function playerDrop() {
@@ -195,7 +195,7 @@ function playerDrop() {
         
         // DODANO: Dźwięk drop przy uderzeniu w dno (automatyczne lub ArrowDown)
         sounds.drop.currentTime = 0;
-        sounds.drop.play();
+        sounds.drop.play().catch(() => {});
 
         playerReset();
         arenaSweep();
@@ -214,13 +214,14 @@ function hardDrop() {
 
     // RESET I PLAY DLA SPACJI
     sounds.drop.currentTime = 0;
-    sounds.drop.play();
+    sounds.drop.play().catch(() => {});
 
     playerReset();
     arenaSweep();
     updateStats();
 }
 
+// Sprawdzenie i czyszczenie linii na planszy
 function arenaSweep() {
     let rowCount = 0;
     outer: for (let y = ARENA.length - 1; y >= 0; --y) {
@@ -236,12 +237,12 @@ function arenaSweep() {
         score += [0, 100, 300, 500, 800][rowCount] * level;
         lines += rowCount;
         sounds.line.currentTime = 0;
-        sounds.line.play();
+        sounds.line.play().catch(() => {});
         if (lines >= level * 10) {
             level++;
             dropInterval = Math.max(120, 1000 - (level - 1) * 80);
             sounds.levelup.currentTime = 0;
-            sounds.levelup.play();
+            sounds.levelup.play().catch(() => {});
         }
     }
 }
@@ -303,9 +304,9 @@ function shuffle(a) {
 }
 
 function updateStats() {
-    scoreEl.textContent = score;
-    linesEl.textContent = lines;
-    levelEl.textContent = level;
+    if (scoreEl) scoreEl.textContent = score;
+    if (linesEl) linesEl.textContent = lines;
+    if (levelEl) levelEl.textContent = level;
 }
 
 function update(time = 0) {
@@ -315,12 +316,15 @@ function update(time = 0) {
     dropCounter += delta;
     if (dropCounter > dropInterval) playerDrop();
     draw();
-    requestAnimationFrame(update);
+    animationFrameId = requestAnimationFrame(update);
 }
 
 // --- LOGIKA MENU I PRZYCISKÓW ---
 
 function gameStart() {
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+    }
     ARENA.forEach(r => r.fill(0));
     score = 0; lines = 0; level = 1; dropInterval = 1000;
     queue = shuffle(['I', 'J', 'L', 'O', 'S', 'T', 'Z']);
@@ -330,18 +334,21 @@ function gameStart() {
     playerReset();
     updateStats();
     running = true;
-    overlay.classList.add('hidden');
+    if (overlay) overlay.classList.add('hidden');
     lastTime = performance.now();
-    try { sounds.music.play(); } catch(e) {}
-    requestAnimationFrame(update);
+    try { sounds.music.play().catch(() => {}); } catch(e) {}
+    animationFrameId = requestAnimationFrame(update);
 }
 
 function gameEnd() {
     running = false; gameOver = true;
-    overlayTitle.textContent = 'Koniec gry';
-    overlaySub.textContent = 'Enter – zagraj ponownie';
-    overlay.classList.remove('hidden');
-    sounds.gameover.play();
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+    }
+    if (overlayTitle) overlayTitle.textContent = 'Koniec gry';
+    if (overlaySub) overlaySub.textContent = 'Enter – zagraj ponownie';
+    if (overlay) overlay.classList.remove('hidden');
+    sounds.gameover.play().catch(() => {});
     sounds.music.pause();
     sounds.music.currentTime = 0;
 }
@@ -349,12 +356,20 @@ function gameEnd() {
 function togglePause() {
     if (!running || gameOver) return;
     paused = !paused;
-    overlayTitle.textContent = paused ? 'Pauza' : 'Tetris';
-    overlaySub.textContent = paused ? 'P – wznów' : 'Enter – rozpocznij';
-    overlay.classList.toggle('hidden', !paused);
+    if (overlayTitle) overlayTitle.textContent = paused ? 'Pauza' : 'Tetris';
+    if (overlaySub) overlaySub.textContent = paused ? 'P – wznów' : 'Enter – rozpocznij';
+    if (overlay) overlay.classList.toggle('hidden', !paused);
+    
     if (!paused) {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
         lastTime = performance.now();
-        requestAnimationFrame(update);
+        animationFrameId = requestAnimationFrame(update);
+    } else {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
     }
 }
 
@@ -419,19 +434,19 @@ if (volumeSlider) {
 const volumeSlider1 = document.getElementById('volume-effect');
 if (volumeSlider1) {
     volumeSlider1.addEventListener('input', () => {
-		sounds.line.volume = volumeSlider1.value;
-		sounds.levelup.volume = volumeSlider1.value;
-		sounds.drop.volume = volumeSlider1.value;
-		sounds.rotate.volume = volumeSlider1.value;
-		sounds.gameover.volume = volumeSlider1.value;
+        sounds.line.volume = volumeSlider1.value;
+        sounds.levelup.volume = volumeSlider1.value;
+        sounds.drop.volume = volumeSlider1.value;
+        sounds.rotate.volume = volumeSlider1.value;
+        sounds.gameover.volume = volumeSlider1.value;
     });
 }
 
 // Inicjalizacja przy starcie strony
 window.addEventListener('load', () => {
-    overlayTitle.textContent = 'Tetris';
-    overlaySub.textContent = 'Enter – rozpocznij';
-    overlay.classList.remove('hidden');
+    if (overlayTitle) overlayTitle.textContent = 'Tetris';
+    if (overlaySub) overlaySub.textContent = 'Enter – rozpocznij';
+    if (overlay) overlay.classList.remove('hidden');
     updateStats();
     draw();
 });
