@@ -3,208 +3,209 @@
  * Ładuje częściowe szablony, obsługuje menu i podstawowe funkcje
  */
 
-// Globalne zmienne dla interwału cząsteczek, aby były dostępne wszędzie
+window.addEventListener("load", function() {
+    const loader = document.getElementById("loader");
+    if (loader) {
+        loader.classList.add("loader-hidden");
+    }
+});
+
+// Globalne zmienne dla interwału i ikony, aby były dostępne wszędzie
 let particleInterval = null;
 let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
 
 (function () {
-    'use strict';
+  'use strict';
   
-    // Ścieżki do plików częściowych
-    const MENU_PATH = "menu.html";
-    const FOOTER_PATH = "footer.html";
+  // Ścieżki do plików częściowych
+  const MENU_PATH = "menu.html";
+  const FOOTER_PATH = "footer.html";
   
-    // Stan aplikacji
-    const state = {
-        menuLoaded: false,
-        footerLoaded: false
+  // Stan aplikacji
+  const state = {
+    menuLoaded: false,
+    footerLoaded: false
+  };
+
+  /* =========================
+     Helper: wczytaj HTML do kontenera
+     ========================= */
+  function loadHTML(targetId, path) {
+    return new Promise((resolve, reject) => {
+      const target = document.getElementById(targetId);
+      if (!target) {
+        resolve();
+        return;
+      }
+
+      fetch(path)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Fetch ${path} failed: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(html => {
+          target.innerHTML = html;
+          resolve();
+        })
+        .catch(error => {
+          console.error("Błąd ładowania:", path, error);
+          reject(error);
+        });
+    });
+  }
+
+  /* =========================
+     Ładowanie partiali (menu + footer)
+     ========================= */
+  function loadPartials() {
+    Promise.all([
+      loadHTML("menu-placeholder", MENU_PATH).then(() => {
+        state.menuLoaded = true;
+        initMenuToggle();
+      }),
+      loadHTML("footer-placeholder", FOOTER_PATH).then(() => {
+        state.footerLoaded = true;
+      })
+    ]).catch(error => {
+      console.error("Błąd podczas ładowania partiali:", error);
+    });
+  }
+
+  /* =========================
+     Inicjalizacja toggle menu (hamburger)
+     ========================= */
+  function initMenuToggle() {
+    const menuToggle = document.getElementById("menu-toggle");
+    const mainNav = document.getElementById("main-nav");
+    
+    if (!menuToggle || !mainNav) return;
+
+    // Ustaw stan początkowy menu
+    const updateMenuVisibility = () => {
+      if (window.innerWidth <= 1200) {
+        mainNav.style.display = "none";
+      } else {
+        mainNav.style.display = "";
+      }
     };
 
-    /* =========================
-       Helper: wczytaj HTML do kontenera
-       ========================= */
-    function loadHTML(targetId, path) {
-        return new Promise((resolve, reject) => {
-            const target = document.getElementById(targetId);
-            if (!target) {
-                resolve();
-                return;
-            }
+    updateMenuVisibility();
 
-            fetch(path)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Fetch ${path} failed: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    target.innerHTML = html;
-                    resolve();
-                })
-                .catch(error => {
-                    console.error("Błąd ładowania:", path, error);
-                    reject(error);
-                });
-        });
-    }
+    // Kliknięcie ikony hamburgera
+    menuToggle.addEventListener("click", () => {
+      const isVisible = window.getComputedStyle(mainNav).display !== "none";
+      mainNav.style.display = isVisible ? "none" : "flex";
+    });
 
-    /* =========================
-       Ładowanie partiali (menu + footer)
-       ========================= */
-    function loadPartials() {
-        Promise.all([
-            loadHTML("menu-placeholder", MENU_PATH).then(() => {
-                state.menuLoaded = true;
-                initMenuToggle();
-            }),
-            loadHTML("footer-placeholder", FOOTER_PATH).then(() => {
-                state.footerLoaded = true;
-            })
-        ]).catch(error => {
-            console.error("Błąd podczas ładowania partiali:", error);
-        });
-    }
-
-    /* =========================
-       Inicjalizacja toggle menu (hamburger)
-       ========================= */
-    function initMenuToggle() {
-        const menuToggle = document.getElementById("menu-toggle");
-        const mainNav = document.getElementById("main-nav");
-        
-        if (!menuToggle || !mainNav) return;
-
-        // Ustaw stan początkowy menu
-        const updateMenuVisibility = () => {
-            if (window.innerWidth <= 1200) {
-                mainNav.style.display = "none";
-            } else {
-                mainNav.style.display = "";
-            }
-        };
-
-        updateMenuVisibility();
-
-        // Kliknięcie ikony hamburgera
-        menuToggle.addEventListener("click", () => {
-            const isVisible = window.getComputedStyle(mainNav).display !== "none";
-            mainNav.style.display = isVisible ? "none" : "flex";
-        });
-
-        // Zamknij menu po kliknięciu linku (tylko na mobile)
-        const navLinks = mainNav.querySelectorAll("a");
-        navLinks.forEach(link => {
-            link.addEventListener("click", () => {
-                if (window.innerWidth <= 1200) {
-                    mainNav.style.display = "none";
-                }
-            });
-        });
-
-        // Reakcja na zmianę rozmiaru okna
-        window.addEventListener("resize", updateMenuVisibility);
-    }
-
-    /* =========================
-       Redirecty (hash i ścieżki)
-       ========================= */
-    function checkForRedirects() {
-        const shouldRedirect = (
-            location.hash === "#social" ||
-            location.hash === "#media" ||
-            location.pathname.endsWith("/social")
-        );
-        
-        if (shouldRedirect) {
-            window.location.replace("https://linktr.ee/endixendi");
+    // Zamknij menu po kliknięciu linku (tylko na mobile)
+    const navLinks = mainNav.querySelectorAll("a");
+    navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        if (window.innerWidth <= 1200) {
+          mainNav.style.display = "none";
         }
+      });
+    });
+
+    // Reakcja na zmianę rozmiaru okna
+    window.addEventListener("resize", updateMenuVisibility);
+  }
+
+  /* =========================
+     Redirecty (hash i ścieżki)
+     ========================= */
+  function checkForRedirects() {
+    const shouldRedirect = (
+      location.hash === "#social" ||
+      location.hash === "#media" ||
+      location.pathname.endsWith("/social")
+    );
+    
+    if (shouldRedirect) {
+      window.location.replace("https://linktr.ee/endixendi");
     }
+  }
 
-    /* =========================
-       Obsługa przycisku Donate
-       ========================= */
-    function initDonateButton() {
-        const donateBtn = document.getElementById("donate-btn");
-        if (donateBtn) {
-            donateBtn.addEventListener("click", () => {
-                window.open("https://tipply.pl/@endixendi", "_blank");
-            });
-        }
+  /* =========================
+     Obsługa przycisku Donate
+     ========================= */
+  function initDonateButton() {
+    const donateBtn = document.getElementById("donate-btn");
+    if (donateBtn) {
+      donateBtn.addEventListener("click", () => {
+        window.open("https://streamelements.com/endixendi/tip", "_blank");
+      });
     }
+  }
 
-    /* =========================
-       Smooth scroll (delegacja zdarzeń)
-       ========================= */
-    function initSmoothScroll() {
-        document.addEventListener("click", function (e) {
-            const trigger = e.target.closest("a, [data-scroll]");
-            if (!trigger) return;
+  /* =========================
+     Smooth scroll (delegacja zdarzeń)
+     ========================= */
+  function initSmoothScroll() {
+    document.addEventListener("click", function (e) {
+      const trigger = e.target.closest("a, [data-scroll]");
+      if (!trigger) return;
 
-            // Pobierz cel scrollowania
-            let targetHash = trigger.getAttribute("data-scroll");
-            
-            // Dla linków <a>, sprawdź czy hash jest w bieżącej stronie
-            if (!targetHash && trigger.tagName === "A") {
-                const href = trigger.getAttribute("href");
-                if (!href || !href.includes("#")) return;
-                
-                try {
-                    const url = new URL(href, window.location.href);
-                    if (url.pathname !== window.location.pathname) return;
-                    targetHash = url.hash;
-                } catch (error) {
-                    console.error("Błąd parsowania URL:", error);
-                    return;
-                }
-            }
-
-            if (!targetHash || targetHash === "#") return;
-
-            // Znajdź element docelowy
-            const targetElement = document.querySelector(targetHash);
-            if (!targetElement) return;
-
-            // Wykonaj płynne przewijanie
-            e.preventDefault();
-            targetElement.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-            // Zamknij mobilne menu po kliknięciu
-            const mainNav = document.getElementById("main-nav");
-            if (mainNav && window.innerWidth <= 1200) {
-                mainNav.style.display = "none";
-            }
-        });
-    }
-
-    /* =========================
-       Inicjalizacja wszystkich komponentów
-       ========================= */
-    function init() {
-        loadPartials();
-        checkForRedirects();
-        initDonateButton();
-        initSmoothScroll();
+      // Pobierz cel scrollowania
+      let targetHash = trigger.getAttribute("data-scroll");
+      
+      // Dla linków <a>, sprawdź czy hash jest w bieżącej stronie
+      if (!targetHash && trigger.tagName === "A") {
+        const href = trigger.getAttribute("href");
+        if (!href || !href.includes("#")) return;
         
-        // Nasłuchuj zmian hash dla redirectów
-        window.addEventListener("hashchange", checkForRedirects);
-
-        // Przycisk przełączania przypięty nasłuchiwaczem zdarzeń (dodatkowe zabezpieczenie)
-        const toggleBtn = document.getElementById('toggle-effects-btn');
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', toggleEffects);
+        try {
+          const url = new URL(href, window.location.href);
+          if (url.pathname !== window.location.pathname) return;
+          targetHash = url.hash;
+        } catch (error) {
+          console.error("Błąd parsowania URL:", error);
+          return;
         }
-    }
+      }
 
-    // Uruchom inicjalizację gdy DOM jest gotowy
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init);
-    } else {
-        init();
-    }
+      if (!targetHash || targetHash === "#") return;
+
+      // Znajdź element docelowy
+      const targetElement = document.querySelector(targetHash);
+      if (!targetElement) return;
+
+      // Wykonaj płynne przewijanie
+      e.preventDefault();
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+      // Zamknij mobilne menu po kliknięciu
+      const mainNav = document.getElementById("main-nav");
+      if (mainNav && window.innerWidth <= 1200) {
+        mainNav.style.display = "none";
+      }
+    });
+  }
+
+  /* =========================
+     Inicjalizacja wszystkich komponentów
+     ========================= */
+  function init() {
+    loadPartials();
+    checkForRedirects();
+    initDonateButton();
+    initSmoothScroll();
+    
+    // Nasłuchuj zmian hash dla redirectów
+    window.addEventListener("hashchange", checkForRedirects);
+  }
+
+  // Uruchom inicjalizację gdy DOM jest gotowy
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();
 
 // --- FUNKCJA OBLICZAJĄCA WIELKANOC ---
@@ -255,57 +256,44 @@ function initSeasonalSystem() {
     
     // --- PORY ROKU (Jeśli nie ma święta) ---
     else {
-        if ((month === 3 && day >= 21) || month === 4 || month === 5 || (month === 6 && day < 21)) {
+        if ((month === 3 && day >= 21) || month === 4 || month === 5 || (month === 6 && day < 21)) 
             eventInfo = { theme: "theme-spring", icon: "🌱", active: true };
-        }
-        else if ((month === 6 && day >= 21) || month === 7 || month === 8 || (month === 9 && day < 23)) {
+        else if ((month === 6 && day >= 21) || month === 7 || month === 8 || (month === 9 && day < 23)) 
             eventInfo = { theme: "theme-summer", icon: "☀️", active: true };
-        }
-        else if ((month === 9 && day >= 23) || month === 10 || month === 11 || (month === 12 && day < 21)) {
+        else if ((month === 9 && day >= 23) || month === 10 || month === 11 || (month === 12 && day < 21)) 
             eventInfo = { theme: "theme-autumn", icon: "🍂", active: true };
-        }
-        else if ((month === 12 && day >= 21) || month === 1 || month === 2 || (month === 3 && day < 21)) {
+        else if ((month === 12 && day >= 21) || month === 1 || month === 2 || (month === 3 && day < 21))
             eventInfo = { theme: "theme-winter", icon: "❄️", active: true };
-        }
     }
 
     // Aplikowanie motywu
     if (eventInfo.active) {
         document.body.classList.add(eventInfo.theme);
-        currentSeasonalIcon = eventInfo.icon; // Zapamiętaj ikonę globalnie
+        currentSeasonalIcon = eventInfo.icon; // Zapamiętujemy ikonę globalnie
 
-        // Zawsze upewnij się, że przycisk przełączania jest widoczny
+        // Pokaż przycisk wyłączania
         const toggleBtn = document.getElementById('toggle-effects-btn');
-        if (toggleBtn) {
-            toggleBtn.style.display = 'block';
-        }
+        if (toggleBtn) toggleBtn.style.display = 'block';
 
-        // ABSOLUTNY BEZPIECZNIK: Jeśli efekty były zablokowane, wymuszamy klasę i kończymy bez odpalania pętli
-        if (localStorage.getItem('effects-disabled') === 'true' || document.body.classList.contains('effects-off')) {
+        // Sprawdź czy użytkownik wcześniej nie wyłączył
+        if (localStorage.getItem('effects-disabled') === 'true') {
             document.body.classList.add('effects-off');
-            if (particleInterval) {
-                clearInterval(particleInterval);
-                particleInterval = null;
-            }
-            return; 
+        } else {
+            startParticles(currentSeasonalIcon);
         }
-
-        startParticles(currentSeasonalIcon);
     }
 }
 
 function startParticles(icon) {
-    // Bezwzględne czyszczenie starego interwału przed nadpisaniem (kluczowe przy podwójnym ładowaniu kodu)
+    // Reset starego interwału przed uruchomieniem nowego (zabezpieczenie)
     if (particleInterval) {
         clearInterval(particleInterval);
-        particleInterval = null;
     }
 
-    // Bezpiecznik: jeśli efekty są wyłączone, w ogóle nie uruchamiaj interwału
     if (document.body.classList.contains('effects-off')) return;
 
     particleInterval = setInterval(() => {
-        // Główna bariera bezpieczeństwa wewnątrz pętli
+        // Dodatkowa bariera bezpieczeństwa wewnątrz pętli
         if (document.body.classList.contains('effects-off')) {
             if (particleInterval) {
                 clearInterval(particleInterval);
@@ -322,41 +310,36 @@ function startParticles(icon) {
         p.style.fontSize = (Math.random() * 15 + 10) + "px";
         document.body.appendChild(p);
         
-        setTimeout(() => {
-            p.remove();
-        }, 5000);
+        setTimeout(() => p.remove(), 5000);
     }, 400);
 }
 
-// Usprawniona funkcja przełączająca z potrójnym czyszczeniem
 function toggleEffects() {
     const isOff = document.body.classList.toggle('effects-off');
     localStorage.setItem('effects-disabled', isOff);
 
     if (isOff) {
-        // 1. Natychmiast zabijamy interwał
+        // 1. Wyłączamy stoper generujący nowe elementy
         if (particleInterval) {
             clearInterval(particleInterval);
             particleInterval = null;
         }
-        // 2. Czyścimy absolutnie wszystkie cząsteczki, które są aktualnie na ekranie
+        // 2. Natychmiast kasujemy z ekranu cząsteczki, które zdążyły się pojawić
         document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
     } else {
-        // 3. Jeśli włączono ponownie, odpalaj generator z zapamiętaną ikoną
+        // 3. Jeśli włączono ponownie, odpalamy generator od nowa
         startParticles(currentSeasonalIcon);
     }
 }
 
-// Przypisanie do obiektu window, aby instrukcja onclick="..." w HTML bezbłędnie ją wywołała
+// Udostępniamy funkcję globalnie dla atrybutu onclick w HTML
 window.toggleEffects = toggleEffects;
 
-// Loader strony
+// Inicjalizacja przy pełnym załadowaniu
 window.addEventListener('load', () => {
     const loader = document.getElementById('loader');
     setTimeout(() => {
-        if (loader) {
-            loader.classList.add('loader-hidden');
-        }
+        if (loader) loader.classList.add('loader-hidden');
     }, 1500);
     initSeasonalSystem();
 });
