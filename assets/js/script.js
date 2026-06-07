@@ -3,7 +3,7 @@
  * Ładuje częściowe szablony, obsługuje menu i podstawowe funkcje
  */
 
-// Globalna zmienna dla interwału cząsteczek, aby była dostępna wszędzie
+// Globalne zmienne dla interwału cząsteczek, aby były dostępne wszędzie
 let particleInterval = null;
 let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
 
@@ -280,17 +280,22 @@ function initSeasonalSystem() {
             toggleBtn.style.display = 'block';
         }
 
-        // Sprawdź czy użytkownik wcześniej nie wyłączył efektów
-        if (localStorage.getItem('effects-disabled') === 'true') {
+        // ABSOLUTNY BEZPIECZNIK: Jeśli efekty były zablokowane, wymuszamy klasę i kończymy bez odpalania pętli
+        if (localStorage.getItem('effects-disabled') === 'true' || document.body.classList.contains('effects-off')) {
             document.body.classList.add('effects-off');
-        } else {
-            startParticles(currentSeasonalIcon);
+            if (particleInterval) {
+                clearInterval(particleInterval);
+                particleInterval = null;
+            }
+            return; 
         }
+
+        startParticles(currentSeasonalIcon);
     }
 }
 
 function startParticles(icon) {
-    // Jeśli generator już działa, najpierw go bezwzględnie resetujemy
+    // Bezwzględne czyszczenie starego interwału przed nadpisaniem (kluczowe przy podwójnym ładowaniu kodu)
     if (particleInterval) {
         clearInterval(particleInterval);
         particleInterval = null;
@@ -300,8 +305,7 @@ function startParticles(icon) {
     if (document.body.classList.contains('effects-off')) return;
 
     particleInterval = setInterval(() => {
-        // Główna bariera bezpieczeństwa: jeśli w trakcie działania interwału 
-        // użytkownik kliknął przycisk wyłączenia, natychmiast przerywamy i sprzątamy
+        // Główna bariera bezpieczeństwa wewnątrz pętli
         if (document.body.classList.contains('effects-off')) {
             if (particleInterval) {
                 clearInterval(particleInterval);
@@ -346,7 +350,7 @@ function toggleEffects() {
 // Przypisanie do obiektu window, aby instrukcja onclick="..." w HTML bezbłędnie ją wywołała
 window.toggleEffects = toggleEffects;
 
-// Loader
+// Loader strony
 window.addEventListener('load', () => {
     const loader = document.getElementById('loader');
     setTimeout(() => {
