@@ -290,11 +290,26 @@ function initSeasonalSystem() {
 }
 
 function startParticles(icon) {
-    // Jeśli generator już działa, najpierw go zresetuj
-    if (particleInterval) clearInterval(particleInterval);
+    // Jeśli generator już działa, najpierw go bezwzględnie resetujemy
+    if (particleInterval) {
+        clearInterval(particleInterval);
+        particleInterval = null;
+    }
+
+    // Bezpiecznik: jeśli efekty są wyłączone, w ogóle nie uruchamiaj interwału
+    if (document.body.classList.contains('effects-off')) return;
 
     particleInterval = setInterval(() => {
-        if (document.body.classList.contains('effects-off')) return;
+        // Główna bariera bezpieczeństwa: jeśli w trakcie działania interwału 
+        // użytkownik kliknął przycisk wyłączenia, natychmiast przerywamy i sprzątamy
+        if (document.body.classList.contains('effects-off')) {
+            if (particleInterval) {
+                clearInterval(particleInterval);
+                particleInterval = null;
+            }
+            return;
+        }
+
         const p = document.createElement('div');
         p.className = 'seasonal-particle';
         p.innerText = icon;
@@ -302,26 +317,28 @@ function startParticles(icon) {
         p.style.animationDuration = (Math.random() * 3 + 2) + "s";
         p.style.fontSize = (Math.random() * 15 + 10) + "px";
         document.body.appendChild(p);
+        
         setTimeout(() => {
             p.remove();
         }, 5000);
     }, 400);
 }
 
-// Funkcja przełączająca
+// Usprawniona funkcja przełączająca z potrójnym czyszczeniem
 function toggleEffects() {
     const isOff = document.body.classList.toggle('effects-off');
     localStorage.setItem('effects-disabled', isOff);
 
     if (isOff) {
-        // Natychmiast zatrzymaj interwał i wyczyść z ekranu stare ikony
+        // 1. Natychmiast zabijamy interwał
         if (particleInterval) {
             clearInterval(particleInterval);
             particleInterval = null;
         }
+        // 2. Czyścimy absolutnie wszystkie cząsteczki, które są aktualnie na ekranie
         document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
     } else {
-        // Jeśli włączono ponownie, odpal natychmiast generator z zapamiętaną ikoną
+        // 3. Jeśli włączono ponownie, odpalaj generator z zapamiętaną ikoną
         startParticles(currentSeasonalIcon);
     }
 }
