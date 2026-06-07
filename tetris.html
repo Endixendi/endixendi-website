@@ -1,138 +1,119 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Endixendi - Tetris</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endixendi - Tetris</title>
 
-  <!-- GŁÓWNY ARKUSZ STYLI -->
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/tetris.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/tetris.css">
 
-  <!-- IKONKA STRONY -->
-  <link rel="icon" href="assets/images/kolo.png" type="image/png">
+    <link rel="icon" href="assets/images/kolo.png" type="image/png">
 </head>
 <body>
 
-<div id="loader">
-  <img src="assets/images/kolo.png" alt="Loading..." class="loader-logo">
-</div>
+    <div id="loader">
+        <img src="assets/images/kolo.png" alt="Loading..." class="loader-logo">
+    </div>
 
-  <!-- MENU -->
-  <header>
-    <div id="menu-placeholder"></div>
-  </header>
+    <header>
+        <div id="menu-placeholder"></div>
+    </header>
 
-  <!-- MAIN CONTENT -->
-  <main>
+    <main>
 
-    <!-- HERO SECTION -->
-    <section id="tetris-hero" class="mt-16">
-      <div class="card">
-        <h1>Tetris</h1>
-        <p class="lead">Klasyczna gra Tetris w wersji przeglądarkowej 🎮</p>
-      </div>
-    </section>
-
-    <!-- GRA TETRIS -->
-    <section id="tetris-game" class="card mt-22">
-      <div class="tetris-container">
-
-        <!-- LEWA STRONA (wynik) -->
-        <aside class="side left">
-          <h2>Statystyki</h2>
-          <div class="stats">
-            <div>Wynik: <span id="score">0</span></div>
-            <div>Linie: <span id="lines">0</span></div>
-            <div>Poziom: <span id="level">1</span></div>
-          </div>
-        </aside>
-
-        <!-- ŚRODEK (plansza) -->
-        <div class="board-container">
-          
-          <!-- Główny canvas gry -->
-          <canvas id="board" width="300" height="600"></canvas>
-          
-          <!-- Overlay menu -->
-          <div class="overlay hidden" id="overlay">
-            <div class="modal">
-              <h2 id="overlay-title">Tetris</h2>
-              <p id="overlay-sub">Naciśnij Enter aby zacząć</p>
+        <section id="tetris-hero" class="mt-16">
+            <div class="card">
+                <h1>Tetris</h1>
+                <p class="lead">Klasyczna gra Tetris w wersji przeglądarkowej 🎮</p>
             </div>
-          </div>
-        </div>
+        </section>
 
-        <!-- PRAWA STRONA (reszta paneli) -->
-        <aside class="side right">
-          
-          <!-- Sterowanie mobilne -->
-          <div class="mobile-controls mt-16">
-            <button data-action="left">&larr;</button> 
-            <button data-action="rotate">&uarr;</button>
-            <button data-action="right">&rarr;</button>
-            <button data-action="down">&darr;</button>
-            <button data-action="drop">&harr;</button>
-            <button data-action="start">&crarr;</button>
-            <button data-action="hold">&loz;</button>
-          </div>
-          
-          <!-- Next i Hold -->
-          <div class="next-hold">
-            <div>
-              <h3>Następny</h3>
-              <canvas id="next" width="120" height="120"></canvas>
-            </div>
-            <div>
-              <h3>Trzymany</h3>
-              <canvas id="hold" width="120" height="120"></canvas>
-            </div>
-          </div>
+        <section id="tetris-game" class="card mt-22">
+            <div class="tetris-container">
 
-          <!-- Kontrola głośności -->
-          <div class="mt-16">
-            <h5>Głośność muzyki</h5>
-            <input id="volume" type="range" min="0" max="1" step="0.01" value="0.15">
+                <aside class="side left">
+                    <h2>Statystyki</h2>
+                    <div class="stats">
+                        <div>Wynik: <span id="score">0</span></div>
+                        <div>Linie: <span id="lines">0</span></div>
+                        <div>Poziom: <span id="level">1</span></div>
+                    </div>
+                </aside>
+
+                <div class="board-container">
+                    <canvas id="board" width="300" height="600"></canvas>
+                    
+                    <div class="overlay hidden" id="overlay">
+                        <div class="modal">
+                            <h2 id="overlay-title">Tetris</h2>
+                            <p id="overlay-sub">Naciśnij Enter aby zacząć</p>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="side right">
+                    
+                    <div class="mobile-controls mt-16">
+                        <button data-action="left">&larr;</button> 
+                        <button data-action="rotate">&uarr;</button>
+                        <button data-action="right">&rarr;</button>
+                        <button data-action="down">&darr;</button>
+                        <button data-action="drop">&harr;</button>
+                        <button data-action="start">&crarr;</button>
+                        <button data-action="hold">&loz;</button>
+                    </div>
+                    
+                    <div class="next-hold">
+                        <div>
+                            <h3>Następny</h3>
+                            <canvas id="next" width="120" height="120"></canvas>
+                        </div>
+                        <div>
+                            <h3>Trzymany</h3>
+                            <canvas id="hold" width="120" height="120"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="mt-16">
+                        <h5>Głośność muzyki</h5>
+                        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.15">
 			
-			<h5>Głośność efektów</h5>
-			<input id="volume-effect" type="range" min="0" max="1" step="0.01" value="0.3">
-          </div>
+                        <h5>Głośność efektów</h5>
+                        <input id="volume-effect" type="range" min="0" max="1" step="0.01" value="0.3">
+                    </div>
 
-          <!-- Instrukcje sterowania -->
-          <div class="controls-left mt-16">
-            <h3>Sterowanie</h3>
-            <ul>
-              <li>← / → – Przesuń</li>
-              <li>↑ / X – Obrót</li>
-              <li>Z – Obrót w lewo</li>
-              <li>↓ – Szybciej</li>
-              <li>Spacja – Rzuć</li>
-              <li>C – Trzymaj</li>
-			  <li>P – Pauza</li>
-              <li>Enter – Start</li>
-            </ul>
-          </div>
-        </aside>
+                    <div class="controls-left mt-16">
+                        <h3>Sterowanie</h3>
+                        <ul>
+                            <li>← / → – Przesuń</li>
+                            <li>↑ / X – Obrót</li>
+                            <li>Z – Obrót w lewo</li>
+                            <li>↓ – Szybciej</li>
+                            <li>Spacja – Rzuć</li>
+                            <li>C – Trzymaj</li>
+                            <li>P – Pauza</li>
+                            <li>Enter – Start</li>
+                        </ul>
+                    </div>
+                </aside>
 
-      </div>
-    </section>
+            </div>
+        </section>
 	
-	<!-- INFORMACJE O MUZYCE I DŹWIĘKACH -->
-    <section id="credits" class="card mt-16">
-      <p>
-        <strong>Muzyka:</strong> pixabay.com<br>
-        <strong>Dźwięki:</strong> pixabay.com
-      </p>
-    </section>
+        <section id="credits" class="card mt-16">
+            <p>
+                <strong>Muzyka:</strong> pixabay.com<br>
+                <strong>Dźwięki:</strong> pixabay.com
+            </p>
+        </section>
 
-  </main>
-  <!-- /MAIN -->
+    </main>
 
-  <!-- FOOTER -->
-  <div id="footer-placeholder"></div>
+    <div id="footer-placeholder"></div>
 
-  <!-- SKRYPTY -->
-  <script src="assets/js/tetris.js"></script>
-  <script src="assets/js/script.js"></script>
+    <script src="assets/js/tetris.js"></script>
+    <script src="assets/js/script.js"></script>
+
 </body>
 </html>
