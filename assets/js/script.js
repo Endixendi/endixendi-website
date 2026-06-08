@@ -135,7 +135,7 @@ let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
     const donateBtn = document.getElementById("donate-btn");
     if (donateBtn) {
       donateBtn.addEventListener("click", () => {
-        window.open("tipply.pl/@endixendi", "_blank");
+        window.open("https://tipply.pl/@endixendi", "_blank");
       });
     }
   }
