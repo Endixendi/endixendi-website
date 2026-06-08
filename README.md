@@ -96,7 +96,8 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 ├── shooter.html              # Gra Shooter
 ├── statki.html               # Gra Statki
 ├── tetris.html               # Gra Tetris
-└── tools.html                # Spis narzędzi i poradniki YT
+├── tools-rec.html            # Spis narzędzi i poradniki YT
+└── tools-all.html            # Spis narzędzi online
 ```
 ## 📺 Wspieraj moją twórczość!
 
