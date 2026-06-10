@@ -44,6 +44,7 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 │   │   ├── battleship.css    # Style dedykowane grze Statki
 │   │   ├── dino.css          # Style dedykowane grze Dino
 │   │   ├── gallery.css       # Style dedykowane galerii zdjęć
+│   │   ├── linux.css         # Style dedykowane stronie linux
 │   │   ├── shooter.css       # Style dedykowane grze Shooter
 │   │   ├── style.css         # Główny arkusz stylów strony
 │   │   └── tetris.css        # Style dedykowane grze Tetris
@@ -92,6 +93,7 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 ├── footer.html               # Wspólna stopka stron (ładowana dynamicznie)
 ├── gallery.html              # Galeria projektów
 ├── index.html                # Strona główna (Portfolio & PC Spec)
+├── linux.html                # Strona Linux vs Windows
 ├── menu.html                 # Wspólne menu stron (ładowane dynamicznie)
 ├── shooter.html              # Gra Shooter
 ├── statki.html               # Gra Statki
