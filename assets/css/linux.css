@@ -1,0 +1,120 @@
+/* Dodatkowe dedykowane style dla odtwarzaczy wideo, logotypów i odznak kroków */
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* Proporcje ekranu 16:9 */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    background: #000;
+    border-radius: 8px;
+    margin: 16px 0;
+    border: 1px solid var(--border);
+}
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+.distro-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+/* Zaktualizowane oficjalne logotypy dystrybucji */
+.distro-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.icon-mint { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Linux_Mint_logo_without_wordmark.svg/960px-Linux_Mint_logo_without_wordmark.svg.png'); }
+.icon-cachy { background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/b8/CachyOS_Logo.svg'); }
+.icon-fedora { background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg'); }
+.icon-bazzite { background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a7/Bazzite_Logo.svg'); }
+.icon-ubuntu { background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/9e/UbuntuCoF.svg'); }
+
+.step-badge {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #000;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+/* Układ kolumnowy dla multimediów */
+.triple-videos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+.media-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 20px;
+}
+@media(min-width: 992px) {
+    .media-flex {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    .media-flex .text-content { flex: 1; }
+    .media-flex .video-content { flex: 1; max-width: 500px; }
+}
+
+.inline-link {
+    color: var(--accent);
+    text-decoration: none;
+    transition: var(--transition);
+}
+.inline-link:hover {
+    color: var(--accent-2);
+    text-decoration: underline;
+}
+
+/* Rozbudowane sekcje FAQ i dodatkowe komponenty */
+.faq-item {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+.faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.faq-question {
+    font-weight: bold;
+    color: var(--accent-2);
+    margin-bottom: 6px;
+}
+
+/* Styl dla siatki narzędzi gamingowych */
+.tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+.tool-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+}
+.tool-card h4 {
+    color: var(--accent);
+    margin-bottom: 8px;
+}
