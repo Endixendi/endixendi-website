@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dlaczego Linux jest lepszy niż Windows? Poznaj najlepsze dystrybucje, środowiska graficzne, systemy plików oraz kompletny poradnik instalacji.">
+    <meta name="keywords" content="Linux, Windows vs Linux, środowiska graficzne linux, systemy plików linux, ext4 vs btrfs, Proton, Wine, Lutris, Heroic Games Launcher">
+    <title>Linux vs Windows — Dystrybucje, Środowiska i Instalacja | Endixendi</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="assets/css/linux.css">
+    <link rel="icon" href="assets/images/kolo.png" type="image/png">
+</head>
+<body>
+
+    <div id="loader">
+        <img src="assets/images/kolo.png" alt="Loading..." class="loader-logo">
+    </div>
+
+    <header>
+        <div id="menu-placeholder"></div>
+    </header>
+
+    <main>
+        <!-- Sekcja Hero Podstrony -->
+        <section id="linux-hero" class="card">
+            <h1>Linux vs Windows: Czas na systemową rewolucję</h1>
+            <p class="lead mt-12">
+                Jako informatyk i gracz przez lata tkwiłem w ekosystemie Microsoftu. Dziś wiem, że świat Open Source to nie tylko alternatywa — to wyższa kultura pracy, pełna prywatność i drugie życie dla Twojego sprzętu. Poznaj fakty, odrzuć mity i zobacz, jak bezpiecznie zacząć przygodę.
+            </p>
+            <div class="cta mt-16">
+                <a data-scroll="#dlaczego-linux" class="btn">Dlaczego Linux wygrywa?</a>
+                <a data-scroll="#dystrybucje" class="ghost">Polecane Dystrybucje</a>
+                <a data-scroll="#gaming-warstwy" class="ghost">Gaming i Wine/Proton</a>
+                <a data-scroll="#poradnik-instalacji" class="ghost">Poradnik Instalacji</a>
+            </div>
+        </section>
+
+        <!-- Dlaczego Linux jest lepszy -->
+        <section id="dlaczego-linux" class="card mt-22">
+            <h2>Dlaczego warto porzucić Windowsa?</h2>
+            <p class="muted mb-16">Oto argumenty, z którymi zamknięty system operacyjny Windows 10 i 11 po prostu nie może konkurować:</p>
+            
+            <table class="specs" aria-label="Porównanie Linux vs Windows">
+                <tr>
+                    <td class="cat">Absolutna Prywatność</td>
+                    <td>➤ Brak telemetrii, przymusowych kont online, reklam w menu Start i kontrowersyjnych funkcji śledzących (jak Windows Recall). System robi TYLKO to, na co mu pozwolisz. Twoje dane nie są towarem.</td>
+                </tr>
+                <tr>
+                    <td class="cat">Gaming na najwyższym poziomie</td>
+                    <td>➤ Warstwa translacji Proton (rozwijana przez Valve) sprawiła, że ponad 80% gier z Windowsa działa bezpośrednio z poziomu platformy Steam. Bardzo często system notuje stabilniejszy klatkaż dzięki lepszemu zarządzaniu plikami shaderów.</td>
+                </tr>
+                <tr>
+                    <td class="cat">Lekkość i optymalizacja</td>
+                    <td>➤ Linux nie dusi podzespołów setkami ukrytych usług systemowych oraz Windows Defenderem skanującym dysk w losowych momentach. Po uruchomieniu czysty system zużywa poniżej 1 GB pamięci RAM.</td>
+                </tr>
+                <tr>
+                    <td class="cat">Kontrola nad aktualizacjami</td>
+                    <td>➤ Koniec z wymuszonymi restartami podczas ważnego meczu, renderu wideo czy pracy. Aktualizujesz pakiety wtedy, kiedy masz na to ochotę, a 99% poprawek instaluje się w tle bez potrzeby restartowania komputera.</td>
+                </tr>
+            </table>
+        </section>
+
+		<!-- Zestawienie Dystrybucji z Oficjalnymi Logotypami i Linkami -->
+        <section id="dystrybucje" class="mt-22">
+            <h2 class="card" style="margin-bottom: 16px;">Moje TOP 5 Dystrybucji dla każdego</h2>
+            
+            <div class="grid">
+                <!-- Linux Mint -->
+                <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div class="distro-header">
+                            <div class="distro-icon icon-mint" aria-label="Logo Linux Mint"></div>
+                            <h3>1. Linux Mint</h3>
+                        </div>
+                        <p class="muted"><strong>Najlepszy na start (Klasyczny i stabilny)</strong></p>
+                        <p class="mt-12">Genialny, bezpośredni zamiennik Windowsa. Posiada znajomy układ pulpitu (pasek zadań na dole, menu start po lewej). Działa bezproblemowo po wyjęciu z pudełka, posiada świetnego menedżera sterowników dla kart graficznych NVIDIA i wbudowany sklep z bezpiecznymi aplikacjami.</p>
+                    </div>
+                    <div class="mt-16">
+                        <a href="https://linuxmint.com/" target="_blank" class="inline-link" style="font-weight: bold;">Dowiedz się więcej (Strona oficjalna) →</a>
+                    </div>
+                </div>
+
+                <!-- CachyOS -->
+                <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div class="distro-header">
+                            <div class="distro-icon icon-cachy" aria-label="Logo CachyOS"></div>
+                            <h3>2. CachyOS</h3>
+                        </div>
+                        <p class="muted"><strong>Potwór wydajnościowy pod gaming</strong></p>
+                        <p class="mt-12">Dystrybucja oparta na potężnym Arch Linux, ale zautomatyzowana i prosta w instalacji. Cały system został skompilowany pod kątem instrukcji nowoczesnych procesorów (x86-64-v3/v4). Posiada zaawansowane jądra zoptymalizowane pod minimalne opóźnienia i maksymalne FPS-y w grach.</p>
+                    </div>
+                    <div class="mt-16">
+                        <a href="https://cachyos.org/" target="_blank" class="inline-link" style="font-weight: bold;">Dowiedz się więcej (Strona oficjalna) →</a>
+                    </div>
+                </div>
+
+                <!-- Fedora -->
+                <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div class="distro-header">
+                            <div class="distro-icon icon-fedora" aria-label="Logo Fedora"></div>
+                            <h3>3. Fedora Workstation</h3>
+                        </div>
+                        <p class="muted"><strong>Złoty środek dla programistów i technicznych</strong></p>
+                        <p class="mt-12">Nowoczesne, czyste i bezpieczne środowisko wspierane przez giganta Red Hat. To tutaj jako pierwsze pojawiają się innowacyjne rozwiązania technologiczne (jak Wayland czy PipeWire). Doskonały wybór do codziennej nauki programowania, sieci i szeroko pojętej informatyki.</p>
+                    </div>
+                    <div class="mt-16">
+                        <a href="https://fedoraproject.org/" target="_blank" class="inline-link" style="font-weight: bold;">Dowiedz się więcej (Strona oficjalna) →</a>
+                    </div>
+                </div>
+
+                <!-- Bazzite -->
+                <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div class="distro-header">
+                            <div class="distro-icon icon-bazzite" aria-label="Logo Bazzite"></div>
+                            <h3>4. Bazzite</h3>
+                        </div>
+                        <p class="muted"><strong>Konsolowy potwór (SteamOS dla każdego PC)</strong></p>
+                        <p class="mt-12">System stworzony stricte z myślą o graczach komputerowych i handheldach (Steam Deck, ASUS ROG Ally, Lenovo Legion Go). Potrafi uruchomić się bezpośrednio w trybie konsolowym Steam Big Picture. Jest odporny na błędy użytkownika dzięki niezmiennej strukturze plików (immutability).</p>
+                    </div>
+                    <div class="mt-16">
+                        <a href="https://bazzite.gg/" target="_blank" class="inline-link" style="font-weight: bold;">Dowiedz się więcej (Strona oficjalna) →</a>
+                    </div>
+                </div>
+
+                <!-- Ubuntu -->
+                <div class="card full" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div class="distro-header">
+                            <div class="distro-icon icon-ubuntu" aria-label="Logo Ubuntu"></div>
+                            <h3>5. Ubuntu</h3>
+                        </div>
+                        <p class="muted"><strong>„Windows w świecie Linuksa” — Korporacyjny Standard</strong></p>
+                        <p class="mt-12">
+                            Najbardziej rozpoznawalny Linux na świecie, ale dla mnie to taki Windows w tym ekosystemie. Przez komercyjne decyzje firmy Canonical (usilne wpychanie własnych, ciężkich pakietów formatu <em>Snap</em>) system stracił dawną lekkość i idzie w stronę korporacyjnej kontroli. Ogromną zaletą Ubuntu pozostaje fakt, że ze względu na gigantyczną popularność, w wyszukiwarce znajdziesz gotowe rozwiązanie każdego napotkanego błędu w parę sekund. Dobra baza wypadowa, z której szybko zechcesz uciec.
+                        </p>
+                    </div>
+                    <div class="mt-16">
+                        <a href="https://ubuntu.com/" target="_blank" class="inline-link" style="font-weight: bold;">Dowiedz się więcej (Strona oficjalna) →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NOWA SEKCJA: Gaming, Wine, Proton, Lutris -->
+        <section id="gaming-warstwy" class="card mt-22">
+            <h2>Gaming i aplikacje z Windowsa — Jak to właściwie działa?</h2>
+            <p class="lead mt-12">
+                Największy mit o Linuksie to przekonanie, że "nie działają na nim gry i programy z Windowsa". Działają, i to często znakomicie! Linux nie potrzebuje emulatorów (które spowalniają komputer). Zamiast tego używa **warstw kompatybilności**, które tłumaczą windowsowe instrukcje bezpośrednio na język Linuksa w locie. Zgłoś się do bazy wiedzy i poznaj te narzędzia:
+            </p>
+
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h4>🍷 WINE (Wine Is Not an Emulator)</h4>
+                    <p class="small muted">Absolutny fundament wszystkiego. Jest to otwarta warstwa oprogramowania, która pozwala systemom z rodziny Linux uruchamiać pliki `.exe`. Tłumaczy funkcje systemu Windows (API) na komendy zrozumiałe dla Linuksa bez utraty wydajności komputerowych podzespołów.</p>
+                </div>
+                <div class="tool-card">
+                    <h4>⚛️ Proton (od Valve)</h4>
+                    <p class="small muted">Ulepszona wersja Wine stworzona przez firmę Valve na potrzeby Steam Decka i gamingu PC. Proton automatycznie tłumaczy biblioteki graficzne DirectX (z Windowsa) na nowoczesny i ultra-szybki Vulkan (na Linuksie). Dzięki temu gry działają płynnie i stabilnie bezpośrednio po kliknięciu "Graj" na Steamie.</p>
+                </div>
+                <div class="tool-card">
+                    <h4>🛡️ Lutris</h4>
+                    <p class="small muted">Twój centralny menedżer gier. Jeśli masz gry spoza Steama (np. stare pudełkowe wersje, gry z GOG, Epic Games Store, Ubisoft Connect czy emulatory starych konsol), Lutris posiada gotowe skrypty instalacyjne stworzone przez społeczność. Klikasz "Instaluj", a program konfiguruje optymalną wersję Wine za Ciebie.</p>
+                </div>
+                <div class="tool-card">
+                    <h4>🚀 Heroic Games Launcher</h4>
+                    <p class="small muted">Świetna, nowoczesna i bardzo lekka alternatywa dla oficjalnych aplikacji. Służy do bezpośredniej i wygodnej obsługi Twoich bibliotek gier z **Epic Games Store, GOG oraz Amazon Prime Gaming** na Linuksie z pełnym wsparciem dla Protona.</p>
+                </div>
+            </div>
+
+            <table class="specs mt-16" aria-label="Szybka ściągawka uruchamiania programów">
+                <tr>
+                    <td class="cat">Gdzie mam grę?</td>
+                    <td><strong>Jakiego narzędzia użyć na Linuksie?</strong></td>
+                </tr>
+                <tr>
+                    <td class="cat">Platforma Steam</td>
+                    <td>➤ Nic nie robisz. Wchodzisz w ustawienia Steam -> Steam Play -> Włącz dla wszystkich tytułów. Steam sam pobierze i skonfiguruje **Protona**.</td>
+                </tr>
+                <tr>
+                    <td class="cat">Epic Games / GOG</td>
+                    <td>➤ Instalujesz **Heroic Games Launcher**. Logujesz się na swoje konto i pobierasz gry jak na Windowsie.</td>
+                </tr>
+                <tr>
+                    <td class="cat">EA App / Ubisoft / Inne</td>
+                    <td>➤ Odpalasz **Lutris**, wybierasz dany launcher z listy, a program sam przygotuje dla niego idealne środowisko pracy.</td>
+                </tr>
+                <tr>
+                    <td class="cat">Zwykły program .exe</td>
+                    <td>➤ Używasz darmowego programu **Bottles (Butelki)** lub Wine. Bottles pozwala stworzyć odizolowane "środowisko Windowsa" dla konkretnej aplikacji.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ROZBUDOWANA SEKCJA: Środowiska Graficzne -->
+        <section id="srodowiska" class="card mt-22">
+            <h2>Wielki test środowisk graficznych (Desktop Environments)</h2>
+            <p class="lead mt-12">
+                W świecie Linuksa wygląd systemu (interfejs) jest całkowicie odizolowany od jego wnętrza (jądra i pakietów). To oznacza, że każdą dystrybucję możesz ubrać w zupełnie inne szaty. Niezależnie od tego, czy dane środowisko uruchomisz na CachyOS, Mint czy Fedorze – jego układ, opcje i możliwości personalizacji pozostają takie same!
+            </p>
+
+            <div class="media-flex">
+                <div class="text-content">
+                    <ul style="padding-left: 20px; line-height: 1.7;">
+                        <li class="mb-12"><strong>KDE Plasma:</strong> Absolutny król nowoczesności i elastyczności. Z wyglądu przypomina luksusową wersję Windowsa 11, ale pozwala zmienić dosłownie wszystko — od zachowania okien po zaawansowane widgety. Jest niesamowicie lekki dla pamięci RAM i uwielbiany przez graczy ze względu na perfekcyjne wsparcie dla VRR (G-Sync/FreeSync) oraz HDR.</li>
+                        <li class="mb-12"><strong>GNOME:</strong> Minimalizm i elegancja inspirowane systemami macOS oraz interfejsami tabletów. Brak klasycznego menu Start i ikon na pulpicie. Całość opiera się na genialnych gestach touchpada, wirtualnych pulpitach oraz pełnoekranowym menu aplikacji. Maksymalne skupienie na pracy.</li>
+                        <li class="mb-12"><strong>Cinnamon:</strong> Flagowe środowisko Linuksa Mint. Tradycyjne, bezpieczne, niezwykle stabilne i intuicyjne. Jeśli chcesz, aby system po przesiadce z Windowsa 10 nie zmuszał Cię do zmiany starych nawyków – to strzał w dziesiątkę.</li>
+                        <li class="mb-12"><strong>XFCE / MATE:</strong> Ultra-lekkie, klasyczne interfejsy środowiskowe. Zużywają śladowe ilości zasobów komputera, dzięki czemu potrafią sprawić, że laptop sprzed 15 lat zacznie działać szybciej niż nowoczesne komputery z Windowsem 11.</li>
+                    </ul>
+                </div>
+                <div class="video-content">
+                    <h4>Przegląd środowisk w praktyce:</h4>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/3JdUBpakX5A" title="Wielki test środowisk graficznych" allowfullscreen></iframe>
+                    </div>
+                    <p class="small muted">Prezentacja i porównanie najpopularniejszych środowisk graficznych przygotowane przez Linexy.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKCJA: Systemy Plików -->
+        <section id="systemy-plikow" class="card mt-22">
+            <h2>Którego systemu plików powinieneś używać w 2026 roku?</h2>
+            <p class="lead mt-12">
+                Podczas instalacji Linuksa przyjdzie moment na sformatowanie dysku. Windows zmusza Cię do archaicznego systemu NTFS, natomiast Linux daje wybór, który realnie wpływa na bezpieczeństwo Twoich danych i szybkość działania dysków SSD/NVMe.
+            </p>
+
+            <div class="media-flex">
+                <div class="text-content">
+                    <table class="specs" aria-label="Porównanie systemów plików Linux">
+                        <tr>
+                            <td class="cat" style="color: var(--accent);">Ext4</td>
+                            <td>➤ Sprawdzony przez dekady król stabilności. Jest domyślnym wyborem w większości systemów (np. Linux Mint). Oferuje świetną wydajność, prostotę i zerowe ryzyko błędów. Jeśli nie potrzebujesz zaawansowanych funkcji – wybierz Ext4.</td>
+                        </tr>
+                        <tr>
+                            <td class="cat" style="color: var(--accent-2);">Btrfs</td>
+                            <td>➤ System plików nowej generacji (domyślny w Fedorze). Posiada funkcję <strong>Copy-on-Write</strong> oraz automatyczne migawki (snapshots). Jeśli aktualizacja popsuje system, możesz w 2 sekundy cofnąć czas do momentu sprzed awarii z poziomu menu startowego GRUB! Posiada też automatyczną kompresję danych w locie, chroniąc dysk SSD.</td>
+                        </tr>
+                        <tr>
+                            <td class="cat">XFS / ZFS</td>
+                            <td>➤ Zastosowania zaawansowane. XFS rewelacyjnie radzi sobie z gigantycznymi plikami i bazami danych (używany w rozwiązaniach enterprise). ZFS to potężny kombajn stworzony do serwerów NAS i macierzy RAID, dbający o najwyższą integralność danych kosztem większego zużycia pamięci RAM.</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="video-content">
+                    <h4>Kompletny przewodnik po systemach plików:</h4>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/4kMt5RtDZ7g" title="Którego systemu plików używać w Linux" allowfullscreen></iframe>
+                    </div>
+                    <p class="small muted">Szczegółowa analiza systemów plików Ext4, Btrfs, ZFS i XFS od Linexy.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kompleksowy poradnik instalacji -->
+        <section id="poradnik-instalacji" class="card mt-22">
+            <h2>Masz stary laptop lub PC? Czas na zabawę i bezpieczne testy!</h2>
+            <p class="lead mt-12">
+                Nie musisz od razu kasować systemu Windows na swoim głównym komputerze. Masz w szafie stary, zakurzony laptop, na którym Windows 10 ledwo dyszy? To idealny poligon doświadczalny! Linux tchnie w niego nowe życie.
+            </p>
+
+            <div class="grid mt-22">
+                <div class="card" style="background: rgba(255,255,255,0.01);">
+                    <span class="step-badge">Krok 1</span>
+                    <h4>Pobierz obraz ISO</h4>
+                    <p class="mt-12">Wejdź na oficjalną stronę wybranej dystrybucji (np. <a href="https://linuxmint.com" target="_blank" class="inline-link">linuxmint.com</a>) i pobierz darmowy plik z rozszerzeniem <code>.iso</code>. Dla Minta wybierz wersję <strong>Cinnamon</strong>.</p>
+                </div>
+
+                <div class="card" style="background: rgba(255,255,255,0.01);">
+                    <span class="step-badge">Krok 2</span>
+                    <h4>Przygotuj pendrive</h4>
+                    <p class="mt-12">Potrzebujesz czystego pendrive'a (minimum 8GB). Użyj jednego z dwóch darmowych narzędzi do wgrania systemu:</p>
+                    <ul class="mt-12" style="padding-left: 20px;">
+                        <li><strong>Rufus:</strong> Klasyczny program, który "wypala" jedną, konkretną dystrybucję na pamięć USB, formatując ją w procesie.</li>
+                        <li><strong>Ventoy:</strong> Prawdziwy game-changer. Instalujesz go raz na pendrive, a potem po prostu przeciągasz pobrane pliki ISO jak zwykłe dokumenty! Możesz mieć tam Linuksa i instalator Windowsa jednocześnie.</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="background: rgba(255,255,255,0.01);">
+                    <span class="step-badge">Krok 3</span>
+                    <h4>Bootowanie z USB</h4>
+                    <p class="mt-12">Włóż pendrive do komputera, uruchom go i od razu klikaj klawisz Boot Menu (zwykle <strong>F12, F11, F10 lub F8</strong>, zależnie od producenta płyty głównej). Wybierz swoje urządzenie USB z wyświetlonej listy.</p>
+                </div>
+
+                <div class="card" style="background: rgba(255,255,255,0.01);">
+                    <span class="step-badge">Krok 4</span>
+                    <h4>Przetestuj w trybie LIVE!</h4>
+                    <p class="mt-12">Większość dystrybucji uruchomi się w tzw. <strong>Trybie Live</strong>. System działa bezpośrednio z Twojego pendrive'a i pamięci RAM — nie modyfikuje nic na dysku twardym komputera! Możesz poklikać, sprawdzić Wi-Fi i zobaczyć, jak działa system. Dopiero gdy klikniesz ikonę <em>"Install"</em> na pulpicie, rozpocznie się faktyczne wgrywanie systemu.</p>
+                </div>
+            </div>
+
+            <!-- Filmy instruktażowe -->
+            <div class="mt-22">
+                <h3>Wideo-poradniki dla ułatwienia zadania</h3>
+                <p class="muted">Wyselekcjonowane materiały wideo, które odpowiedzą na Twoje pytania i przeprowadzą Cię przez instalację krok po kroku:</p>
+                
+                <div class="triple-videos">
+                    <!-- Film 1: Recenzja po roku -->
+                    <div>
+                        <h4>Co musisz wiedzieć przed przesiadką:</h4>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/8bv8dhNrbg0" title="YouTube video: Co musisz wiedzieć przed przesiadką" allowfullscreen></iframe>
+                        </div>
+                        <p class="small muted">Podsumowanie i szczera recenzja po pełnym roku korzystania z Linuksa jako głównego systemu od Linexy.</p>
+                    </div>
+
+                    <!-- Film 2: Ventoy -->
+                    <div>
+                        <h4>Konfiguracja pendrive'a (Ventoy):</h4>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/V-O_lIs9fI8" title="YouTube video: Ventoy" allowfullscreen></iframe>
+                        </div>
+                        <p class="small muted">Wideo autorstwa Michu IT wyjaśniające magię wrzucania wielu systemów ISO na jeden nośnik USB.</p>
+                    </div>
+
+                    <!-- Film 3: Instalacja Mint -->
+                    <div>
+                        <h4>Proces instalacji (Linux Mint):</h4>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/yRDr3CB-sVw" title="YouTube video: Instalacja Linux Mint" allowfullscreen></iframe>
+                        </div>
+                        <p class="small muted">Kompletny przewodnik od blimek pokazujący, jak odpalić instalator i bezpiecznie wgrać system.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profesjonalna wskazówka Endixendiego -->
+            <div class="card mt-22" style="border-left: 4px solid var(--accent); background: rgba(0, 170, 255, 0.02); margin-top: 24px;">
+                <h4>💡 Tip od Endixendiego:</h4>
+                <p class="mt-12 text-justify">
+                    Zasada instalacji każdego Linuksa jest niemal identyczna. Jeśli wybierzesz dystrybucję spoza tej listy (np. Manjaro, Pop!_OS, Debian) i utkniesz na jakimś kroku w instalatorze, wystarczy, że wejdziesz na YouTube i wpiszesz wyszukiwanie w formacie: <br>
+                    <strong style="color: var(--accent-2);">"instalacja linux [nazwa_dystrybucji]"</strong> (np. <em>instalacja linux fedora</em>). Społeczność Linuksa jest ogromna i na 100% ktoś nagrał już rozwiązanie Twojego problemu!
+                </p>
+            </div>
+        </section>
+
+        <!-- Szybkie FAQ -->
+        <section id="linux-faq" class="card mt-22">
+            <h2>Często zadawane pytania (FAQ)</h2>
+            <div class="mt-16">
+                <div class="faq-item">
+                    <p class="faq-question">Czy programy z Windowsa (pliki .exe) działają na Linuksie?</p>
+                    <p class="muted">Bezpośrednio nie, ale narzędzia takie jak Wine, Bottles czy Steam Proton tworzą warstwę kompatybilności, dzięki której większość programów i gier działa bez problemu. Narzędzia biurowe posiadają świetne, darmowe alternatywy (np. LibreOffice, OnlyOffice).</p>
+                </div>
+                <div class="faq-item">
+                    <p class="faq-question">Czy Linux poradzi sobie z pakietem Adobe (Photoshop, Premiere) lub MS Office?</p>
+                    <p class="muted">Aplikacje Adobe oraz stacjonarny pakiet MS Office to jedne z niewielu programów, które celowo nie wspierają Linuksa. Jeśli Twoja praca zawodowa w 100% zależy od Photoshopa lub zaawansowanych makr w Excelu, najlepszym wyborem będzie pozostanie przy Windowsie lub używanie wersji przeglądarkowych (Office 365).</p>
+                </div>
+                <div class="faq-item">
+                    <p class="faq-question">Czy muszę znać komendy tekstowe (Terminal), żeby używać Linuksa?</p>
+                    <p class="muted">W dzisiejszych czasach (na dystrybucjach typu Linux Mint) – absolutnie NIE. Wszystko, od instalacji aplikacji po aktualizacje sterowników, wyklikasz w interfejsie graficznym. Terminal staje się opcjonalnym, potężnym ułatwieniem dla chętnych.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
