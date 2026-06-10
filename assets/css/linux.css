@@ -118,3 +118,32 @@
     color: var(--accent);
     margin-bottom: 8px;
 }
+
+/* Modyfikacje responsywne menu nawigacyjnego Hero (Naprawa dla telefonów) */
+#linux-hero .cta {
+    display: flex;
+    flex-wrap: wrap; /* Pozwala przyciskom przejść do nowej linii, gdy brakuje miejsca */
+    gap: 10px;
+}
+
+#linux-hero .cta .btn, 
+#linux-hero .cta .ghost {
+    flex: 1 1 calc(50% - 10px); /* Układa przyciski w równe pary po 2 w rzędzie na średnich ekranach */
+    text-align: center;
+    padding: 12px 10px; /* Nieco wygodniejsza przestrzeń do kliknięcia palcem */
+    font-size: 0.9rem;
+}
+
+/* Stylizacja stricte pod pionowe ekrany smartfonów (np. poniżej 576px) */
+@media screen and (max-width: 576px) {
+    #linux-hero .cta {
+        flex-direction: column; /* Układa przyciski jeden pod drugim */
+        gap: 8px;
+    }
+    
+    #linux-hero .cta .btn, 
+    #linux-hero .cta .ghost {
+        flex: 1 1 100%; /* Każdy przycisk zajmuje pełną dostępną szerokość */
+        width: 100%;
+    }
+}
