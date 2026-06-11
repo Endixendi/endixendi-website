@@ -89,7 +89,7 @@
 		<section id="pc" class="controls-left card mt-22">
 			<h2>PC — Specyfikacja</h2>
 			
-			<table class="specs" aria-label="Specyfikacja komputera">
+			<table class="specs mt-12" aria-label="Specyfikacja komputera">
 				<tr><td class="cat">Procesor (CPU)</td><td>➤ AMD Ryzen 7 5700X</td></tr>
 				<tr><td class="cat">Karta graficzna (GPU)</td><td>➤ ASUS GeForce RTX 4060 Dual EVO OC, 8 GB</td></tr>
 				<tr><td class="cat">Płyta główna</td><td>➤ ASUS ROG STRIX B550-F GAMING</td></tr>
@@ -99,10 +99,10 @@
 
 				<tr>
 					<td class="cat">Dyski SSD M.2 2280 NVMe</td>
-					<td>
-						➤ LEXAR NM790 2TB SSD – odczyt 7400 MB/s, zapis 6500 MB/s<br>
-						➤ WD Blue SN580 1 TB – odczyt 4150 MB/s, zapis 4150 MB/s<br>
-						➤ Kingston A2000 500 GB – odczyt 2200 MB/s, zapis 2000 MB/s<br>
+					<td class="ssd-list">
+						➤ LEXAR NM790 2TB SSD – odczyt 7400 MB/s, zapis 6500 MB/s
+						➤ WD Blue SN580 1 TB – odczyt 4150 MB/s, zapis 4150 MB/s
+						➤ Kingston A2000 500 GB – odczyt 2200 MB/s, zapis 2000 MB/s
 						➤ Adata XPG SX8200 PRO 256 GB – odczyt 3500 MB/s, zapis 1200 MB/s
 					</td>
 				</tr>
@@ -116,27 +116,27 @@
 
 				<tr>
 					<td class="cat">Dyski HDD</td>
-					<td>
-						➤ Seagate 1 TB – ST1000DM010-2EP102<br>
-						➤ Seagate 500 GB – ST3500312CS<br>
-						➤ Seagate 500 GB – ST3500418AS<br>
+					<td class="ssd-list">
+						➤ Seagate 1 TB – ST1000DM010-2EP102
+						➤ Seagate 500 GB – ST3500312CS
+						➤ Seagate 500 GB – ST3500418AS
 						➤ Toshiba 1 TB – External USB 3.0 (przenośny)
 					</td>
 				</tr>
 
 				<tr>
 					<td class="cat">System operacyjny</td>
-					<td>
-						➤ Windows 11 HOME (64-bit)<br>
+					<td class="ssd-list">
+						➤ Windows 11 HOME (64-bit)
 						➤ Linux Mint 22.3 (laptop)
 					</td>
 				</tr>
 				
 				<tr>
 					<td class="cat">Monitory</td>
-					<td>
-						➤ Monitor LG UltraGear 27GS75Q-B 27" 2K IPS 180Hz (O/C 200Hz) 1ms Gamingowy<br>
-						➤ Monitor LG UltraGear 27GS75Q-B 27" 2K IPS 180Hz (O/C 200Hz) 1ms Gamingowy<br>
+					<td class="ssd-list">
+						➤ Monitor LG UltraGear 27GS75Q-B 27" 2K IPS 180Hz (O/C 200Hz) 1ms Gamingowy
+						➤ Monitor LG UltraGear 27GS75Q-B 27" 2K IPS 180Hz (O/C 200Hz) 1ms Gamingowy
 						➤ TV 4K 60Hz Hisense
 					</td>
 				</tr>
@@ -159,19 +159,6 @@
 				<li>Laptop: HP 15s (AMD Ryzen 5 5500U, 16 GB RAM, 512 GB SSD NVMe M.2)</li>
 			</ul>
 		</section>
-
-        <section id="o-mnie" class="card mt-22">
-            <h2>O mnie</h2>
-            <p>
-                Filmy na moim kanale YouTube „Endixendi” zacząłem publikować hobbystycznie w 2014 roku. Moja pierwsza seria z MTA szybko zdobyła popularność i wciąż wspominam ten czas z ogromnym sentymentem. Choć obowiązki szkolne i później studia chwilowo ograniczyły moją aktywność, pasja do gier i tworzenia treści nigdy nie zgasła.
-            </p>
-            <p>
-                Dziś nadal nagrywam gameplaye, tworzę poradniki i dzielę się wiedzą z zakresu gier oraz technologii. Studia informatyczne pozwalają mi rozwijać techniczne umiejętności, które wykorzystuję przy tworzeniu materiałów, a jednocześnie są kolejnym sposobem na realizację mojej pasji.
-            </p>
-            <p>
-                Mój kanał i społeczność są dla mnie bardzo ważne – chcę dzielić się doświadczeniem, inspirować innych i razem rozwijać miejsce, gdzie pasja do gier łączy ludzi w Polsce i na całym świecie.
-            </p>
-        </section>
 
         <section id="kontakt" class="grid mt-22">
             <div class="card">
@@ -201,7 +188,7 @@
 -->
         
         <section id="ig" class="card mt-22">
-            <h2>Instagram — <a class="inline-link" href="https://www.instagram.com/endixendi/">@Endixendi</a></h2></br>
+            <h2 >Instagram — <a class="inline-link" href="https://www.instagram.com/endixendi/">@Endixendi</a></h2></br>
             <!-- Elfsight Instagram Feed | Untitled Instagram Feed -->
             <script src="https://elfsightcdn.com/platform.js" async></script>
             <div class="elfsight-app-6ee50ddd-5d35-4e64-8983-ee9db1764b81" data-elfsight-app-lazy></div>
@@ -210,7 +197,7 @@
         <section id="spotify" class="card mt-22">
             <h2>Playlista Spotify</h2>
             <p>Muzyka, którą sam wybrałem i polecam!</p>
-            <iframe class="spotify-embed" src="https://open.spotify.com/embed/playlist/2qrALXJZta6M1PdaW8QRCE?utm_source=generator" width="100%" height="352" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <iframe class="mt-12" data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2qrALXJZta6M1PdaW8QRCE?utm_source=generator&theme=0&si=d4a64e8b10ff45e4" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </section>
 
     </main>

@@ -347,7 +347,7 @@ table.specs td,
 table.specs th {
     padding: 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-} cleavage
+}
 
 /* Styl dla kategorii w tabeli specyfikacji */
 .cat {
@@ -773,4 +773,11 @@ section {
         height: auto; 
         aspect-ratio: 25 / 10; 
     }
+}
+
+/* ==========================================================================
+   Formatowanie tekstu wielolinijkowego (zastępuje tagi <br>)
+   ========================================================================== */
+.ssd-list {
+    white-space: pre-line;
 }
