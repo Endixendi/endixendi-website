@@ -64,6 +64,8 @@ let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
       loadHTML("menu-placeholder", MENU_PATH).then(() => {
         state.menuLoaded = true;
         initMenuToggle();
+        // TUTAJ DOPISUJEMY: Podświetlenie zakładki odpali się natychmiast po wczytaniu menu.html
+        highlightActiveNav(); 
       }),
       loadHTML("footer-placeholder", FOOTER_PATH).then(() => {
         state.footerLoaded = true;
@@ -348,3 +350,51 @@ window.addEventListener('load', () => {
     }, 1500);
     initSeasonalSystem();
 });
+
+/* ==========================================================================
+   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU (UX)
+   ========================================================================== */
+function highlightActiveNav() {
+    // 1. Pobieramy aktualną ścieżkę podstrony (np. "/gallery.html") oraz kotwicę/hash (np. "#pc")
+    const currentPath = window.location.pathname;
+    const currentHash = window.location.hash;
+
+    // 2. Czyścimy stare podświetlenia (na wypadek, gdyby użytkownik klikał linki na tej samej stronie)
+    const allLinks = ["nav-home", "nav-tworczosc", "nav-pc", "nav-o-mnie", "nav-kontakt", "nav-gallery"];
+    allLinks.forEach(id => {
+        const link = document.getElementById(id);
+        if (link) {
+            link.style.color = "";        // Przywraca domyślny kolor z CSS
+            link.style.textShadow = "";   // Usuwa efekt poświaty/glow
+        }
+    });
+
+    // 3. Sprawdzamy adres URL i decydujemy, który link w menu powinien się teraz świecić
+    if (currentPath.includes("gallery.html")) {
+        setActiveLink("nav-gallery");
+    } else if (currentHash === "#tworczosc") {
+        setActiveLink("nav-tworczosc");
+    } else if (currentHash === "#pc") {
+        setActiveLink("nav-pc");
+    } else if (currentHash === "#o-mnie") {
+        setActiveLink("nav-o-mnie");
+    } else if (currentHash === "#kontakt") {
+        setActiveLink("nav-kontakt");
+    } else if (currentPath === "/" || currentPath.includes("index.html") || currentHash === "#home" || currentHash === "") {
+        // Domyślnie podświetlamy przycisk "Home", jeśli jesteśmy na stronie głównej bez konkretnego hasha
+        setActiveLink("nav-home");
+    }
+
+    // Funkcja wewnętrzna wykonująca faktyczne podświetlenie wybranego elementu
+    function setActiveLink(activeId) {
+        const link = document.getElementById(activeId);
+        if (link) {
+            link.style.color = "var(--accent)"; // Zmienia kolor na neonowy niebieski
+            link.style.textShadow = "0 0 10px var(--accent)"; // Wyciąga neonową poświatę glow
+            link.style.opacity = "1"; // Zapewnia pełną widoczność elementu
+        }
+    }
+}
+
+// Nasłuchiwacz zdarzeń: reaguje na zmianę sekcji (gdy przewijasz stronę główną klikając w menu)
+window.addEventListener("hashchange", highlightActiveNav);
