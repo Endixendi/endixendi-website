@@ -86,14 +86,12 @@
     border: 2px solid var(--accent);
     z-index: 99;
     min-width: 200px;
-    box-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Klasa dodawana przez skrypt przy przegranej */
 .modal.game-over-border {
-    border-color: var(--neon-red) !important;
-    box-shadow: 0 0 25px rgba(255, 77, 109, 0.5) !important;
+    border-color: rgba(255, 0, 0, 1.0) !important;
 }
 
 .modal h2 {
