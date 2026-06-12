@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/tetris.css">
-
+    
     <link rel="icon" href="assets/images/kolo.png" type="image/png">
 </head>
 <body>
@@ -24,91 +24,93 @@
 
         <section id="tetris-hero" class="mt-16">
             <div class="card">
-                <h1>Tetris</h1>
-                <p class="lead">Klasyczna gra Tetris w wersji przeglądarkowej 🎮</p>
+                <h1>Tetris Game</h1>
+                <p class="lead">Układaj klocki, czyść linie i zdobywaj najwyższy wynik! 🧱</p>
             </div>
         </section>
 
         <section id="tetris-game" class="card mt-22">
             <div class="tetris-container">
-
-                <aside class="side left">
-                    <h2>Statystyki</h2>
-                    <div class="stats">
-                        <div>Wynik: <span id="score">0</span></div>
-                        <div>Linie: <span id="lines">0</span></div>
-                        <div>Poziom: <span id="level">1</span></div>
+                
+                <div class="side-panel">
+                    <div class="stat-box">
+                        <div class="label">Wynik</div>
+                        <div id="score" class="value">0</div>
                     </div>
-                </aside>
-
-                <div class="board-container">
-                    <canvas id="board" width="300" height="600"></canvas>
-                    
-                    <div class="overlay hidden" id="overlay">
-                        <div class="modal">
-                            <h2 id="overlay-title">Tetris</h2>
-                            <p id="overlay-sub">Naciśnij Enter aby zacząć</p>
-                        </div>
+                    <div class="stat-box mt-16">
+                        <div class="label">Linie</div>
+                        <div id="lines" class="value">0</div>
+                    </div>
+                    <div class="stat-box mt-16">
+                        <div class="label">Poziom</div>
+                        <div id="level" class="value">1</div>
                     </div>
                 </div>
 
-                <aside class="side right">
+                <div class="tetris-wrapper">
+                    <canvas id="tetrisCanvas"></canvas>
                     
-                    <div class="mobile-controls mt-16">
-                        <button data-action="left">&larr;</button> 
-                        <button data-action="rotate">&uarr;</button>
-                        <button data-action="right">&rarr;</button>
-                        <button data-action="down">&darr;</button>
-                        <button data-action="drop">&harr;</button>
-                        <button data-action="start">&crarr;</button>
-                        <button data-action="hold">&loz;</button>
+                    <div id="tetris-menu" class="modal">
+                        <h2 id="menu-title">Tetris</h2>
+                        <p id="menu-instruction">Enter – rozpocznij</p>
                     </div>
-                    
-                    <div class="next-hold">
-                        <div>
-                            <h3>Następny</h3>
-                            <canvas id="next" width="120" height="120"></canvas>
-                        </div>
-                        <div>
-                            <h3>Trzymany</h3>
-                            <canvas id="hold" width="120" height="120"></canvas>
-                        </div>
-                    </div>
+                </div>
 
-					<div class="audio-settings mt-16">
-						<div class="volume-control">
-							<label for="volume-music">Głośność muzyki</label>
-							<input id="volume-music" type="range" min="0" max="1" step="0.01" value="0.15">
-						</div>
-						<div class="volume-control">
-							<label for="volume-effects">Głośność efektów</label>
-							<input id="volume-effects" type="range" min="0" max="1" step="0.01" value="0.3">
-						</div>
-					</div>
-
-                    <div class="controls-left mt-16">
-                        <h3>Sterowanie</h3>
-                        <ul>
-                            <li>← / → – Przesuń</li>
-                            <li>↑ / X – Obrót</li>
-                            <li>Z – Obrót w lewo</li>
-                            <li>↓ – Szybciej</li>
-                            <li>Spacja – Rzuć</li>
-                            <li>C – Trzymaj</li>
-                            <li>P – Pauza</li>
-                            <li>Enter – Start</li>
-                        </ul>
+                <div class="side-panel">
+                    <div class="preview-box">
+                        <div class="label">Następny</div>
+                        <canvas id="nextCanvas" width="100" height="100"></canvas>
                     </div>
-                </aside>
+                    <div class="preview-box mt-16">
+                        <div class="label">Trzymany</div>
+                        <canvas id="holdCanvas" width="100" height="100"></canvas>
+                    </div>
+                </div>
 
             </div>
+
+            <div class="tetris-mobile-controls mt-16">
+                <div class="control-row">
+                    <button id="btn-left" class="arrow-btn">←</button>
+                    <button id="btn-up" class="arrow-btn">↑</button>
+                    <button id="btn-right" class="arrow-btn">→</button>
+                </div>
+                <div class="control-row">
+                    <button id="btn-down" class="arrow-btn">↓</button>
+                    <button id="btn-swap" class="arrow-btn">↔</button>
+                    <button id="btn-drop" class="arrow-btn">↵</button>
+                </div>
+            </div>
         </section>
-	
-        <section id="credits" class="card mt-16">
-            <p>
-                <strong>Muzyka:</strong> pixabay.com<br>
-                <strong>Dźwięki:</strong> pixabay.com
-            </p>
+        
+        <section id="controls" class="card mt-16">
+            <div class="controls-grid">
+                
+                <div class="controls-left">
+                    <h3>Sterowanie</h3>
+                    <ul>
+                        <li>← / → – Ruch w lewo / prawo</li>
+                        <li>↑ – Obrót klocka</li>
+                        <li>↓ – Przyspieszenie opadania</li>
+                        <li>Spacja – Natychmiastowy upadek (Hard Drop)</li>
+                        <li>C – Przetrzymanie klocka (Hold)</li>
+						<li>P – Pauza</li>
+                        <li>Enter – Start</li>
+                    </ul>
+                </div>
+
+                <div class="audio-settings mt-16">
+                    <div class="volume-control">
+                        <label for="volume-music">Głośność muzyki</label>
+                        <input id="volume-music" type="range" min="0" max="1" step="0.01" value="0.3">
+                    </div>
+                    <div class="volume-control">
+                        <label for="volume-effects">Głośność efektów</label>
+                        <input id="volume-effects" type="range" min="0" max="1" step="0.01" value="0.3">
+                    </div>
+                </div>
+
+            </div>
         </section>
 
     </main>

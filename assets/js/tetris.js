@@ -3,33 +3,37 @@
  */
 
 // Konfiguracja Canvas
-const board = document.getElementById('board');
-const ncv = document.getElementById('next');
-const hcv = document.getElementById('hold');
+const board = document.getElementById('tetrisCanvas'); // Dopasowane do id z HTML
+const ncv = document.getElementById('nextCanvas');     // Dopasowane do id z HTML
+const hcv = document.getElementById('holdCanvas');     // Dopasowane do id z HTML
 const ctx = board.getContext('2d');
 const nctx = ncv.getContext('2d');
 const hctx = hcv.getContext('2d');
 
-// Elementy UI
+// Elementy UI (Dopasowane dokładnie do struktury HTML)
 const scoreEl = document.getElementById('score');
 const linesEl = document.getElementById('lines');
 const levelEl = document.getElementById('level');
-const overlay = document.getElementById('overlay');
-const overlayTitle = document.getElementById('overlay-title');
-const overlaySub = document.getElementById('overlay-sub');
+const tetrisMenu = document.getElementById('tetris-menu');
+const menuTitle = document.getElementById('menu-title');
+const menuInstruction = document.getElementById('menu-instruction');
+
+// Ustawienia wielkości fizycznej kanwy głównej
+board.width = 300;
+board.height = 600;
 
 // Ustawienia gry
 const COLS = 10, ROWS = 20, TILE = 30;
 const ARENA = createMatrix(COLS, ROWS);
 
-// Kolory
+// Kolory klocków
 const COLORS = {
     'I': '#20c4ff', 'J': '#4e6cff', 'L': '#ff9f1c',
     'O': '#ffe600', 'S': '#3bd16f', 'T': '#bf7bff', 'Z': '#ff4d6d',
     '#': 'rgba(255, 255, 255, 0.15)' 
 };
 
-// KOLOR POSTAWIONYCH FIGUR
+// Kolor zablokowanych elementów na planszy
 const LOCKED_COLOR = '#4a4a4a'; 
 
 const PIECES = {
@@ -52,7 +56,7 @@ const sounds = {
     gameover: new Audio("assets/sounds/global/gameover-retro.webm")
 };
 
-// KONFIGURACJA AUDIO
+// Konfiguracja audio
 sounds.music.loop = true;
 sounds.music.volume = 0.15;
 
@@ -182,7 +186,6 @@ function playerRotate(dir) {
             return;
         }
     }
-    // RESET I PLAY DLA OBROTU
     sounds.rotate.currentTime = 0;
     sounds.rotate.play().catch(() => {});
 }
@@ -193,7 +196,6 @@ function playerDrop() {
         player.pos.y--;
         merge(ARENA, player);
         
-        // DODANO: Dźwięk drop przy uderzeniu w dno (automatyczne lub ArrowDown)
         sounds.drop.currentTime = 0;
         sounds.drop.play().catch(() => {});
 
@@ -212,7 +214,6 @@ function hardDrop() {
     player.pos.y--;
     merge(ARENA, player);
 
-    // RESET I PLAY DLA SPACJI
     sounds.drop.currentTime = 0;
     sounds.drop.play().catch(() => {});
 
@@ -221,7 +222,6 @@ function hardDrop() {
     updateStats();
 }
 
-// Sprawdzenie i czyszczenie linii na planszy
 function arenaSweep() {
     let rowCount = 0;
     outer: for (let y = ARENA.length - 1; y >= 0; --y) {
@@ -334,7 +334,13 @@ function gameStart() {
     playerReset();
     updateStats();
     running = true;
-    if (overlay) overlay.classList.add('hidden');
+
+    // Ukrywamy menu oraz przywracamy domyślną (niebieską) ramkę
+    if (tetrisMenu) {
+        tetrisMenu.classList.add('hidden');
+        tetrisMenu.classList.remove('game-over-border');
+    }
+
     lastTime = performance.now();
     try { sounds.music.play().catch(() => {}); } catch(e) {}
     animationFrameId = requestAnimationFrame(update);
@@ -345,9 +351,15 @@ function gameEnd() {
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
     }
-    if (overlayTitle) overlayTitle.textContent = 'Koniec gry';
-    if (overlaySub) overlaySub.textContent = 'Enter – zagraj ponownie';
-    if (overlay) overlay.classList.remove('hidden');
+
+    // Dynamiczna zamiana tekstów i narzucenie czerwonej ramki przy przegranej
+    if (menuTitle) menuTitle.textContent = 'Koniec gry';
+    if (menuInstruction) menuInstruction.textContent = 'Enter – zagraj ponownie';
+    if (tetrisMenu) {
+        tetrisMenu.classList.remove('hidden');
+        tetrisMenu.classList.add('game-over-border');
+    }
+
     sounds.gameover.play().catch(() => {});
     sounds.music.pause();
     sounds.music.currentTime = 0;
@@ -356,9 +368,16 @@ function gameEnd() {
 function togglePause() {
     if (!running || gameOver) return;
     paused = !paused;
-    if (overlayTitle) overlayTitle.textContent = paused ? 'Pauza' : 'Tetris';
-    if (overlaySub) overlaySub.textContent = paused ? 'P – wznów' : 'Enter – rozpocznij';
-    if (overlay) overlay.classList.toggle('hidden', !paused);
+
+    // Zarządzanie stanem pauzy w menu modalnym
+    if (menuTitle) menuTitle.textContent = paused ? 'Pauza' : 'Tetris';
+    if (menuInstruction) menuInstruction.textContent = paused ? 'P – wznów' : 'Enter – rozpocznij';
+    
+    if (tetrisMenu) {
+        tetrisMenu.classList.toggle('hidden', !paused);
+        // Na wypadek pauzy upewniamy się, że nie ma czerwonej ramki końca gry
+        tetrisMenu.classList.remove('game-over-border');
+    }
     
     if (!paused) {
         if (animationFrameId) {
@@ -400,12 +419,14 @@ window.addEventListener('keydown', e => {
     }
 });
 
-// Obsługa przycisków mobilnych
-document.querySelectorAll(".mobile-controls button").forEach(btn => {
+// Obsługa przycisków mobilnych (Dopasowane selektory)
+document.querySelectorAll(".tetris-mobile-controls button").forEach(btn => {
     btn.addEventListener("click", (e) => {
-        const action = btn.dataset.action;
+        // Ponieważ w HTML użyłeś ID zamiast dataset, pobieramy akcję z atrybutu ID odcinając przedrostek "btn-"
+        const action = btn.id.replace('btn-', '');
+        
         if (!running || gameOver) {
-            if (action === "start") gameStart();
+            if (action === "start") gameStart(); // Jeśli masz dedykowany przycisk pauzy/startu
             return;
         }
         if (paused && action !== "start") return;
@@ -413,17 +434,18 @@ document.querySelectorAll(".mobile-controls button").forEach(btn => {
         switch(action){
             case "left": player.pos.x--; if(collide(ARENA, player)) player.pos.x++; break;
             case "right": player.pos.x++; if(collide(ARENA, player)) player.pos.x--; break;
-            case "rotate": playerRotate(1); break;
+            case "up": playerRotate(1); break; // W Tetrisie strzałka w górę to obrót
             case "down": playerDrop(); break;
             case "drop": hardDrop(); break;
             case "hold": holdPiece(); break;
+            case "swap": holdPiece(); break; // Dodatkowe powiązanie dla przycisku ze strzałkami wymiennymi ↔
             case "start": togglePause(); break;
         }
         draw();
     });
 });
 
-// Suwak głośności
+// Suwaki głośności
 const musicVolumeSlider = document.getElementById('volume-music');
 if (musicVolumeSlider) {
     musicVolumeSlider.addEventListener('input', () => {
@@ -444,9 +466,12 @@ if (effectsVolumeSlider) {
 
 // Inicjalizacja przy starcie strony
 window.addEventListener('load', () => {
-    if (overlayTitle) overlayTitle.textContent = 'Tetris';
-    if (overlaySub) overlaySub.textContent = 'Enter – rozpocznij';
-    if (overlay) overlay.classList.remove('hidden');
+    if (menuTitle) menuTitle.textContent = 'Tetris';
+    if (menuInstruction) menuInstruction.textContent = 'Enter – rozpocznij';
+    if (tetrisMenu) {
+        tetrisMenu.classList.remove('hidden');
+        tetrisMenu.classList.remove('game-over-border');
+    }
     updateStats();
     draw();
 });
