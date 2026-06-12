@@ -83,7 +83,7 @@
     padding: 25px;
     border-radius: 12px;
     text-align: center;
-    border: 2px solid var(--neon-blue);
+    border: 2px solid var(--accent);
     z-index: 99;
     min-width: 200px;
     box-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
