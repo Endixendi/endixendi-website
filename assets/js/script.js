@@ -143,7 +143,7 @@ let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
   }
 
   /* =========================
-     Smooth scroll (delegacja zdarzeń)
+     Smooth scroll (delegacja zdarzeń) - POPRAWIONY URL
      ========================= */
   function initSmoothScroll() {
     document.addEventListener("click", function (e) {
@@ -180,6 +180,12 @@ let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
         behavior: "smooth",
         block: "start"
       });
+
+      // --- POPRAWKA: Aktualizujemy adres URL w przeglądarce i ręcznie wywołujemy podświetlenie ---
+      history.pushState(null, null, targetHash);
+      if (typeof highlightActiveNav === "function") {
+         highlightActiveNav();
+      }
 
       // Zamknij mobilne menu po kliknięciu
       const mainNav = document.getElementById("main-nav");
@@ -352,14 +358,14 @@ window.addEventListener('load', () => {
 });
 
 /* ==========================================================================
-   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU (UX)
+   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU (UX) - POPRAWIONY
    ========================================================================== */
 function highlightActiveNav() {
-    // 1. Pobieramy aktualną ścieżkę podstrony (np. "/gallery.html") oraz kotwicę/hash (np. "#pc")
+    // 1. Pobieramy aktualną ścieżkę podstrony oraz kotwicę/hash
     const currentPath = window.location.pathname;
     const currentHash = window.location.hash;
 
-    // 2. Czyścimy stare podświetlenia (na wypadek, gdyby użytkownik klikał linki na tej samej stronie)
+    // 2. Czyścimy stare podświetlenia z głównych linków widocznych w pasku
     const allLinks = ["nav-home", "nav-tworczosc", "nav-pc", "nav-o-mnie", "nav-kontakt", "nav-gallery"];
     allLinks.forEach(id => {
         const link = document.getElementById(id);
@@ -369,7 +375,7 @@ function highlightActiveNav() {
         }
     });
 
-    // 3. Sprawdzamy adres URL i decydujemy, który link w menu powinien się teraz świecić
+    // 3. Sprawdzamy adres URL i decydujemy, który główny link powinien się świecić
     if (currentPath.includes("gallery.html")) {
         setActiveLink("nav-gallery");
     } else if (currentHash === "#tworczosc") {
@@ -380,21 +386,24 @@ function highlightActiveNav() {
         setActiveLink("nav-o-mnie");
     } else if (currentHash === "#kontakt") {
         setActiveLink("nav-kontakt");
+    } else if (currentHash === "#spotify" || currentHash === "#Spotify") {
+        // Jeśli kliknięto Spotify w zakładce Sociale, nie podświetlamy nic na głównym pasku
+        return;
     } else if (currentPath === "/" || currentPath.includes("index.html") || currentHash === "#home" || currentHash === "") {
-        // Domyślnie podświetlamy przycisk "Home", jeśli jesteśmy na stronie głównej bez konkretnego hasha
+        // Domyślnie podświetlamy przycisk "Home", tylko jeśli jesteśmy na stronie głównej
         setActiveLink("nav-home");
     }
 
-    // Funkcja wewnętrzna wykonująca faktyczne podświetlenie wybranego elementu
+    // Funkcja wewnętrzna wykonująca podświetlenie
     function setActiveLink(activeId) {
         const link = document.getElementById(activeId);
         if (link) {
-            link.style.color = "var(--accent)"; // Zmienia kolor na neonowy niebieski
-            link.style.textShadow = "0 0 10px var(--accent)"; // Wyciąga neonową poświatę glow
-            link.style.opacity = "1"; // Zapewnia pełną widoczność elementu
+            link.style.color = "var(--accent)"; 
+            link.style.textShadow = "0 0 10px var(--accent)"; 
+            link.style.opacity = "1"; 
         }
     }
 }
 
-// Nasłuchiwacz zdarzeń: reaguje na zmianę sekcji (gdy przewijasz stronę główną klikając w menu)
+// Nasłuchiwacz zdarzeń: reaguje na ręczne wpisanie lub zmianę adresu URL
 window.addEventListener("hashchange", highlightActiveNav);
