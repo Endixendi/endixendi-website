@@ -163,6 +163,7 @@ function merge(arena, p) {
     });
 }
 
+// Naprawiony obrót klocka (transpozycja + odwrócenie)
 function rotate(matrix, dir) {
     for (let y = 0; y < matrix.length; ++y) {
         for (let x = 0; x < y; ++x) {
@@ -354,7 +355,7 @@ function gameEnd() {
 
     // Dynamiczna zamiana tekstów i narzucenie czerwonej ramki przy przegranej
     if (menuTitle) menuTitle.textContent = 'Koniec gry';
-    if (menuInstruction) menuInstruction.textContent = 'Enter – zagraj ponownie';
+    if (menuInstruction) menuInstruction.textContent = '↵ lub Enter – zagraj ponownie';
     if (tetrisMenu) {
         tetrisMenu.classList.remove('hidden');
         tetrisMenu.classList.add('game-over-border');
@@ -371,7 +372,7 @@ function togglePause() {
 
     // Zarządzanie stanem pauzy w menu modalnym
     if (menuTitle) menuTitle.textContent = paused ? 'Pauza' : 'Tetris';
-    if (menuInstruction) menuInstruction.textContent = paused ? 'P – wznów' : 'Enter – rozpocznij';
+    if (menuInstruction) menuInstruction.textContent = paused ? 'P – wznów' : '↵ lub Enter – rozpocznij';
     
     if (tetrisMenu) {
         tetrisMenu.classList.toggle('hidden', !paused);
@@ -419,26 +420,35 @@ window.addEventListener('keydown', e => {
     }
 });
 
-// Obsługa przycisków mobilnych (Dopasowane selektory)
+// POPRAWIONA: Obsługa przycisków mobilnych i dotyku menu
 document.querySelectorAll(".tetris-mobile-controls button").forEach(btn => {
     btn.addEventListener("click", (e) => {
-        // Ponieważ w HTML użyłeś ID zamiast dataset, pobieramy akcję z atrybutu ID odcinając przedrostek "btn-"
+        // Pobieramy akcję z atrybutu ID odcinając przedrostek "btn-"
         const action = btn.id.replace('btn-', '');
         
+        // Zmiana: przycisk "drop" (↵) może wystartować grę, jeśli nie jest uruchomiona lub nastąpił koniec gry
         if (!running || gameOver) {
-            if (action === "start") gameStart(); // Jeśli masz dedykowany przycisk pauzy/startu
+            if (action === "drop" || action === "start") {
+                gameStart();
+            }
             return;
         }
-        if (paused && action !== "start") return;
+        
+        if (paused) {
+            if (action === "drop" || action === "start") {
+                togglePause();
+            }
+            return;
+        }
 
         switch(action){
             case "left": player.pos.x--; if(collide(ARENA, player)) player.pos.x++; break;
             case "right": player.pos.x++; if(collide(ARENA, player)) player.pos.x--; break;
-            case "up": playerRotate(1); break; // W Tetrisie strzałka w górę to obrót
+            case "up": playerRotate(1); break; 
             case "down": playerDrop(); break;
             case "drop": hardDrop(); break;
             case "hold": holdPiece(); break;
-            case "swap": holdPiece(); break; // Dodatkowe powiązanie dla przycisku ze strzałkami wymiennymi ↔
+            case "swap": holdPiece(); break; 
             case "start": togglePause(); break;
         }
         draw();
@@ -464,13 +474,23 @@ if (effectsVolumeSlider) {
     });
 }
 
-// Inicjalizacja przy starcie strony
+// Inicjalizacja przy starcie strony oraz obsługa dotknięcia samego menu na ekranie smartfona
 window.addEventListener('load', () => {
     if (menuTitle) menuTitle.textContent = 'Tetris';
-    if (menuInstruction) menuInstruction.textContent = 'Enter – rozpocznij';
+    if (menuInstruction) menuInstruction.textContent = 'Kliknij ↵ lub Dotknij';
+    
     if (tetrisMenu) {
         tetrisMenu.classList.remove('hidden');
         tetrisMenu.classList.remove('game-over-border');
+        
+        // Dodatkowe udogodnienie mobilne – kliknięcie/tapnięcie w czarne okienko menu również odpala grę!
+        tetrisMenu.addEventListener('click', () => {
+            if (!running || gameOver) {
+                gameStart();
+            } else if (paused) {
+                togglePause();
+            }
+        });
     }
     updateStats();
     draw();

@@ -115,11 +115,13 @@
    STEROWANIE MOBILNE
    ========================================================================== */
 .tetris-mobile-controls {
-    display: none;
+    display: none; /* Domyślnie ukryte na PC */
     flex-direction: column;
     gap: 8px;
     margin: 20px auto 0 auto;
-    max-width: 340px;
+    width: 100%;
+    max-width: 320px; /* Szerokość całego panelu */
+    flex-shrink: 0;   /* ZAKAZ MIAŻDŻENIA PRZEZ FLEXBOX */
 }
 
 .control-row {
@@ -130,15 +132,17 @@
 
 .arrow-btn {
     flex: 1;
-    height: 52px;
+    height: 54px;     /* Stała, wygodna wysokość przycisku */
+    min-width: 60px;  /* Minimalna szerokość pojedynczego przycisku */
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: white;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     border-radius: 8px;
     cursor: pointer;
     user-select: none;
+    transition: background 0.1s;
 }
 
 .arrow-btn:active {
@@ -146,26 +150,36 @@
     border-color: var(--neon-blue);
 }
 
-/* RWD – dopasowanie do mniejszych ekranów */
+/* ==========================================================================
+   RWD – Proste dopasowanie do mniejszych ekranów telefonów
+   ========================================================================== */
 @media (max-width: 600px) {
+    /* Na telefonie zmieniamy kierunek z poziomego na pionowy */
     .tetris-container {
         flex-direction: column;
         align-items: center;
         gap: 15px;
     }
+
+    /* Pokazujemy przyciski mobilne w pełnej okazałości */
+    .tetris-mobile-controls {
+        display: flex !important; 
+        margin: 15px auto;
+    }
+
+    /* Boczne panele lądują na dole i układają się obok siebie */
     .side-panel {
+        display: flex;
         flex-direction: row;
-        width: 300px;
+        width: 100%;
+        max-width: 320px;
         justify-content: space-between;
-    }
-    .side-panel .stat-box, .side-panel .preview-box {
-        flex: 1;
-        margin: 0 !important;
-    }
-    .side-panel {
         gap: 10px;
     }
-    .tetris-mobile-controls {
-        display: flex;
+
+    .side-panel .stat-box, 
+    .side-panel .preview-box {
+        flex: 1;
+        margin: 0 !important;
     }
 }
