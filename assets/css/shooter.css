@@ -3,12 +3,12 @@
    ========================================================================== */
 
 :root {
-    --accent: #06b6d4;
-    --accent-2: #84cc16;
+    --accent: var(--accent);
+    --accent-2: var(--accent-2);
     --danger: #ff4d6d;
     --warning: #ff9f1c;
-    --bg-dark: #0f172a;
-    --card-bg: rgba(20, 23, 27, 0.95);
+    --bg-dark: var(--bg);
+    --card-bg: var(--card);
 }
 
 .shooter-container {
@@ -22,6 +22,11 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border);
+}
+
+.shooter-container:hover {
+    border-color: var(--accent);
 }
 
 #gameCanvas {
@@ -39,14 +44,6 @@
 #score {
     position: absolute;
     top: 15px;
-    left: 15px;
-    font-size: 20px;
-    font-weight: 800;
-    color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-    z-index: 10;
-    pointer-events: none;
-    font-family: 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Sekcja temperatury */
@@ -275,13 +272,13 @@
 .volume-control h5 {
     margin: 10px 0 5px 0;
     font-size: 14px;
-    color: #94a3b8;
+    color: var(--muted);
 }
 
 input[type="range"] {
     width: 100%;
     height: 6px;
-    background: #334155;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
     outline: none;
     -webkit-appearance: none;
@@ -294,6 +291,11 @@ input[type="range"]::-webkit-slider-thumb {
     background: var(--accent);
     border-radius: 50%;
     cursor: pointer;
+}
+
+body.theme-red .mobile-btn-shoot {
+    background: #ff0000 !important;
+    color: #ffffff !important;
 }
 
 /* ==========================================================================

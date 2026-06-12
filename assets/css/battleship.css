@@ -9,7 +9,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border);
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
@@ -28,14 +28,19 @@
 }
 
 .ghost-select {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--glass);
+    border: 1px solid var(--border);
     color: #fff;
     padding: 5px 10px;
     border-radius: 4px;
     outline: none;
     cursor: pointer;
     font-size: 0.9rem;
+    transition: border-color var(--transition);
+}
+
+.ghost-select:hover {
+    border-color: var(--accent);
 }
 
 .ghost-select option {
@@ -267,7 +272,6 @@
 input[type="range"] {
     accent-color: var(--accent);
     cursor: pointer;
-    width: 80px;
 }
 
 /* ==========================================================================

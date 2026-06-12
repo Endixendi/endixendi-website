@@ -3,10 +3,10 @@
    ========================================================================== */
 
 :root {
-    --primary-color: #06b6d4;
-    --primary-dark: #0284c7;
-    --bg-dark: #0f1115;
-    --card-bg: #14171b;
+    --primary-color: var(--accent);
+    --primary-dark: var(--accent-2);
+    --bg-dark: var(--bg);
+    --card-bg: var(--card);
 }
 
 body {
@@ -39,10 +39,10 @@ body {
     display: flex;
     justify-content: center;
     border-radius: 16px;
-    background: linear-gradient(to right, #06b6d4, #84cc16, #facc15);
+    background: linear-gradient(to right, var(--accent), var(--accent-2), var(--accent));
     padding: 2px;
     box-sizing: border-box;
-}
+
 
 #gameCanvas {
     width: 100%;
@@ -182,17 +182,67 @@ body {
     font-weight: 800;
     font-size: 1rem;
     color: white;
-    background: #0f1115;
-    border: 2px solid #333;
+    background: var(--bg);
+    border: 2px solid var(--border);
     border-radius: 12px;
     cursor: pointer;
     text-transform: uppercase;
-    transition: transform 0.1s;
+    transition: transform 0.1s, background var(--transition), border-color var(--transition);
+}
+
+#jumpBtn:hover {
+    border-color: var(--accent);
 }
 
 #jumpBtn:active {
     transform: scale(0.97);
-    background: #1a1d23;
+    background: var(--card);
+}
+
+/* Dopasowanie do czerwonego stylu */
+body.theme-red #jumpBtn {
+    background: #ff0000 !important;
+    color: #ffffff !important;
+    border-color: #ff0000 !important;
+}
+
+@media (max-width: 768px) {
+    #dino-hero.mt-16 { 
+        margin-top: 5px !important; 
+    }
+    #dino-hero .card { 
+        padding: 10px; 
+    }
+    #dino-hero h1 { 
+        font-size: 1.5rem; 
+        margin-bottom: 5px; 
+    }
+    #dino-hero p { 
+        font-size: 0.8rem; 
+    }
+}
+
+/* Dopasowanie do czerwonego stylu */
+body.theme-red #jumpBtn {
+    background: #ff0000 !important;
+    color: #ffffff !important;
+    border-color: #ff0000 !important;
+}
+
+@media (max-width: 768px) {
+    #dino-hero.mt-16 { 
+        margin-top: 5px !important; 
+    }
+    #dino-hero .card { 
+        padding: 10px; 
+    }
+    #dino-hero h1 { 
+        font-size: 1.5rem; 
+        margin-bottom: 5px; 
+    }
+    #dino-hero p { 
+        font-size: 0.8rem; 
+    }
 }
 
 /* ==========================================================================
