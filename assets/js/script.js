@@ -358,15 +358,15 @@ window.addEventListener('load', () => {
 });
 
 /* ==========================================================================
-   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU (UX) - POPRAWIONY
+   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU (UX) - WERSJA Z DROPDOWNAMI
    ========================================================================== */
 function highlightActiveNav() {
     // 1. Pobieramy aktualną ścieżkę podstrony oraz kotwicę/hash
-    const currentPath = window.location.pathname;
-    const currentHash = window.location.hash;
+    const currentPath = window.location.pathname.toLowerCase();
+    const currentHash = window.location.hash.toLowerCase();
 
-    // 2. Czyścimy stare podświetlenia z głównych linków widocznych w pasku
-    const allLinks = ["nav-home", "nav-tworczosc", "nav-pc", "nav-o-mnie", "nav-kontakt", "nav-gallery"];
+    // 2. Czyścimy stare podświetlenia ZE WSZYSTKICH głównych elementów menu
+    const allLinks = ["nav-home", "nav-tworczosc", "nav-pc", "nav-o-mnie", "nav-kontakt", "nav-gallery", "nav-tools", "nav-socials", "nav-games"];
     allLinks.forEach(id => {
         const link = document.getElementById(id);
         if (link) {
@@ -375,8 +375,18 @@ function highlightActiveNav() {
         }
     });
 
-    // 3. Sprawdzamy adres URL i decydujemy, który główny link powinien się świecić
-    if (currentPath.includes("gallery.html")) {
+    // 3. Sprawdzamy, gdzie dokładnie znajduje się użytkownik i podświetlamy odpowiedni element (lub rodzica)
+    
+    // --- GRUPA: GRY ---
+    if (currentPath.includes("dino.html") || currentPath.includes("tetris.html") || currentPath.includes("shooter.html") || currentPath.includes("statki.html")) {
+        setActiveLink("nav-games");
+    } 
+    // --- GRUPA: NARZĘDZIA ---
+    else if (currentPath.includes("tools-rec.html") || currentPath.includes("tools-all.html") || currentPath.includes("linux.html")) {
+        setActiveLink("nav-tools");
+    } 
+    // --- POZOSTAŁE JEDNOSTKOWE PODSTRONY ---
+    else if (currentPath.includes("gallery.html")) {
         setActiveLink("nav-gallery");
     } else if (currentHash === "#tworczosc") {
         setActiveLink("nav-tworczosc");
@@ -386,24 +396,24 @@ function highlightActiveNav() {
         setActiveLink("nav-o-mnie");
     } else if (currentHash === "#kontakt") {
         setActiveLink("nav-kontakt");
-    } else if (currentHash === "#spotify" || currentHash === "#Spotify") {
-        // Jeśli kliknięto Spotify w zakładce Sociale, nie podświetlamy nic na głównym pasku
-        return;
+    } else if (currentHash === "#spotify") {
+        // Kliknięcie Spotify przewija stronę główną, ale logicznie to element Sociali
+        setActiveLink("nav-socials");
     } else if (currentPath === "/" || currentPath.includes("index.html") || currentHash === "#home" || currentHash === "") {
-        // Domyślnie podświetlamy przycisk "Home", tylko jeśli jesteśmy na stronie głównej
+        // Domyślnie podświetlamy przycisk "Home", jeśli jesteśmy na stronie głównej bez konkretnego hasha
         setActiveLink("nav-home");
     }
 
-    // Funkcja wewnętrzna wykonująca podświetlenie
+    // Funkcja wewnętrzna wykonująca fizyczne podświetlenie neonem
     function setActiveLink(activeId) {
         const link = document.getElementById(activeId);
         if (link) {
-            link.style.color = "var(--accent)"; 
-            link.style.textShadow = "0 0 10px var(--accent)"; 
-            link.style.opacity = "1"; 
+            link.style.color = "var(--accent)"; // Zmienia kolor na neonowy niebieski
+            link.style.textShadow = "0 0 10px var(--accent)"; // Dodaje piękny neonowy blask
+            link.style.opacity = "1"; // Upewnia się, że element jest w pełni widoczny
         }
     }
 }
 
-// Nasłuchiwacz zdarzeń: reaguje na ręczne wpisanie lub zmianę adresu URL
+// Nasłuchiwacz zdarzeń: reaguje na zmiany kotwic w adresie URL
 window.addEventListener("hashchange", highlightActiveNav);
