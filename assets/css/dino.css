@@ -223,10 +223,11 @@ body.theme-red #jumpBtn {
     display: none;
     width: 100%;
     max-width: 800px;
+    gap: 12px; /* Odstęp między przyciskiem Skok a Kucanie */
 }
 
-#jumpBtn {
-    width: 100%;
+/* Wspólny styl dla obu przycisków (Komputer / Stan bazowy) */
+#jumpBtn, #crouchBtn {
     padding: 14px;
     font-weight: 800;
     font-size: 1rem;
@@ -239,11 +240,11 @@ body.theme-red #jumpBtn {
     transition: transform 0.1s, background var(--transition), border-color var(--transition);
 }
 
-#jumpBtn:hover {
+#jumpBtn:hover, #crouchBtn:hover {
     border-color: var(--accent);
 }
 
-#jumpBtn:active {
+#jumpBtn:active, #crouchBtn:active {
     transform: scale(0.97);
     background: var(--card);
 }
@@ -260,36 +261,73 @@ body.theme-red #jumpBtn {
         margin-bottom: 5px; 
     }
     #dino-hero p { 
-        font-size: 0.8rem; 
+        font-size: 0.9rem; 
+    }
+    
+    #dino-game {
+        padding: 8px !important;
+        margin-top: 10px !important;
+    }
+    
+    .board-container {
+        border-radius: 10px;
+        padding: 1px;
     }
 
-    .mobile-controls {
+    /* Dopasowanie canvasa, aby nie był zgnieciony */
+    #gameCanvas {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 200px;
+        border-radius: 9px;
         display: block;
-        margin-top: 5px;
+    }
+
+    /* Pasek przycisków mobilnych (Zmieniony na flex, by stały w jednej linii) */
+    .mobile-controls {
+        display: flex !important;
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    /* Styl mobilny dla OBU przycisków (Równe ułożenie obok siebie 50/50) */
+    #jumpBtn, #crouchBtn {
+        flex: 1; /* Każdy przycisk bierze dokładnie po połowie szerokości ekranu */
+        height: 55px; /* Duży, wygodny przycisk pod kciuk */
+        font-size: 1.1rem;
+        background: var(--accent);
+        color: #000;
+        font-weight: bold;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 170, 255, 0.3);
+    }
+    
+    /* Efekt kliknięcia na telefonie dla obu przycisków */
+    #jumpBtn:active, #crouchBtn:active {
+        background: #0088dd;
+        transform: scale(0.98);
     }
 
     .game-footer-controls {
         flex-direction: column;
-        padding: 10px;
-        gap: 10px;
+        gap: 12px;
     }
-
-    .volume-settings {
+    
+    .audio-settings {
         width: 100%;
     }
+}
 
-    #gameCanvas {
-        max-height: 40vh;
-    }
+/* Wsparcie dla CZERWONEGO MOTYWU dla OBU przycisków */
+body.theme-red #jumpBtn, 
+body.theme-red #crouchBtn {
+    background: #ff0000 !important;
+    color: #ffffff !important;
+    border-color: #ff0000 !important;
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3) !important;
+}
 
-    #scoreBoard {
-        font-size: 14px;
-        padding: 8px;
-        margin-top: 8px !important;
-    }
-  
-    .dino-container {
-        padding: 10px;
-        box-sizing: border-box;
-    }
+body.theme-red #jumpBtn:active,
+body.theme-red #crouchBtn:active {
+    background: #cc0000 !important;
 }
