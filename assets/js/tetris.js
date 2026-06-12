@@ -424,21 +424,21 @@ document.querySelectorAll(".mobile-controls button").forEach(btn => {
 });
 
 // Suwak głośności
-const volumeSlider = document.getElementById('volume');
-if (volumeSlider) {
-    volumeSlider.addEventListener('input', () => {
-        sounds.music.volume = volumeSlider.value;
+const musicVolumeSlider = document.getElementById('volume-music');
+if (musicVolumeSlider) {
+    musicVolumeSlider.addEventListener('input', () => {
+        sounds.music.volume = musicVolumeSlider.value;
     });
 }
 
-const volumeSlider1 = document.getElementById('volume-effect');
-if (volumeSlider1) {
-    volumeSlider1.addEventListener('input', () => {
-        sounds.line.volume = volumeSlider1.value;
-        sounds.levelup.volume = volumeSlider1.value;
-        sounds.drop.volume = volumeSlider1.value;
-        sounds.rotate.volume = volumeSlider1.value;
-        sounds.gameover.volume = volumeSlider1.value;
+const effectsVolumeSlider = document.getElementById('volume-effects');
+if (effectsVolumeSlider) {
+    effectsVolumeSlider.addEventListener('input', () => {
+        sounds.line.volume = effectsVolumeSlider.value;
+        sounds.levelup.volume = effectsVolumeSlider.value;
+        sounds.drop.volume = effectsVolumeSlider.value;
+        sounds.rotate.volume = effectsVolumeSlider.value;
+        sounds.gameover.volume = effectsVolumeSlider.value;
     });
 }
 

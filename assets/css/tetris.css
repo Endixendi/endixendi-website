@@ -138,8 +138,7 @@
     height: 8px;
     border-radius: 5px;
     margin: 10px 0;
-    accent-color: var(--accent); /* Wymuszenie koloru paska dla nowoczesnych przeglądarek */
-}
+    accent-color: var(--accent); */
 
 /* Kropka suwaka - Chrome, Safari, Edge, Opera */
 #tetris-game input[type="range"]::-webkit-slider-thumb {

@@ -19,7 +19,6 @@ const ctx = canvas.getContext("2d");
 const scoreEl = document.getElementById("score");
 const healthFill = document.getElementById("healthFill");
 const heatFillBar = document.getElementById("heatFillBar"); 
-const heatLabel = document.getElementById("heatLabel");
 
 const menu = document.getElementById("menu");
 const startBtn = document.getElementById("startBtn");
@@ -28,8 +27,8 @@ const finalScoreEl = document.getElementById("finalScore");
 const restartBtn = document.getElementById("restartBtn");
 
 // Kontrola głośności
-const volumeControl = document.getElementById("volumeControl");
-const volumeControl1 = document.getElementById("volumeControl1");
+const volumeControl = document.getElementById('volume-music');
+const volumeControl1 = document.getElementById('volume-effects');
 
 // Elementy sterowania mobilnego (Slider i Przycisk)
 const mobileShoot = document.getElementById("mobileShootBtn");
@@ -174,14 +173,14 @@ function updateHUD() {
         healthFill.style.background = gameState.health > 50 ? "limegreen" : gameState.health > 20 ? "orange" : "red"; 
     }
 
+    // Nowa pionowa logika paska przegrzania (zarządzanie wysokością height, nie szerokością width)
     const heatPercent = Math.min(100, (gameState.heat / GAME_CONFIG.maxHeat) * 100);
     if (heatFillBar) {
-        heatFillBar.style.width = heatPercent + "%";
+        heatFillBar.style.height = heatPercent + "%";
         if (gameState.isOverheated) {
-            if (heatLabel) heatLabel.textContent = "PRZEGRZANIE! (Czekaj)";
             heatFillBar.style.background = "red"; 
         } else {
-            if (heatLabel) heatLabel.textContent = "TEMPERATURA DZIAŁA";
+            // Kolor płynnie przechodzi od zielonego, przez żółty, do czerwonego wraz z nagrzewaniem
             const r = Math.floor(255 * (heatPercent / 100));
             const g = Math.floor(255 * (1 - heatPercent / 100));
             heatFillBar.style.background = `rgb(${r}, ${g}, 0)`;

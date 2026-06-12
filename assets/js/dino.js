@@ -14,8 +14,8 @@ const gameOverMenu = document.getElementById('gameOverMenu');
 const finalScoreEl = document.getElementById('finalScore');
 const finalHighScoreEl = document.getElementById('finalHighScore');
 const restartBtn = document.getElementById('restartBtn');
-const volumeControl = document.getElementById("volumeControl");
-const volumeControl1 = document.getElementById('volumeControl1');
+const volumeControl = document.getElementById('volume-music');
+const volumeControl1 = document.getElementById('volume-effects');
 const jumpBtn = document.getElementById('jumpBtn');
 
 jumpBtn.style.display = "none";

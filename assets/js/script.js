@@ -283,26 +283,32 @@ function initSeasonalSystem() {
 
     const isSameDay = (d1, d2) => d1.toDateString() === d2.toDateString();
 
-    // === SPRAWDZANIE CZERWONEGO MOTYWU NA KAŻDEJ PODSTRONIE ===
     const redBtn = document.getElementById("red-theme-btn");
+    const toggleBtn = document.getElementById('toggle-effects-btn');
     
+    // Na start ukrywamy przycisk efektów (pokażemy go tylko, jeśli motyw/święto tego wymaga)
+    if (toggleBtn) toggleBtn.style.display = 'none';
+
+    // === SPRAWDZANIE CZERWONEGO MOTYWU NA KAŻDEJ PODSTRONIE ===
     if (localStorage.getItem("theme-red-active") === "true") {
-        // Aplikujemy czerwony kolor na body (to zadziała na KAŻDEJ podstronie)
         document.body.classList.add("theme-red");
         
-        // Zmieniamy tekst przycisku TYLKO JEŚLI fizycznie istnieje na danej stronie (np. na index.html)
         if (redBtn) redBtn.textContent = "Wygląd fabryczny";
         
-        // Zarządzanie przyciskiem wyłączania efektów na czerwonym motywie
-        const toggleBtn = document.getElementById('toggle-effects-btn');
+        // Pokazujemy przycisk wyłączania efektów na czerwonym motywie
         if (toggleBtn) toggleBtn.style.display = 'block';
 
         if (localStorage.getItem('effects-disabled') === 'true') {
             document.body.classList.add('effects-off');
             if (toggleBtn) toggleBtn.innerText = "Włącz efekty";
+            // Zabezpieczenie: jeśli wyłączone, upewnijmy się że czyszczone są stare śmieci
+            if (particleInterval) { clearInterval(particleInterval); particleInterval = null; }
+            document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
         } else {
-            // Domyślne ikony cząsteczek dla czerwonego motywu w zależności od miesiąca
-            let defaultIcon = "❄️";
+            document.body.classList.remove('effects-off');
+            if (toggleBtn) toggleBtn.innerText = "Wyłącz efekty";
+
+            let defaultIcon = "😎";
             if (month >= 3 && month <= 5) defaultIcon = "🌱";
             if (month >= 6 && month <= 8) defaultIcon = "☀️";
             if (month >= 9 && month <= 11) defaultIcon = "🍂";
@@ -311,9 +317,8 @@ function initSeasonalSystem() {
             startParticles(currentSeasonalIcon);
         }
         
-        return; // Przerywamy sprawdzanie innych świąt – czerwony styl jest aktywny!
+        return; // Przerywamy dalsze sprawdzanie – czerwony styl jest nadrzędny
     } else {
-        // Jeśli czerwony styl NIE jest aktywny w pamięci, upewniamy się, że przycisk (jeśli istnieje) ma właściwy tekst
         if (redBtn) redBtn.textContent = "Włącz czerwony styl";
     }
     // ==============================================================
@@ -348,22 +353,28 @@ function initSeasonalSystem() {
         } else if (month === 12 && day === 21) {
             eventInfo = { theme: "theme-winter", icon: "❄️", active: true };
         } else {
+            // Brak świąt i startu por roku -> upewniamy się, że wszystko jest wyczyszczone
+            if (particleInterval) { clearInterval(particleInterval); particleInterval = null; }
+            document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
             console.log("Dzisiaj nie ma żadnego święta ani pory roku, więc zostawiamy wygląd fabryczny.");
         }
     }
 
-    // Aplikowanie motywu
+    // Aplikowanie motywu sezonowego
     if (eventInfo.active) {
         document.body.classList.add(eventInfo.theme);
         currentSeasonalIcon = eventInfo.icon;
 
-        const toggleBtn = document.getElementById('toggle-effects-btn');
         if (toggleBtn) toggleBtn.style.display = 'block';
 
         if (localStorage.getItem('effects-disabled') === 'true') {
             document.body.classList.add('effects-off');
             if (toggleBtn) toggleBtn.innerText = "Włącz efekty";
+            if (particleInterval) { clearInterval(particleInterval); particleInterval = null; }
+            document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
         } else {
+            document.body.classList.remove('effects-off');
+            if (toggleBtn) toggleBtn.innerText = "Wyłącz efekty";
             startParticles(currentSeasonalIcon);
         }
     }
