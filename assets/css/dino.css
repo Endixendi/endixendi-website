@@ -130,12 +130,13 @@ body {
     cursor: pointer;
 }
 
-/* Linia suwaka - Webkit */
+/* Linia suwaka - Webkit (Chrome, Safari, Edge, Opera) */
 .volume-settings input[type="range"]::-webkit-slider-runnable-track {
     width: 100%;
     height: 6px;
-    background: linear-gradient(to right, #06b6d4, #84cc16, #facc15);
+    background: linear-gradient(to right, var(--accent), var(--accent-2));
     border-radius: 3px;
+    transition: background var(--transition);
 }
 
 /* Kropka suwaka - Webkit (Chrome/Safari) */
@@ -143,27 +144,52 @@ body {
     -webkit-appearance: none;
     height: 18px;
     width: 18px;
-    background: #facc15;
-    border: 2px solid #0f172a;
+    background: var(--accent);
+    border: 2px solid var(--bg);
     border-radius: 50%;
     margin-top: -6px; 
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    transition: background var(--transition);
 }
 
 /* Linia suwaka - Firefox */
 .volume-settings input[type="range"]::-moz-range-track {
     height: 6px;
-    background: linear-gradient(to right, #06b6d4, #84cc16, #facc15);
+    background: linear-gradient(to right, var(--accent), var(--accent-2));
     border-radius: 3px;
+    transition: background var(--transition);
 }
 
 /* Kropka suwaka - Firefox */
 .volume-settings input[type="range"]::-moz-range-thumb {
     height: 18px;
     width: 18px;
-    background: #facc15;
-    border: 2px solid #0f172a;
+    background: var(--accent);
+    border: 2px solid var(--bg);
     border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    transition: background var(--transition);
+}
+
+/* ==========================================================================
+   Modyfikacja specyficzna dla CZERWONEGO MOTYWU (brak gradientów)
+   ========================================================================== */
+body.theme-red .volume-settings input[type="range"]::-webkit-slider-runnable-track {
+    background: #ff0000 !important; /* Jednolity czerwony pasek */
+}
+
+body.theme-red .volume-settings input[type="range"]::-webkit-slider-thumb {
+    background: #ffffff !important; /* Biała kropka, aby odróżniała się od czerwonego paska */
+    border-color: #ff0000 !important;
+}
+
+body.theme-red .volume-settings input[type="range"]::-moz-range-track {
+    background: #ff0000 !important;
+}
+
+body.theme-red .volume-settings input[type="range"]::-moz-range-thumb {
+    background: #ffffff !important;
+    border-color: #ff0000 !important;
 }
 
 /* ==========================================================================
