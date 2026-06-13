@@ -182,7 +182,7 @@ body.theme-red .board-container {
 }
 
 /* Dopasowanie ramki karty dino do czerwonego motywu */
-body.theme-red #dino-game.card {
+body.theme-red #dino-game.card:hover {
     border-color: rgba(255, 0, 0, 0.4) !important;
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.15) !important;
 }
