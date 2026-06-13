@@ -131,6 +131,48 @@ header {
 }
 
 /* ==========================================================================
+   Przycisk powrotu na górę strony w menu głównym (Desktop)
+   ========================================================================== */
+.nav-back-to-top {
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    line-height: 32px; /* Centrowanie strzałki w pionie */
+    text-align: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--muted);
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-left: 6px;
+    transition: all var(--transition);
+    cursor: pointer;
+}
+
+.nav-back-to-top:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px rgba(0, 170, 255, 0.2);
+}
+
+/* Automatyczne dopasowanie do czerwonego motywu */
+body.theme-red .nav-back-to-top:hover {
+    box-shadow: 0 0 12px rgba(255, 0, 0, 0.3) !important;
+}
+
+/* Ukrywamy przycisk na telefonach/tabletach wewnątrz menu hamburgerowego */
+@media screen and (max-width: 1200px) {
+    .nav-back-to-top {
+        display: none !important;
+    }
+}
+
+
+/* ==========================================================================
    Rozwijane menu (Dropdown z płynną animacją fade-in & slide-up)
    ========================================================================== */
 
