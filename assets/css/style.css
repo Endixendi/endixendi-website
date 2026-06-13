@@ -456,6 +456,7 @@ footer {
     font-weight: bold;
     margin-bottom: 20px;
     transition: all var(--transition);
+    cursor: pointer;
 }
 
 .back-to-top:hover {

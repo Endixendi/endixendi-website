@@ -75,21 +75,34 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
 		});
 	}
   
-  /* =========================
-   Pływający przycisk "Wróć na górę" (Dla dynamicznej stopki)
-   ========================= */
-	window.addEventListener('scroll', () => {
-		const floatingTopBtn = document.getElementById('js-floating-top');
-		
-		// Jeśli stopka się już załadowała i przycisk istnieje w dokumencie
-		if (floatingTopBtn) {
-			if (window.scrollY > 300) {
-				floatingTopBtn.classList.add('show');
-			} else {
-				floatingTopBtn.classList.remove('show');
-			}
-		}
-	});
+/* ==========================================================================
+   Pływający przycisk "Wróć na górę" z płynnym przewijaniem na sam start strony
+   ========================================================================== */
+window.addEventListener('scroll', () => {
+    const floatingTopBtn = document.getElementById('js-floating-top');
+    
+    if (floatingTopBtn) {
+        // 1. Pokazywanie/ukrywanie przycisku
+        if (window.scrollY > 300) {
+            floatingTopBtn.classList.add('show');
+        } else {
+            floatingTopBtn.classList.remove('show');
+        }
+        
+        // 2. Obsługa idealnego przewijania na samą górę po kliknięciu
+        // Zapobiegamy podwójnemu przypisywaniu akcji przez sprawdzenie flagi
+        if (!floatingTopBtn.dataset.hasListener) {
+            floatingTopBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Blokujemy domyślne skakanie do kotwicy
+                window.scrollTo({
+                    top: 0,         // Przewiń do absolutnego początku (piksel 0)
+                    behavior: 'smooth' // Płynna animacja
+                });
+            });
+            floatingTopBtn.dataset.hasListener = 'true'; // Oznaczamy, że nasłuch już działa
+        }
+    }
+});
 
   /* =========================
      Inicjalizacja toggle menu (hamburger)
