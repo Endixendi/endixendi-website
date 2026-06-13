@@ -59,50 +59,47 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
   /* =========================
      Ładowanie partiali (menu + footer)
      ========================= */
-	function loadPartials() {
-		Promise.all([
-		  loadHTML("menu-placeholder", MENU_PATH).then(() => {
-			state.menuLoaded = true;
-			initMenuToggle();
-			// TUTAJ DOPISUJEMY: Podświetlenie zakładki odpali się natychmiast po wczytaniu menu.html
-			highlightActiveNav(); 
-		  }),
-		  loadHTML("footer-placeholder", FOOTER_PATH).then(() => {
-			state.footerLoaded = true;
-		  })
-		]).catch(error => {
-		  console.error("Błąd podczas ładowania partiali:", error);
-		});
-	}
+  function loadPartials() {
+    Promise.all([
+      loadHTML("menu-placeholder", MENU_PATH).then(() => {
+        state.menuLoaded = true;
+        initMenuToggle();
+        // Podświetlenie zakładki odpali się natychmiast po wczytaniu menu.html
+        highlightActiveNav(); 
+      }),
+      loadHTML("footer-placeholder", FOOTER_PATH).then(() => {
+        state.footerLoaded = true;
+      })
+    ]).catch(error => {
+      console.error("Błąd podczas ładowania partiali:", error);
+    });
+  }
   
 /* ==========================================================================
-   Pływający przycisk "Wróć na górę" z płynnym przewijaniem na sam start strony
+   Pływający przycisk "Wróć na górę" - Zoptymalizowany pod kątem bindowania
    ========================================================================== */
-window.addEventListener('scroll', () => {
+  function initFloatingTopBtn() {
     const floatingTopBtn = document.getElementById('js-floating-top');
-    
-    if (floatingTopBtn) {
-        // 1. Pokazywanie/ukrywanie przycisku
+    if (!floatingTopBtn) return;
+
+    // Rejestrujemy kliknięcie tylko RAZ przy inicjalizacji, poza eventem scroll
+    floatingTopBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Event scroll odpowiada TYLKO za pokazywanie/ukrywanie klasy klas wizualnych
+    window.addEventListener('scroll', () => {
         if (window.scrollY > 300) {
             floatingTopBtn.classList.add('show');
         } else {
             floatingTopBtn.classList.remove('show');
         }
-        
-        // 2. Obsługa idealnego przewijania na samą górę po kliknięciu
-        // Zapobiegamy podwójnemu przypisywaniu akcji przez sprawdzenie flagi
-        if (!floatingTopBtn.dataset.hasListener) {
-            floatingTopBtn.addEventListener('click', (e) => {
-                e.preventDefault(); // Blokujemy domyślne skakanie do kotwicy
-                window.scrollTo({
-                    top: 0,         // Przewiń do absolutnego początku (piksel 0)
-                    behavior: 'smooth' // Płynna animacja
-                });
-            });
-            floatingTopBtn.dataset.hasListener = 'true'; // Oznaczamy, że nasłuch już działa
-        }
-    }
-});
+    });
+  }
 
   /* =========================
      Inicjalizacja toggle menu (hamburger)
@@ -145,52 +142,40 @@ window.addEventListener('scroll', () => {
   }
   
   /* =========================
-     Otwieranie całego menu na telefonie oraz rozwijanie podkategorii po kliknięciu
+     Delegacja zdarzeń kliknięcia dla menu mobilnego
      ========================= */
-	document.addEventListener("DOMContentLoaded", () => {
-		// Ponieważ menu ładuje się dynamicznie, nasłuchujemy kliknięć na całym dokumencie
-		document.addEventListener("click", (e) => {
-			
-			// 1. OBSŁUGA HAMBURGERA
-			if (e.target.id === "menu-toggle") {
-				const mainNav = document.getElementById("main-nav");
-				if (mainNav) {
-					mainNav.classList.toggle("show");
-					
-					// Zmiana ikony na krzyżyk po otwarciu, i z powrotem na hamburger po zamknięciu
-					if (mainNav.classList.contains("show")) {
-						e.target.textContent = "✕";
-					} else {
-						e.target.textContent = "☰";
-					}
-				}
-			}
-			
-			// 2. OBSŁUGA ROZWIJANIA GRUP (Narzędzia, Sociale, Gry) NA TELEFONIE
-			// Skrypt zadziała bez względu na to, czy to tag <a> czy <button>
-			if (e.target.classList.contains("dropbtn") || e.target.closest(".dropbtn")) {
-				// Reaguj tylko na ekranach mobilnych (poniżej 1200px)
-				if (window.innerWidth <= 1200) {
-					e.preventDefault(); // Zatrzymuje domyślne akcje (np. podskakiwanie strony)
-					
-					const targetBtn = e.target.classList.contains("dropbtn") ? e.target : e.target.closest(".dropbtn");
-					const parentDropdown = targetBtn.closest(".dropdown");
-					
-					if (parentDropdown) {
-						// Zamknij inne otwarte podmenu, żeby nie nachodziły na siebie
-						document.querySelectorAll(".dropdown").forEach(drop => {
-							if (drop !== parentDropdown) {
-								drop.classList.remove("open");
-							}
-						});
-						
-						// Otwórz lub zamknij kliknięte podmenu
-						parentDropdown.classList.toggle("open");
-					}
-				}
-			}
-		});
-	});
+  function initGlobalClickDelegation() {
+    document.addEventListener("click", (e) => {
+      
+      // 1. OBSŁUGA HAMBURGERA
+      if (e.target.id === "menu-toggle") {
+        const mainNav = document.getElementById("main-nav");
+        if (mainNav) {
+          mainNav.classList.toggle("show");
+          e.target.textContent = mainNav.classList.contains("show") ? "✕" : "☰";
+        }
+      }
+      
+      // 2. OBSŁUGA ROZWIJANIA GRUP NA TELEFONIE
+      if (e.target.classList.contains("dropbtn") || e.target.closest(".dropbtn")) {
+        if (window.innerWidth <= 1200) {
+          e.preventDefault();
+          
+          const targetBtn = e.target.classList.contains("dropbtn") ? e.target : e.target.closest(".dropbtn");
+          const parentDropdown = targetBtn.closest(".dropdown");
+          
+          if (parentDropdown) {
+            document.querySelectorAll(".dropdown").forEach(drop => {
+              if (drop !== parentDropdown) {
+                drop.classList.remove("open");
+              }
+            });
+            parentDropdown.classList.toggle("open");
+          }
+        }
+      }
+    });
+  }
 
   /* =========================
      Redirecty (hash i ścieżki)
@@ -220,17 +205,15 @@ window.addEventListener('scroll', () => {
   }
 
   /* =========================
-     Smooth scroll (delegacja zdarzeń) - POPRAWIONY URL
+     Smooth scroll (delegacja zdarzeń)
      ========================= */
   function initSmoothScroll() {
     document.addEventListener("click", function (e) {
       const trigger = e.target.closest("a, [data-scroll]");
       if (!trigger) return;
 
-      // Pobierz cel scrollowania
       let targetHash = trigger.getAttribute("data-scroll");
       
-      // Dla linków <a>, sprawdź czy hash jest w bieżącej stronie
       if (!targetHash && trigger.tagName === "A") {
         const href = trigger.getAttribute("href");
         if (!href || !href.includes("#")) return;
@@ -247,24 +230,20 @@ window.addEventListener('scroll', () => {
 
       if (!targetHash || targetHash === "#") return;
 
-      // Znajdź element docelowy
       const targetElement = document.querySelector(targetHash);
       if (!targetElement) return;
 
-      // Wykonaj płynne przewijanie
       e.preventDefault();
       targetElement.scrollIntoView({
         behavior: "smooth",
         block: "start"
       });
 
-      // --- POPRAWKA: Aktualizujemy adres URL w przeglądarce i ręcznie wywołujemy podświetlenie ---
       history.pushState(null, null, targetHash);
       if (typeof highlightActiveNav === "function") {
          highlightActiveNav();
       }
 
-      // Zamknij mobilne menu po kliknięciu
       const mainNav = document.getElementById("main-nav");
       if (mainNav && window.innerWidth <= 1200) {
         mainNav.style.display = "none";
@@ -280,20 +259,18 @@ window.addEventListener('scroll', () => {
     checkForRedirects();
     initDonateButton();
     initSmoothScroll();
-	
-	// --- LOGIKA DLA CZERWONEGO PRZYCISKU (Zmiany na czerwony styl) ---
+    initFloatingTopBtn();
+    initGlobalClickDelegation();
+  
+    // --- LOGIKA DLA CZERWONEGO PRZYCISKU ---
     const redBtn = document.getElementById("red-theme-btn");
     if (redBtn) {
         redBtn.addEventListener("click", () => {
             const isRed = document.body.classList.toggle("theme-red");
-            
-            // Zapisujemy stan (true/false) do pamięci przeglądarki
             localStorage.setItem("theme-red-active", isRed);
             
             if (isRed) {
                 redBtn.textContent = "Wygląd fabryczny";
-                
-                // Czyszczenie innych motywów, żeby się nie gryzły
                 Array.from(document.body.classList).forEach(className => {
                     if (className.startsWith("theme-") && className !== "theme-red") {
                         document.body.classList.remove(className);
@@ -301,15 +278,12 @@ window.addEventListener('scroll', () => {
                 });
             } else {
                 redBtn.textContent = "Włącz czerwony styl";
-                
-                // ZABEZPIECZENIE: Czyścimy stary stoper i cząsteczki przed przywróceniem święta
                 if (particleInterval) {
                     clearInterval(particleInterval);
                     particleInterval = null;
                 }
                 document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
 
-                // Po wyłączeniu czerwonego, ponownie odpalamy system sezonowy
                 if (typeof initSeasonalSystem === "function") {
                     initSeasonalSystem();
                 }
@@ -321,7 +295,6 @@ window.addEventListener('scroll', () => {
         });
     }
     
-    // Nasłuchuj zmian hash dla redirectów
     window.addEventListener("hashchange", checkForRedirects);
   }
 
@@ -352,7 +325,6 @@ function initSeasonalSystem() {
     const day = now.getDate();
     const dateStr = `${day.toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}`;
 
-    // Daty ruchome
     const easter = getEaster(year);
     const easterMon = new Date(easter); easterMon.setDate(easter.getDate() + 1);
     const zieloneSwiatki = new Date(easter); zieloneSwiatki.setDate(easter.getDate() + 49);
@@ -363,33 +335,24 @@ function initSeasonalSystem() {
     const redBtn = document.getElementById("red-theme-btn");
     const toggleBtn = document.getElementById('toggle-effects-btn');
     
-    // Na start ukrywamy przycisk efektów (pokażemy go tylko, jeśli jest autentyczne święto)
     if (toggleBtn) toggleBtn.style.display = 'none';
 
-    // === SPRAWDZANIE CZERWONEGO MOTYWU NA KAŻDEJ PODSTRONIE ===
     if (localStorage.getItem("theme-red-active") === "true") {
         document.body.classList.add("theme-red");
-        
         if (redBtn) redBtn.textContent = "Wygląd fabryczny";
-        
-        // ZABEZPIECZENIE: Zwykła zmiana koloru nie ma efektów, 
-        // więc chowamy przycisk i upewniamy się, że stary stoper cząsteczek jest wyłączony.
         if (toggleBtn) toggleBtn.style.display = 'none';
         if (particleInterval) { 
             clearInterval(particleInterval); 
             particleInterval = null; 
         }
         document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
-        
-        return; // Przerywamy dalsze sprawdzanie – ręczny czerwony styl blokuje efekty kalendarzowe
+        return; 
     } else {
         if (redBtn) redBtn.textContent = "Włącz czerwony styl";
     }
-    // ==============================================================
 
     let eventInfo = { theme: "", icon: "", active: false };
 
-    // --- SPRAWDZANIE ŚWIĄT ---
     if (dateStr === "07.06") eventInfo = { theme: "theme-birthday", icon: "🎁", active: true };
     else if (dateStr === "01.01") eventInfo = { theme: "theme-new", icon: "🎆", active: true };
     else if (dateStr === "06.01") eventInfo = { theme: "theme-winter", icon: "👑", active: true };
@@ -405,8 +368,6 @@ function initSeasonalSystem() {
     else if (dateStr === "11.11") eventInfo = { theme: "theme-patriotic", icon: "🇵🇱", active: true };
     else if (dateStr === "24.12") eventInfo = { theme: "theme-winter", icon: "🎄", active: true };
     else if (dateStr === "25.12" || dateStr === "26.12") eventInfo = { theme: "theme-winter", icon: "🎅", active: true };
-    
-    // --- PORY ROKU (Jeśli nie ma święta) ---
     else {
         if (month === 3 && day === 21) {
             eventInfo = { theme: "theme-spring", icon: "🌱", active: true };
@@ -417,19 +378,15 @@ function initSeasonalSystem() {
         } else if (month === 12 && day === 21) {
             eventInfo = { theme: "theme-winter", icon: "❄️", active: true };
         } else {
-            // Brak świąt i startu por roku -> upewniamy się, że wszystko jest wyczyszczone
             if (particleInterval) { clearInterval(particleInterval); particleInterval = null; }
             document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
-            console.log("Dzisiaj nie ma żadnego święta ani pory roku, więc zostawiamy wygląd fabryczny.");
         }
     }
 
-    // Aplikowanie motywu sezonowego (Tylko dla wykrytych specjalnych dat!)
     if (eventInfo.active) {
         document.body.classList.add(eventInfo.theme);
         currentSeasonalIcon = eventInfo.icon;
 
-        // Pokazujemy przycisk wyłączania efektów, bo to jest prawdziwe święto z kalendarza
         if (toggleBtn) toggleBtn.style.display = 'block';
 
         if (localStorage.getItem('effects-disabled') === 'true') {
@@ -446,7 +403,6 @@ function initSeasonalSystem() {
 }
 
 function startParticles(icon) {
-    // Reset starego interwału przed uruchomieniem nowego (zabezpieczenie)
     if (particleInterval) {
         clearInterval(particleInterval);
     }
@@ -454,7 +410,6 @@ function startParticles(icon) {
     if (document.body.classList.contains('effects-off')) return;
 
     particleInterval = setInterval(() => {
-        // Dodatkowa bariera bezpieczeństwa wewnątrz pętli
         if (document.body.classList.contains('effects-off')) {
             if (particleInterval) {
                 clearInterval(particleInterval);
@@ -479,33 +434,23 @@ function toggleEffects() {
     const isOff = document.body.classList.toggle('effects-off');
     localStorage.setItem('effects-disabled', isOff);
 
-    // Pobieramy przycisk, aby móc zmienić jego tekst
     const btn = document.getElementById('toggle-effects-btn');
 
     if (isOff) {
-        // Zmieniamy napis na "Włącz efekty", bo właśnie zostały wyłączone
         if (btn) btn.innerText = "Włącz efekty";
-
-        // 1. Wyłączamy stoper generujący nowe elementy
         if (particleInterval) {
             clearInterval(particleInterval);
             particleInterval = null;
         }
-        // 2. Natychmiast kasujemy z ekranu cząsteczki, które zdążyły się pojawić
         document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
     } else {
-        // Zmieniamy napis na "Wyłącz efekty", bo właśnie zostały włączone z powrotem
         if (btn) btn.innerText = "Wyłącz efekty";
-
-        // 3. Jeśli włączono ponownie, odpalamy generator od nowa
         startParticles(currentSeasonalIcon);
     }
 }
 
-// Udostępniamy funkcję globalnie dla atrybutu onclick w HTML
 window.toggleEffects = toggleEffects;
 
-// Inicjalizacja przy pełnym załadowaniu
 window.addEventListener('load', () => {
     const loader = document.getElementById('loader');
     setTimeout(() => {
@@ -515,62 +460,58 @@ window.addEventListener('load', () => {
 });
 
 /* ==========================================================================
-   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU (UX) - WERSJA Z DROPDOWNAMI
+   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU
    ========================================================================== */
 function highlightActiveNav() {
-    // 1. Pobieramy aktualną ścieżkę podstrony oraz kotwicę/hash
     const currentPath = window.location.pathname.toLowerCase();
     const currentHash = window.location.hash.toLowerCase();
 
-    // 2. Czyścimy stare podświetlenia ZE WSZYSTKICH głównych elementów menu
     const allLinks = ["nav-home", "nav-tworczosc", "nav-pc", "nav-o-mnie", "nav-kontakt", "nav-gallery", "nav-tools", "nav-socials", "nav-games"];
     allLinks.forEach(id => {
         const link = document.getElementById(id);
         if (link) {
-            link.style.color = "";        // Przywraca domyślny kolor z CSS
-            link.style.textShadow = "";   // Usuwa efekt poświaty/glow
+            link.style.color = "";        
+            link.style.textShadow = "";   
         }
     });
 
-    // 3. Sprawdzamy, gdzie dokładnie znajduje się użytkownik i podświetlamy odpowiedni element (lub rodzica)
-    
-    // --- GRUPA: GRY ---
-    if (currentPath.includes("dino.html") || currentPath.includes("tetris.html") || currentPath.includes("shooter.html") || currentPath.includes("statki.html")) {
-        setActiveLink("nav-games");
-    } 
-    // --- GRUPA: NARZĘDZIA ---
-    else if (currentPath.includes("tools-rec.html") || currentPath.includes("tools-all.html") || currentPath.includes("linux.html")) {
-        setActiveLink("nav-tools");
-    } 
-    // --- POZOSTAŁE JEDNOSTKOWE PODSTRONY ---
-    else if (currentPath.includes("gallery.html")) {
-        setActiveLink("nav-gallery");
-    } else if (currentHash === "#tworczosc") {
-        setActiveLink("nav-tworczosc");
-    } else if (currentHash === "#pc") {
-        setActiveLink("nav-pc");
-    } else if (currentHash === "#o-mnie") {
-        setActiveLink("nav-o-mnie");
-    } else if (currentHash === "#kontakt") {
-        setActiveLink("nav-kontakt");
-    } else if (currentHash === "#spotify") {
-        // Kliknięcie Spotify przewija stronę główną, ale logicznie to element Sociali
-        setActiveLink("nav-socials");
+    const pathMapping = {
+        "dino.html": "nav-games",
+        "tetris.html": "nav-games",
+        "shooter.html": "nav-games",
+        "statki.html": "nav-games",
+        "tools-rec.html": "nav-tools",
+        "tools-all.html": "nav-tools",
+        "linux.html": "nav-tools",
+        "gallery.html": "nav-gallery"
+    };
+
+    const hashMapping = {
+        "#tworczosc": "nav-tworczosc",
+        "#pc": "nav-pc",
+        "#o-mnie": "nav-o-mnie",
+        "#kontakt": "nav-kontakt",
+        "#spotify": "nav-socials" 
+    };
+
+    const matchedPathKey = Object.keys(pathMapping).find(key => currentPath.includes(key));
+
+    if (matchedPathKey) {
+        setActiveLink(pathMapping[matchedPathKey]);
+    } else if (hashMapping[currentHash]) {
+        setActiveLink(hashMapping[currentHash]);
     } else if (currentPath === "/" || currentPath.includes("index.html") || currentHash === "#home" || currentHash === "") {
-        // Domyślnie podświetlamy przycisk "Home", jeśli jesteśmy na stronie głównej bez konkretnego hasha
         setActiveLink("nav-home");
     }
 
-    // Funkcja wewnętrzna wykonująca fizyczne podświetlenie neonem
     function setActiveLink(activeId) {
         const link = document.getElementById(activeId);
         if (link) {
-            link.style.color = "var(--accent)"; // Zmienia kolor na neonowy niebieski
-            link.style.textShadow = "0 0 10px var(--accent)"; // Dodaje piękny neonowy blask
-            link.style.opacity = "1"; // Upewnia się, że element jest w pełni widoczny
+            link.style.color = "var(--accent)"; 
+            link.style.textShadow = "0 0 10px var(--accent)"; 
+            link.style.opacity = "1"; 
         }
     }
 }
 
-// Nasłuchiwacz zdarzeń: reaguje na zmiany kotwic w adresie URL
 window.addEventListener("hashchange", highlightActiveNav);

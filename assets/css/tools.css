@@ -1,0 +1,49 @@
+/* =========================================================================
+   STYLE DLA PODSTRONY NARZĘDZI (tools-all.html)
+   ========================================================================= */
+
+/* Sekcja Hero / Nagłówek strony */
+.tools-hero-section {
+    display: block; 
+    margin-bottom: 30px;
+}
+
+.tools-hero-lead {
+    margin-top: 10px;
+}
+
+/* Przycisk efektów sezonowych */
+.tools-toggle-btn {
+    margin: 15px auto 0 auto; 
+    display: none;
+}
+
+/* Tytuły sekcji (H2) */
+.tools-section-title {
+    margin-bottom: 15px; 
+    color: var(--accent);
+}
+
+/* Uniwersalna siatka dla kart z narzędziami */
+.tools-grid {
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    gap: 16px;
+}
+
+/* Tekst opisowy wewnątrz kart z narzędziami */
+.tool-card-desc {
+    font-size: 0.9rem; 
+    margin: 8px 0 15px 0;
+}
+
+/* Klasa pomocnicza dla przycisków, aby rozciągały się na całą szerokość karty */
+.btn-full-width {
+    width: 100%;
+    text-align: center;
+}
+
+/* Ostatnia sekcja na stronie (wymagała większego marginesu na dole przed stopką) */
+.tools-last-section {
+    margin-bottom: 50px;
+}

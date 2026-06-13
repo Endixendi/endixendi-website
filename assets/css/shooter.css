@@ -4,10 +4,8 @@
 
 :root {
     /* Gra korzysta bezpośrednio z globalnych zmiennych Twojej strony */
-    --danger: #ff4d6d;        
-    --warning: #ff9f1c;       
-    --bg-dark: var(--bg);
-    --card-bg: var(--card);
+    --danger: #ff4d6d;
+    --warning: #ff9f1c;
 }
 
 .shooter-container {
@@ -106,7 +104,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: var(--card-bg);
+    background: var(--card);
     padding: 30px;
     border-radius: 16px;
     border: 1px solid var(--border);

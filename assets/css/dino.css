@@ -5,8 +5,6 @@
 :root {
     --primary-color: var(--accent);
     --primary-dark: var(--accent-2);
-    --bg-dark: var(--bg);
-    --card-bg: var(--card);
 }
 
 body {
@@ -49,7 +47,7 @@ body {
     width: 100%;
     height: auto;
     border-radius: 14px;
-    background: var(--bg-dark);
+    background: var(--bg);
     display: block;
 }
 
@@ -70,7 +68,7 @@ body {
 }
 
 .modal {
-    background: var(--card-bg);
+    background: var(--card);
     padding: 20px;
     border-radius: 12px;
     text-align: center;

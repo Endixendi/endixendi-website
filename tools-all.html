@@ -7,6 +7,7 @@
     <title>Przydatne Strony — Endixendi</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/tools.css">	
     <link rel="icon" href="assets/images/kolo.png" type="image/png">
 </head>
 <body>
@@ -19,73 +20,73 @@
 
     <main id="home">
 	
-        <section id="home" class="hero text-center" style="display: block; margin-bottom: 30px;">
+        <section class="tools-hero-section text-center">
             <div class="card">
                 <h1>🛠️ Przydatne Strony i Narzędzia</h1>
-                <p class="lead" style="margin-top: 10px;">
-                    Zbiór wyselekcjonowanych, darmowych i niezwykle pomocnych witryn internetowych podzielonych na kategorie. Znajdziesz tu wszystko od grafiki po narzędzia dla streamingu i programowania.
+                <p class="lead tools-hero-lead">
+                    Zbiór wyselekcjonowanych, darmowych i niezwykle pomocnych witryn internetowych podzielonych na kategorie. Znajdziesz tu wszystko od grafika po narzędzia dla streamingu i programowania.
                 </p>
-                <button id="toggle-effects-btn" class="btn btn-secondary" style="margin: 15px auto 0 auto; display: none;" onclick="toggleEffects()">
+                <button id="toggle-effects-btn" class="btn btn-secondary tools-toggle-btn" onclick="toggleEffects()">
                     ✨ Włącz/Wyłącz efekty sezonowe
                 </button>
             </div>
         </section>
 
         <section class="mt-22">
-            <h2 style="margin-bottom: 15px; color: var(--accent);">🎨 Grafika, Obrazy i Tekstury</h2>
-            <div class="card-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+            <h2 class="tools-section-title">🎨 Grafika, Obrazy i Tekstury</h2>
+            <div class="card-container tools-grid">
                 
                 <div class="card">
                     <h3>🖥️ Photopea</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Potężny, darmowy zaawansowany edytor grafiki rastrowej działający prosto w przeglądarce. Świetny zamiennik dla Photoshopa.</p>
+                    <p class="muted tool-card-desc">Potężny, darmowy zaawansowany edytor grafiki rastrowej działający prosto w przeglądarce. Świetny zamiennik dla Photoshopa.</p>
                     <a href="https://www.photopea.com/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>📐 Vectorpea</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Darmowe narzędzie online do tworzenia i edycji grafiki wektorowej (obsługuje pliki SVG, AI, EPS). Brat Photopea.</p>
+                    <p class="muted tool-card-desc">Darmowe narzędzie online do tworzenia i edycji grafiki wektorowej (obsługuje pliki SVG, AI, EPS). Brat Photopea.</p>
                     <a href="https://www.vectorpea.com/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🎨 Canva</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Intuicyjny kreator graficzny online z tysiącami gotowych szablonów do social media, miniatur i prezentacji.</p>
+                    <p class="muted tool-card-desc">Intuicyjny kreator graficzny online z tysiącami gotowych szablonów do social media, miniatur i prezentacji.</p>
                     <a href="https://www.canva.com/pl_pl/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🪄 Cleanup.pictures</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Szybkie narzędzie AI pozwalające w kilka sekund usunąć ze zdjęcia dowolny niechciany obiekt, tekst lub defekt.</p>
+                    <p class="muted tool-card-desc">Szybkie narzędzie AI pozwalające w kilka sekund usunąć ze zdjęcia dowolny niechciany obiekt, tekst lub defekt.</p>
                     <a href="https://cleanup.pictures/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>✂️ Remove.bg</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Automatyczne i błyskawiczne wycinanie tła ze zdjęć przy użyciu sztucznej inteligencji. Idealne pod wycinanie postaci.</p>
+                    <p class="muted tool-card-desc">Automatyczne i błyskawiczne wycinanie tła ze zdjęć przy użyciu sztucznej inteligencji. Idealne pod wycinanie postaci.</p>
                     <a href="https://www.remove.bg/pl" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>💎 CleanPNG</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Ogromna baza darmowych, wysokiej jakości obrazów i elementów graficznych z już wyciętym przezroczystym tłem.</p>
+                    <p class="muted tool-card-desc">Ogromna baza darmowych, wysokiej jakości obrazów i elementów graficznych z już wyciętym przezroczystym tłem.</p>
                     <a href="https://www.cleanpng.com/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🌳 Pngtree</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Miliony darmowych zasobów graficznych: grafiki PNG, tła, wektory oraz szablony przydatne do projektów.</p>
+                    <p class="muted tool-card-desc">Miliony darmowych zasobów graficznych: grafiki PNG, tła, wektory oraz szablony przydatne do projektów.</p>
                     <a href="https://pngtree.com/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>📸 Pixabay</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Bezpieczny bank darmowych materiałów: zdjęcia, grafiki wektorowe i ilustracje bez praw autorskich do użytku komercyjnego.</p>
+                    <p class="muted tool-card-desc">Bezpieczny bank darmowych materiałów: zdjęcia, grafiki wektorowe i ilustracje bez praw autorskich do użytku komercyjnego.</p>
                     <a href="https://pixabay.com/pl/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>📷 Pexels</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Kolejna rewelacyjna platforma oferująca darmowe zdjęcia oraz stockowe materiały wideo najwyższej jakości.</p>
+                    <p class="muted tool-card-desc">Kolejna rewelacyjna platforma oferująca darmowe zdjęcia oraz stockowe materiały wideo najwyższej jakości.</p>
                     <a href="https://www.pexels.com/pl-pl/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
@@ -93,24 +94,24 @@
         </section>
 
         <section class="mt-22">
-            <h2 style="margin-bottom: 15px; color: var(--accent);">🎥 Streaming i Panele Twitch</h2>
-            <div class="card-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+            <h2 class="tools-section-title">🎥 Streaming i Panele Twitch</h2>
+            <div class="card-container tools-grid">
 
                 <div class="card">
                     <h3>📊 NerdOrDie Panel Maker</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Darmowy generator podstawowych, estetycznych paneli informacyjnych pod stream na Twitcha z własnym tekstem.</p>
+                    <p class="muted tool-card-desc">Darmowy generator podstawowych, estetycznych paneli informacyjnych pod stream na Twitcha z własnym tekstem.</p>
                     <a href="https://nerdordie.com/resources/customizable-twitch-panels/#panel-maker" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🖼️ NerdOrDie Profile Panels</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Kolejny oficjalny kreator i zaawansowany edytor paneli profilu umożliwiający dostosowanie wyglądu transmisji.</p>
+                    <p class="muted tool-card-desc">Kolejny oficjalny kreator i zaawansowany edytor paneli profilu umożliwiający dostosowanie wyglądu transmisji.</p>
                     <a href="https://maker.nerdordie.com/profile-panels" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🪜 Streamladder</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Niezbędne narzędzie dla streamerów. Szybko konwertuje poziome klipy z Twitcha/YouTube na pionowy format TikTok, Shorts i Reels.</p>
+                    <p class="muted tool-card-desc">Niezbędne narzędzie dla streamerów. Szybko konwertuje poziome klipy z Twitcha/YouTube na pionowy format TikTok, Shorts i Reels.</p>
                     <a href="https://app.streamladder.com/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
@@ -118,30 +119,30 @@
         </section>
 
         <section class="mt-22">
-            <h2 style="margin-bottom: 15px; color: var(--accent);">🧊 Grafika 3D i Modele</h2>
-            <div class="card-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+            <h2 class="tools-section-title">🧊 Grafika 3D i Modele</h2>
+            <div class="card-container tools-grid">
 
                 <div class="card">
                     <h3>📦 BlenderKit</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Ogromna baza gotowych modeli 3D, materiałów, tekstur i pędzli przeznaczona do bezpośredniego użytku w programie Blender.</p>
+                    <p class="muted tool-card-desc">Ogromna baza gotowych modeli 3D, materiałów, tekstur i pędzli przeznaczona do bezpośredniego użytku w programie Blender.</p>
                     <a href="https://www.blenderkit.com/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🌐 Open3DModel</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Darmowa biblioteka modeli 3D w popularnych formatach (obj, 3ds, fbx, max). Przydatna do gier i animacji.</p>
+                    <p class="muted tool-card-desc">Darmowa biblioteka modeli 3D w popularnych formatach (obj, 3ds, fbx, max). Przydatna do gier i animacji.</p>
                     <a href="https://open3dmodel.com/pl/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🧊 Free3D</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Społecznościowy bank modeli trójwymiarowych. Zawiera tysiące darmowych obiektów gotowych do zaimportowania.</p>
+                    <p class="muted tool-card-desc">Społecznościowy bank modeli trójwymiarowych. Zawiera tysiące darmowych obiektów gotowych do zaimportowania.</p>
                     <a href="https://free3d.com/pl/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🧪 WebGL Samples</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Strona prezentująca eksperymentalne możliwości grafiki trójwymiarowej generowanej w czasie rzeczywistym w przeglądarce.</p>
+                    <p class="muted tool-card-desc">Strona prezentująca eksperymentalne możliwości grafiki trójwymiarowej generowanej w czasie rzeczywistym w przeglądarce.</p>
                     <a href="https://webglsamples.org/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
@@ -149,42 +150,42 @@
         </section>
 
         <section class="mt-22">
-            <h2 style="margin-bottom: 15px; color: var(--accent);">🤖 Sztuczna Inteligencja i Wideo</h2>
-            <div class="card-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+            <h2 class="tools-section-title">🤖 Sztuczna Inteligencja i Wideo</h2>
+            <div class="card-container tools-grid">
 
                 <div class="card">
                     <h3>🎼 Suno AI</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Genialne narzędzie AI do generowania kompletnych, profesjonalnych utworów muzycznych oraz piosenek z wokalem na podstawie tekstu.</p>
+                    <p class="muted tool-card-desc">Genialne narzędzie AI do generowania kompletnych, profesjonalnych utworów muzycznych oraz piosenek z wokalem na podstawie tekstu.</p>
                     <a href="https://suno.com/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🎬 Kling AI</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Zaawansowany model generowania wideo z tekstu lub obrazu, tworzący niezwykle kinowe i realistyczne ujęcia.</p>
+                    <p class="muted tool-card-desc">Zaawansowany model generowania wideo z tekstu lub obrazu, tworzący niezwykle kinowe i realistyczne ujęcia.</p>
                     <a href="https://kling.ai/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🎥 AICut Pro</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Narzędzie napędzane przez AI do automatycznego wycinania najlepszych momentów z wideo i tworzenia krótkich filmów.</p>
+                    <p class="muted tool-card-desc">Narzędzie napędzane przez AI do automatycznego wycinania najlepszych momentów z wideo i tworzenia krótkich filmów.</p>
                     <a href="https://www.aicut.pro/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🗺️ Mult.dev</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Kreator animowanych map podróżniczych i tras wideo. Doskonałe urozmaicenie filmów vlogowych i montaży.</p>
+                    <p class="muted tool-card-desc">Kreator animowanych map podróżniczych i tras wideo. Doskonałe urozmaicenie filmów vlogowych i montaży.</p>
                     <a href="https://mult.dev/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>✨ VideoEffects</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Zbiór darmowych efektów wideo, nakładek i filtrów przydatnych podczas montażu materiałów filmowych.</p>
+                    <p class="muted tool-card-desc">Zbiór darmowych efektów wideo, nakładek i filtrów przydatnych podczas montażu materiałów filmowych.</p>
                     <a href="https://videoeffects.com/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>⚡ MoshPro</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Narzędzie online służące do tworzenia efektów usterki (glitch art) oraz datamoshingu na plikach wideo i grafikach.</p>
+                    <p class="muted tool-card-desc">Narzędzie online służące do tworzenia efektów usterki (glitch art) oraz datamoshingu na plikach wideo i grafikach.</p>
                     <a href="https://moshpro.app/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
@@ -192,73 +193,73 @@
         </section>
 
         <section class="mt-22">
-            <h2 style="margin-bottom: 15px; color: var(--accent);">🎮 Gry, Czcionki i Dźwięki</h2>
-            <div class="card-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+            <h2 class="tools-section-title">🎮 Gry, Czcionki i Dźwięki</h2>
+            <div class="card-container tools-grid">
 
                 <div class="card">
                     <h3>🪵 Textcraft</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Kultowy generator napisów 3D w stylu Minecrafta, GTA oraz innych gier 8-bitowych. Idealny na logotypy serwerów.</p>
+                    <p class="muted tool-card-desc">Kultowy generator napisów 3D w stylu Minecrafta, GTA oraz innych gier 8-bitowych. Idealny na logotypy serwerów.</p>
                     <a href="https://textcraft.net/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>👟 NeedCoolerShoes</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Prosty i wygodny edytor/kreator niestandardowych skinów do gry Minecraft bezpośrednio na podglądzie pikselowym.</p>
+                    <p class="muted tool-card-desc">Prosty i wygodny edytor/kreator niestandardowych skinów do gry Minecraft bezpośrednio na podglądzie pikselowym.</p>
                     <a href="https://needcoolershoes.com/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>⚔️ SkyShiiyuMoe</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Zaawansowana przeglądarka statystyk, ekwipunku i profili graczy w trybie Hypixel SkyBlock (SkyCrypt).</p>
+                    <p class="muted tool-card-desc">Zaawansowana przeglądarka statystyk, ekwipunku i profili graczy w trybie Hypixel SkyBlock (SkyCrypt).</p>
                     <a href="https://sky.shiiyu.moe/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🔊 MyInstants</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Ogromna tablica soundboard zawierająca tysiące krótkich, memicznych i zabawnych efektów dźwiękowych za jednym kliknięciem.</p>
+                    <p class="muted tool-card-desc">Ogromna tablica soundboard zawierająca tysiące krótkich, memicznych i zabawnych efektów dźwiękowych za jednym kliknięciem.</p>
                     <a href="https://www.myinstants.com/en/index/pl/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>✍️ FontMeme</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Wyszukiwarka znanych czcionek z filmów, seriali oraz gier wraz z podręcznym generatorem stylizowanych napisów.</p>
+                    <p class="muted tool-card-desc">Wyszukiwarka znanych czcionek z filmów, seriali oraz gier wraz z podręcznym generatorem stylizowanych napisów.</p>
                     <a href="https://fontmeme.com/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🐉 RenderDragon</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Zasoby i materiały powiązane z silnikiem graficznym Render Dragon używanym w Minecraft Bedrock Edition.</p>
+                    <p class="muted tool-card-desc">Zasoby i materiały powiązane z silnikiem graficznym Render Dragon używanym w Minecraft Bedrock Edition.</p>
                     <a href="https://renderdragon.org/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
             </div>
         </section>
 
-        <section class="mt-22" style="margin-bottom: 50px;">
-            <h2 style="margin-bottom: 15px; color: var(--accent);">⚙️ Przydatne Narzędzia i Zakupy</h2>
-            <div class="card-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+        <section class="mt-22 tools-last-section">
+            <h2 class="tools-section-title">⚙️ Przydatne Narzędzia i Zakupy</h2>
+            <div class="card-container tools-grid">
 
                 <div class="card">
                     <h3>🔤 ConvertCase</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Szybki konwerter wielkości liter. Pozwala natychmiast zamienić cały tekst na wielkie litery, małe litery, kapitalizację itp.</p>
+                    <p class="muted tool-card-desc">Szybki konwerter wielkości liter. Pozwala natychmiast zamienić cały tekst na wielkie litery, małe litery, kapitalizację itp.</p>
                     <a href="https://convertcase.net/pl/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🔑 Key-Soft</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Polska platforma z tanimi, legalnymi kluczami aktywacyjnymi do systemów Windows, pakietów Office i oprogramowania.</p>
+                    <p class="muted tool-card-desc">Polska platforma z tanimi, legalnymi kluczami aktywacyjnymi do systemów Windows, pakietów Office i oprogramowania.</p>
                     <a href="https://key-soft.pl/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>🎮 DLCompare</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Świetna porównywarka cen gier cyfrowych, abonamentów, kluczy CD-Key oraz kart podarunkowych w sklepach internetowych.</p>
+                    <p class="muted tool-card-desc">Świetna porównywarka cen gier cyfrowych, abonamentów, kluczy CD-Key oraz kart podarunkowych w sklepach internetowych.</p>
                     <a href="https://www.dlcompare.pl/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
                 <div class="card">
                     <h3>💻 Replit</h3>
-                    <p class="muted" style="font-size: 0.9rem; margin: 8px 0 15px 0;">Platforma programistyczna online (IDE) w chmurze. Umożliwia pisanie, uruchamianie i hostowanie kodu w ponad 50 językach.</p>
+                    <p class="muted tool-card-desc">Platforma programistyczna online (IDE) w chmurze. Umożliwia pisanie, uruchamianie i hostowanie kodu w ponad 50 językach.</p>
                     <a href="https://replit.com/" target="_blank" rel="noopener" class="btn btn-full-width">Otwórz stronę</a>
                 </div>
 
