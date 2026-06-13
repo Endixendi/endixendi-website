@@ -12,7 +12,7 @@ window.addEventListener("load", function() {
 
 // Globalne zmienne dla interwału i ikony, aby były dostępne wszędzie
 let particleInterval = null;
-let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
+let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
 
 (function () {
   'use strict';
@@ -59,21 +59,37 @@ let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
   /* =========================
      Ładowanie partiali (menu + footer)
      ========================= */
-  function loadPartials() {
-    Promise.all([
-      loadHTML("menu-placeholder", MENU_PATH).then(() => {
-        state.menuLoaded = true;
-        initMenuToggle();
-        // TUTAJ DOPISUJEMY: Podświetlenie zakładki odpali się natychmiast po wczytaniu menu.html
-        highlightActiveNav(); 
-      }),
-      loadHTML("footer-placeholder", FOOTER_PATH).then(() => {
-        state.footerLoaded = true;
-      })
-    ]).catch(error => {
-      console.error("Błąd podczas ładowania partiali:", error);
-    });
-  }
+	function loadPartials() {
+		Promise.all([
+		  loadHTML("menu-placeholder", MENU_PATH).then(() => {
+			state.menuLoaded = true;
+			initMenuToggle();
+			// TUTAJ DOPISUJEMY: Podświetlenie zakładki odpali się natychmiast po wczytaniu menu.html
+			highlightActiveNav(); 
+		  }),
+		  loadHTML("footer-placeholder", FOOTER_PATH).then(() => {
+			state.footerLoaded = true;
+		  })
+		]).catch(error => {
+		  console.error("Błąd podczas ładowania partiali:", error);
+		});
+	}
+  
+  /* =========================
+   Pływający przycisk "Wróć na górę" (Dla dynamicznej stopki)
+   ========================= */
+	window.addEventListener('scroll', () => {
+		const floatingTopBtn = document.getElementById('js-floating-top');
+		
+		// Jeśli stopka się już załadowała i przycisk istnieje w dokumencie
+		if (floatingTopBtn) {
+			if (window.scrollY > 300) {
+				floatingTopBtn.classList.add('show');
+			} else {
+				floatingTopBtn.classList.remove('show');
+			}
+		}
+	});
 
   /* =========================
      Inicjalizacja toggle menu (hamburger)
