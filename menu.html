@@ -1,77 +1,76 @@
-<!-- Menu główne strony -->
-<div class="nav">
-  
-    <!-- Brand (Logo + Nazwa + Podtytuł) -->
-    <div class="brand">
-        <div class="logo">
-            <a href="https://linktr.ee/endixendi" target="_blank" rel="noopener">
-                <img src="assets/images/4.png" alt="Logo Endixendi" class="logo-img">
-            </a>
-        </div>
+<!-- Menu główne strony -->     <link rel="stylesheet" href="assets/css/style.css">
+<header>
+    <div class="nav">
+      
+        <!-- Brand (Logo + Nazwa + Podtytuł) -->
+        <a href="/index.html#home" class="brand" aria-label="Strona główna Endixendi">
+            <div class="logo">
+                <img src="assets/images/4.png" alt="Logo Endixendi" class="logo-img" loading="eager">
+            </div>
 
-        <div>
-            <div class="brand-name">Endixendi</div>
-            <div class="brand-subtitle">Gaming • Streaming • Poradniki • PC</div>
-        </div>
+            <div>
+                <div class="brand-name">Endixendi</div>
+                <div class="brand-subtitle">Gaming • Streaming • Poradniki • PC</div>
+            </div>
+        </a>
+
+        <!-- Menu hamburger na mobile (Ikona ☰) -->
+        <button class="menu-icon" id="menu-toggle" aria-label="Otwórz menu nawigacji" aria-expanded="false" aria-controls="main-nav">☰</button>
+
+        <!-- Nawigacja główna (Linki) -->
+        <nav id="main-nav" aria-label="Nawigacja główna">
+            <a href="/index.html#home" id="nav-home">Home</a>
+            <a href="/index.html#tworczosc" id="nav-tworczosc">Twórczość</a>
+            <a href="/index.html#pc" id="nav-pc">PC</a>
+            <a href="/index.html#o-mnie" id="nav-o-mnie">O mnie</a>
+            <a href="/index.html#kontakt" id="nav-kontakt">Kontakt</a>
+            <a href="/gallery.html" id="nav-gallery">Galeria</a>
+          
+            <!-- Rozwijane menu: Narzędzia -->
+            <div class="dropdown">
+                <button class="dropbtn" id="nav-tools" aria-haspopup="true" aria-expanded="false">Narzędzia <span class="arrow" aria-hidden="true">▾</span></button>
+                <div class="dropdown-content" aria-labelledby="nav-tools">
+                    <!-- Hub -->
+                    <a href="/tools-rec.html">🖥️ Wideo & Grafika</a>
+                    <a href="/tools-all.html">🛠️ Przydatne narzędzia</a>
+                    <a href="/linux.html">🐧 Linux vs Windows</a>
+                </div>
+            </div>
+          
+            <!-- Rozwijane menu: Sociale -->
+            <div class="dropdown">
+                <button class="dropbtn" id="nav-socials" aria-haspopup="true" aria-expanded="false">Sociale <span class="arrow" aria-hidden="true">▾</span></button>
+                <div class="dropdown-content" aria-labelledby="nav-socials">
+                    <!-- Hub -->
+                    <a href="https://linktr.ee/endixendi" target="_blank" rel="noopener">🌐 Social Media (wszystkie linki)</a>
+
+                    <!-- Główne platformy -->
+                    <a href="https://www.youtube.com/c/Endixendi" target="_blank" rel="noopener">🎥 YouTube</a>
+                    <a href="https://www.twitch.tv/endixendi" target="_blank" rel="noopener">🎮 Twitch</a>
+                    <a href="https://www.tiktok.com/@endixendi" target="_blank" rel="noopener">🎵 TikTok</a>
+                    <a href="https://www.instagram.com/endixendi" target="_blank" rel="noopener">📸 Instagram</a>
+
+                    <!-- Społeczność -->
+                    <a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener">💬 Discord</a>
+
+                    <!-- Muzyka -->
+                    <a href="/index.html#spotify">🎧 Spotify</a>
+
+                    <!-- Wsparcie -->
+                    <a href="https://tipply.pl/@endixendi" target="_blank" rel="noopener">💰 Wsparcie</a>
+                </div>
+            </div>
+            
+            <!-- Rozwijane menu: Gry -->
+            <div class="dropdown">
+                <button class="dropbtn" id="nav-games" aria-haspopup="true" aria-expanded="false">Gry <span class="arrow" aria-hidden="true">▾</span></button>
+                <div class="dropdown-content" aria-labelledby="nav-games">
+                    <a href="/dino.html">🦖 Dino</a>
+                    <a href="/tetris.html">🧩 Tetris</a>
+                    <a href="/shooter.html">🚀 Shooter</a>
+                    <a href="/statki.html">⚓ Statki</a>
+                </div>
+            </div>
+        </nav>
     </div>
-
-    <!-- Menu hamburger na mobile (Ikona ☰) -->
-    <div class="menu-icon" id="menu-toggle">☰</div>
-
-    <!-- Nawigacja główna (Linki) -->
-    <nav id="main-nav">
-        <a href="/index.html#home" id="nav-home">Home</a>
-		<a href="/index.html#tworczosc" id="nav-tworczosc">Twórczość</a>
-		<a href="/index.html#pc" id="nav-pc">PC</a>
-		<a href="/index.html#o-mnie" id="nav-o-mnie">O mnie</a>
-		<a href="/index.html#kontakt" id="nav-kontakt">Kontakt</a>
-		<a href="/gallery.html" id="nav-gallery">Galeria</a>
-      
-        <!-- Rozwijane menu: Narzędzia -->
-        <div class="dropdown">
-            <a href="javascript:void(0)" class="dropbtn" id="nav-tools" aria-haspopup="true" aria-expanded="false">Narzędzia ▾</a>
-            <div class="dropdown-content">
-                <!-- Hub -->
-                <a href="/tools-rec.html">🖥️ Wideo & Grafika</a>
-                <a href="/tools-all.html">🛠️ Przydatne narzędzia</a>
-                <a href="/linux.html">🐧 Linux vs Windows</a>
-            </div>
-        </div>
-      
-        <!-- Rozwijane menu: Sociale -->
-        <div class="dropdown">
-            <a href="javascript:void(0)" class="dropbtn" id="nav-socials" aria-haspopup="true" aria-expanded="false">Sociale ▾</a>
-            <div class="dropdown-content">
-                <!-- Hub -->
-                <a href="https://linktr.ee/endixendi" target="_blank" rel="noopener">🌐 Social Media (wszystkie linki)</a>
-
-                <!-- Główne platformy -->
-                <a href="https://www.youtube.com/c/Endixendi" target="_blank" rel="noopener">🎥 YouTube</a>
-                <a href="https://www.twitch.tv/endixendi" target="_blank" rel="noopener">🎮 Twitch</a>
-                <a href="https://www.tiktok.com/@endixendi" target="_blank" rel="noopener">🎵 TikTok</a>
-                <a href="https://www.instagram.com/endixendi" target="_blank" rel="noopener">📸 Instagram</a>
-
-                <!-- Społeczność -->
-                <a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener">💬 Discord</a>
-
-                <!-- Muzyka -->
-                <a href="/index.html#spotify">🎧 Spotify</a>
-
-                <!-- Wsparcie -->
-                <a href="https://tipply.pl/@endixendi" target="_blank" rel="noopener">💰 Wsparcie</a>
-            </div>
-        </div>
-        
-        <!-- Rozwijane menu: Gry -->
-        <div class="dropdown">
-            <a href="javascript:void(0)" class="dropbtn" id="nav-games">Gry ▾</a>
-            <div class="dropdown-content">
-                <a href="/dino.html">🦖 Dino</a>
-                <a href="/tetris.html">🧩 Tetris</a>
-                <a href="/shooter.html">🚀 Shooter</a>
-                <a href="/statki.html">⚓ Statki</a>
-            </div>
-        </div>
-    </nav>
-
-</div>
+</header>

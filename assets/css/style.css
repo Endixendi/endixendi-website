@@ -33,20 +33,176 @@ body {
 }
 
 /* ==========================================================================
-   Nagłówek i menu
+   Nagłówek i menu główne (Nowoczesny Glassmorphism & Sticky)
    ========================================================================== */
 
 header {
     position: sticky;         /* Zawsze przyklejony u góry */
     top: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.15));
-    backdrop-filter: blur(6px); /* Rozmycie tła */
-    z-index: 50;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    padding: 10px 20px;
+    background: rgba(15, 17, 21, 0.75); /* Przezroczyste tło dopasowane do --bg */
+    backdrop-filter: blur(12px);       /* Zwiększone rozmycie dla nowoczesnego efektu szkła */
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 500;             /* Podniesiony zindex, by menu zawsze było nad elementami gry */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 12px 20px;
+    transition: background var(--transition), border-color var(--transition);
 }
 
-/* Kontener loadera - przykrywa cały ekran */
+.nav {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between; /* brand po lewej, menu po prawej */
+    align-items: center;
+    gap: 20px;
+}
+
+/* Brand (logo + nazwa) */
+.brand {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    text-decoration: none; /* Reset dla linku otaczającego brand */
+}
+
+.brand .logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Obrazek nie zniekształca się */
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.brand:hover .logo-img {
+    transform: rotate(12deg) scale(1.05); /* Delikatna mikrointerakcja logo */
+}
+
+.brand-name { 
+    font-weight: 800; 
+    color: #fff;
+} 
+
+.brand-subtitle { 
+    font-size: 12px; 
+    color: var(--muted); 
+    margin-top: 2px; 
+}
+
+/* Linki w menu głównym */
+#main-nav {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+#main-nav > a, .dropbtn {
+    text-decoration: none;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 8px 14px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+#main-nav > a:hover, .dropdown:hover .dropbtn { 
+    color: var(--accent); 
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Wsparcie dla linku aktywnego (wskazywanego przez podstronę) */
+#main-nav a.active {
+    color: var(--accent);
+    background: rgba(0, 170, 255, 0.06);
+}
+
+/* ==========================================================================
+   Rozwijane menu (Dropdown z płynną animacją fade-in & slide-up)
+   ========================================================================== */
+
+.dropdown { 
+    position: relative; 
+    display: inline-block; 
+}
+
+.dropdown-content {
+    display: block; /* Ustawione na block, ponieważ ukrywaniem steruje opacity/visibility dla animacji */
+    position: absolute;
+    background-color: #14171b; /* Przypisane na sztywno var(--card) by nie prześwitywało */
+    min-width: 200px;
+    border-radius: 10px;
+    top: calc(100% + 6px);
+    right: 0; /* Wyrównanie do prawej krawędzi przycisku rodzica */
+    padding: 6px 0;
+    z-index: 600;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    
+    /* Stan początkowy animacji */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+/* Aktywacja stanu rozwijanego po najechaniu kursorem */
+.dropdown:hover .dropdown-content { 
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 16px;
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.dropdown-content a:hover {
+    background: rgba(0, 170, 255, 0.08);
+    color: #fff;
+    padding-left: 20px; /* Eleganckie przesunięcie w prawo podczas hoveru */
+}
+
+/* ==========================================================================
+   Hamburger (Konfiguracja bazowa pod Mobile)
+   ========================================================================== */
+
+.menu-icon {
+    display: none;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background var(--transition);
+}
+
+.menu-icon:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================================
+   Kontener loadera - przykrywa cały ekran
+   ========================================================================== */
 #loader {
     position: fixed;
     top: 0;
@@ -85,108 +241,8 @@ header {
     pointer-events: none;
 }
 
-.nav {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between; /* brand po lewej, menu po prawej */
-    align-items: center;
-    gap: 20px;
-}
-
-/* Brand (logo + nazwa) */
-.brand {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.brand .logo {
-    width: 44px;
-    height: 44px;
-    border-radius: 8px;
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.logo-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Obrazek nie zniekształca się */
-    border-radius: 8px;
-}
-
-.brand-name { 
-    font-weight: 800; 
-} /* Pogrubiona nazwa */
-
-.brand-subtitle { 
-    font-size: 12px; 
-    color: var(--muted); 
-    margin-top: 2px; 
-}
-
 /* ==========================================================================
-   Linki w menu
-   ========================================================================== */
-
-#main-nav {
-    display: flex;
-    gap: 18px;
-    align-items: center;
-}
-
-#main-nav a {
-    text-decoration: none;
-    color: var(--muted);
-    font-weight: 600;
-    transition: color 0.2s ease-in-out;
-}
-
-#main-nav a:hover { 
-    color: var(--accent); 
-}
-
-/* ==========================================================================
-   Dropdown menu
-   ========================================================================== */
-
-.dropdown { 
-    position: relative; 
-    display: inline-block; 
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: var(--card);
-    min-width: 160px;
-    border-radius: 8px;
-    top: 100%;
-    left: 0;
-    padding: 8px 0;
-    z-index: 100;
-}
-
-.dropdown:hover .dropdown-content { 
-    display: block; 
-}
-
-/* ==========================================================================
-   Hamburger (mobile)
-   ========================================================================== */
-
-.menu-icon {
-    display: none;
-    font-size: 24px;
-    cursor: pointer;
-}
-
-/* ==========================================================================
-   Sekcja main
+   Sekcja main i układy kart
    ========================================================================== */
 
 main {
@@ -194,10 +250,6 @@ main {
     margin: 28px auto;
     padding: 0 16px;
 }
-
-/* ==========================================================================
-   Sekcja hero (baner + boczne)
-   ========================================================================== */
 
 .hero {
     display: grid;
@@ -222,10 +274,6 @@ main {
     flex-direction: column;
 }
 
-/* ==========================================================================
-   Karty i przyciski
-   ========================================================================== */
-
 .card {
     background: var(--card);
     padding: 18px;
@@ -241,7 +289,6 @@ main {
     transform: translateY(-4px);
     box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 
                 0 0 20px rgba(0, 170, 255, 0.15); 
-    /* Zmiana: używamy zmiennej --accent zamiast stałego koloru */
     border-color: var(--accent); 
     opacity: 1;
 }
@@ -261,6 +308,10 @@ main {
     gap: 10px; 
 }
 
+/* ==========================================================================
+   Przyciski i interakcje UI
+   ========================================================================== */
+
 .btn,
 a.btn {
     background: linear-gradient(90deg, var(--accent), var(--accent-2));
@@ -273,7 +324,6 @@ a.btn {
     display: inline-block;
     text-decoration: none;
     text-align: center;
-    /* Dodajemy transform do listy animowanych właściwości, jeśli go tam nie było */
     transition: transform 0.1s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -320,7 +370,7 @@ a.btn.mt-12 {
 }
 
 /* ==========================================================================
-   Grid dla innych sekcji
+   Tabele, Siatki strukturalne i Wideo
    ========================================================================== */
 
 .grid {
@@ -332,11 +382,7 @@ a.btn.mt-12 {
 
 .full { 
     grid-column: 1 / -1; 
-} /* Element na całą szerokość */
-
-/* ==========================================================================
-   Tabela specyfikacji
-   ========================================================================== */
+} 
 
 table.specs {
     width: 100%;
@@ -346,13 +392,10 @@ table.specs {
 table.specs td,
 table.specs th {
     padding: 10px;
-    /* Delikatna linia podziału, która też lekko barwi się pod kolor święta */
     border-bottom: 1px solid color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
-/* Styl dla kategorii w tabeli specyfikacji */
 .cat {
-    /* Pasek za napisem PROCESOR automatycznie dostosuje się do koloru dnia specjalnego */
     background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 15%, transparent), transparent); 
     color: var(--accent); 
     font-weight: 700;
@@ -360,10 +403,6 @@ table.specs th {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-
-/* ==========================================================================
-   Sekcja wideo
-   ========================================================================== */
 
 .videos {
     display: grid;
@@ -385,7 +424,7 @@ table.specs th {
 }
 
 /* ==========================================================================
-   Stopka
+   Stopka globalna
    ========================================================================== */
 
 footer {
@@ -472,20 +511,16 @@ footer {
 }
 
 /* ==========================================================================
-   Instagram / Snapwidget
+   Widgety zewnętrzne (Snapwidget, Spotify) i Klasy pomocnicze
    ========================================================================== */
 
 .snapwidget-widget {
     border: none;
     overflow: hidden;
-    width: 100%; /* Zmieniono z 950px na 100% aby pasowało do kontenera */
-    height: 380px; /* Wysokość domyślna, można dostosować */
+    width: 100%; 
+    height: 380px; 
     margin-top: 20px;
 }
-
-/* ==========================================================================
-   Klasy pomocnicze
-   ========================================================================== */
 
 .muted { 
     color: var(--muted); 
@@ -506,25 +541,7 @@ a.inline-link:hover {
 .mt-22 { margin-top: 22px; }
 
 /* ==========================================================================
-   Menu dropdown (druga wersja)
-   ========================================================================== */
-
-.dropdown-content a {
-    display: block;
-    padding: 8px 16px;
-    color: var(--muted);
-    text-decoration: none;
-    font-weight: 600;
-    transition: background 0.2s ease-in-out;
-}
-
-.dropdown-content a:hover {
-    background: rgba(0, 170, 255, 0.1);
-    color: var(--accent);
-}
-
-/* ==========================================================================
-   Style list
+   Struktury list (Tekst specyfikacji PC itp.)
    ========================================================================== */
 
 ul, ol {
@@ -596,10 +613,9 @@ li {
 }
 
 /* ==========================================================================
-   NOWE KLASY (CLEANUP INDEX.HTML)
+   Dedykowane klasy struktur indeksu
    ========================================================================== */
 
-/* Prawa kolumna w sekcji Hero oraz okna te trzy u góry */
 .hero-sidebar {
     display: flex;
     flex-direction: column;
@@ -608,7 +624,6 @@ li {
     height: 100%;
 }
 
-/* Link do Discorda */
 .discord-link {
     color: var(--accent);
     text-decoration: none;
@@ -629,7 +644,6 @@ li {
     object-fit: cover;
 }
 
-/* Przycisk YouTube na całą szerokość */
 .btn-full-width {
     width: 100%;
     max-width: 100%;
@@ -638,18 +652,16 @@ li {
     padding: 15px !important;
 }
 
-/* Widget Spotify */
 .spotify-embed {
     border-radius: 12px;
     border: none;
     margin-top: 20px;
 }
 
-/* Styl dla nowej karty z kodem QR */
 .qr-card {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centrowanie nagłówka i tekstu */
+    align-items: center; 
     text-align: center;
 }
 
@@ -665,33 +677,108 @@ li {
     width: 150px;
     height: auto;
     border-radius: 12px;
-    border: 3px solid var(--accent); /* kolory pod święta */
+    border: 3px solid var(--accent); 
     padding: 10px;
     transition: transform var(--transition), border-color var(--transition);
 }
 
 .qr-code-large:hover {
-    transform: scale(1.08); /* Efekt powiększenia przy najechaniu */
+    transform: scale(1.08); 
 }
 
 .margin-special {
     margin-top: 15px !important;
 }
 
-/* Tworzy poświatę pod sekcją PC dopasowaną do aktualnego święta */
 .controls-left {
     position: relative;
     z-index: 1;
 }
 
 .controls-left::before {
-    /* Miksuje kolor aktualnego motywu (20% widoczności) z przezroczystością */
     background: radial-gradient(circle, color-mix(in srgb, var(--accent) 20%, transparent) 0%, rgba(0, 0, 0, 0) 70%);
 }
 
+.ssd-list {
+    white-space: pre-line;
+}
 
 /* ==========================================================================
-   SYSTEM SEZONOWY
+   SUWAKI W GRACH (Zunifikowane szablony)
+   ========================================================================== */
+
+.audio-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.volume-control {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.volume-control label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.volume-control input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    outline: none;
+    transition: background 0.2s;
+}
+
+.volume-control input[type="range"]:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.volume-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+.volume-control input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: #fff;
+}
+
+.volume-control input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: none;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+.volume-control input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    background: #fff;
+}
+
+/* ==========================================================================
+   DODATKI SEZONOWE I SYSTEM MOTYWÓW KOLORYSTYCZNYCH
    ========================================================================== */
 
 .seasonal-particle {
@@ -708,7 +795,15 @@ li {
     }
 }
 
-/* Motywy kolorystyczne */
+#toggle-effects-btn {
+    display: none;
+}
+
+body.effects-off .seasonal-particle {
+    display: none !important;
+}
+
+/* Motywy podstawowe */
 body.theme-winter     { --accent: #ffffff; --accent-2: #add8e6; }
 body.theme-spring     { --accent: #4ade80; --accent-2: #facc15; }
 body.theme-summer     { --accent: #fbbf24; --accent-2: #f87171; }
@@ -718,26 +813,37 @@ body.theme-birthday   { --accent: #f472b6; --accent-2: #22d3ee; }
 body.theme-youtube    { --accent: #ff1606; --accent-2: #ffffff; }
 body.theme-new        { --accent: #ffff06; --accent-2: #ffa12c; }
 
-/* NOWY: Czerwony styl bez gradientów */
+/* Motyw: CZERWONY (Jednolity) */
 body.theme-red        { --accent: #ff0000; --accent-2: #ff0000; }
 
-/* Zmiana tła przycisku na jednolity kolor, gdy aktywny jest czerwony motyw */
 body.theme-red .btn {
     background: #ff0000 !important;
-    color: #ffffff !important; /* Biały tekst, bo czarny na czerwonym tle słabo widać */
+    color: #ffffff !important; 
 }
 
-/* Przycisk wyłączania (domyślnie ukryty) */
-#toggle-effects-btn {
-    display: none;
+/* Nowe, dynamiczne dopasowanie menu do czerwonego motywu */
+body.theme-red header {
+    background: rgba(20, 10, 10, 0.85);
+    border-bottom-color: rgba(255, 0, 0, 0.2);
 }
 
-body.effects-off .seasonal-particle {
-    display: none !important;
+body.theme-red .dropdown-content {
+    background: #1a1010;
+    border-color: rgba(255, 0, 0, 0.2);
+}
+
+body.theme-red .dropdown-content a:hover {
+    background: rgba(255, 0, 0, 0.15);
+    color: #ff4d4d;
+}
+
+body.theme-red #main-nav a.active {
+    color: #ff4d4d;
+    background: rgba(255, 0, 0, 0.08);
 }
 
 /* ==========================================================================
-   Responsywność i Media Queries
+   RESPONSYWNOŚĆ I MEDIA QUERIES (Mobilne Menu Hamburgerowe)
    ========================================================================== */
 
 section { 
@@ -745,20 +851,54 @@ section {
 }
 
 @media screen and (max-width: 1200px) {
+    .menu-icon { 
+        display: block; 
+    }
+
     #main-nav {
         display: none;            
         flex-direction: column;   
         gap: 12px;
         width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #14171b; /* var(--card) */
+        padding: 20px;
+        box-sizing: border-box;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        z-index: 499;
+    }
+
+    /* Klasa dynamiczna aktywowana przez skrypt po kliknięciu hamburgera */
+    #main-nav.show {
+        display: flex;
     }
     
-    .menu-icon { 
-        display: block; 
+    .dropdown {
+        width: 100%;
+        text-align: left;
     }
-    
+
     .dropdown-content { 
         position: relative; 
-        box-shadow: none; 
+        box-shadow: none;
+        width: 100%;
+        top: 0;
+        background: rgba(0, 0, 0, 0.2);
+        border: none;
+        margin-top: 6px;
+        
+        /* Wyłączenie domyślnych animacji desktopowych na telefonie dla czytelności */
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        display: none; 
+    }
+
+    /* Klasa sterowana za pomocą JS na mobile po kliknięciu rozwijanej sekcji */
+    .dropdown.open .dropdown-content {
+        display: block;
     }
     
     .hero {
@@ -790,105 +930,9 @@ section {
         height: 200px; 
     }
     
-    /* Snapwidget responsywność */
     .snapwidget-widget { 
         width: 100%; 
         height: auto; 
         aspect-ratio: 25 / 10; 
     }
-}
-
-/* ==========================================================================
-   Formatowanie tekstu wielolinijkowego (zastępuje tagi <br>)
-   ========================================================================== */
-.ssd-list {
-    white-space: pre-line;
-}
-
-/* ==========================================================================
-   Modyfikacje dla czerwonego motywu
-   ========================================================================== */
-
-/* Zmiana tła przycisku na jednolity czerwony, gdy motyw jest aktywny */
-body.theme-red .btn {
-    background: #ff0000 !important;
-    color: #ffffff !important; 
-}
-
-/* ==========================================================================
-   Suwaki w grach
-   ========================================================================== */
-
-/* Unifikacja wyglądu suwaków audio w grach */
-.audio-settings {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    background: rgba(255, 255, 255, 0.02);
-    padding: 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.volume-control {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.volume-control label {
-    font-size: 0.85rem;
-    color: var(--muted);
-    font-weight: 500;
-}
-
-/* Stylizacja paska suwaka */
-.volume-control input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    outline: none;
-    transition: background 0.2s;
-}
-
-.volume-control input[type="range"]:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* Stylizacja kropki suwaka (Chrome, Safari, Edge, Opera) */
-.volume-control input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-    cursor: pointer;
-    transition: transform 0.1s, background-color 0.2s;
-}
-
-.volume-control input[type="range"]::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-    background: #fff;
-}
-
-/* Stylizacja kropki suwaka (Firefox) */
-.volume-control input[type="range"]::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border: none;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-    cursor: pointer;
-    transition: transform 0.1s, background-color 0.2s;
-}
-
-.volume-control input[type="range"]::-moz-range-thumb:hover {
-    transform: scale(1.2);
-    background: #fff;
 }
