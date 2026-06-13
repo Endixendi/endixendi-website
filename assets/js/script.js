@@ -114,6 +114,54 @@ let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
     // Reakcja na zmianę rozmiaru okna
     window.addEventListener("resize", updateMenuVisibility);
   }
+  
+  /* =========================
+     Otwieranie całego menu na telefonie oraz rozwijanie podkategorii po kliknięciu
+     ========================= */
+	document.addEventListener("DOMContentLoaded", () => {
+		// Ponieważ menu ładuje się dynamicznie, nasłuchujemy kliknięć na całym dokumencie
+		document.addEventListener("click", (e) => {
+			
+			// 1. OBSŁUGA HAMBURGERA
+			if (e.target.id === "menu-toggle") {
+				const mainNav = document.getElementById("main-nav");
+				if (mainNav) {
+					mainNav.classList.toggle("show");
+					
+					// Zmiana ikony na krzyżyk po otwarciu, i z powrotem na hamburger po zamknięciu
+					if (mainNav.classList.contains("show")) {
+						e.target.textContent = "✕";
+					} else {
+						e.target.textContent = "☰";
+					}
+				}
+			}
+			
+			// 2. OBSŁUGA ROZWIJANIA GRUP (Narzędzia, Sociale, Gry) NA TELEFONIE
+			// Skrypt zadziała bez względu na to, czy to tag <a> czy <button>
+			if (e.target.classList.contains("dropbtn") || e.target.closest(".dropbtn")) {
+				// Reaguj tylko na ekranach mobilnych (poniżej 1200px)
+				if (window.innerWidth <= 1200) {
+					e.preventDefault(); // Zatrzymuje domyślne akcje (np. podskakiwanie strony)
+					
+					const targetBtn = e.target.classList.contains("dropbtn") ? e.target : e.target.closest(".dropbtn");
+					const parentDropdown = targetBtn.closest(".dropdown");
+					
+					if (parentDropdown) {
+						// Zamknij inne otwarte podmenu, żeby nie nachodziły na siebie
+						document.querySelectorAll(".dropdown").forEach(drop => {
+							if (drop !== parentDropdown) {
+								drop.classList.remove("open");
+							}
+						});
+						
+						// Otwórz lub zamknij kliknięte podmenu
+						parentDropdown.classList.toggle("open");
+					}
+				}
+			}
+		});
+	});
 
   /* =========================
      Redirecty (hash i ścieżki)

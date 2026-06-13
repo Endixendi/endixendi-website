@@ -853,6 +853,10 @@ section {
 @media screen and (max-width: 1200px) {
     .menu-icon { 
         display: block; 
+        color: var(--accent); /* Zmieniono z białego na kolor motywu strony */
+        font-weight: bold;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     #main-nav {
@@ -868,16 +872,17 @@ section {
         box-sizing: border-box;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         z-index: 499;
+        text-align: center; /* Wyśrodkowanie linków głównych */
     }
 
-    /* Klasa dynamiczna aktywowana przez skrypt po kliknięciu hamburgera */
+    /* Klasa aktywowana przez skrypt JS po kliknięciu hamburgera */
     #main-nav.show {
         display: flex;
     }
     
     .dropdown {
         width: 100%;
-        text-align: left;
+        text-align: center; /* Wyśrodkowanie przycisków "Gry ▾" itp. */
     }
 
     .dropdown-content { 
@@ -888,17 +893,31 @@ section {
         background: rgba(0, 0, 0, 0.2);
         border: none;
         margin-top: 6px;
+        border-radius: 8px;
         
-        /* Wyłączenie domyślnych animacji desktopowych na telefonie dla czytelności */
+        /* Wyłączenie desktopowych efektów najechania myszką */
         opacity: 1;
         visibility: visible;
         transform: none;
+        
+        /* Domyślnie ukryte na telefonie, dopóki użytkownik nie kliknie */
         display: none; 
+        text-align: center; /* Wyśrodkowanie linków wewnątrz podmenu */
     }
 
-    /* Klasa sterowana za pomocą JS na mobile po kliknięciu rozwijanej sekcji */
+    /* Klasa sterowana za pomocą JS po kliknięciu w podkategorię */
     .dropdown.open .dropdown-content {
         display: block;
+    }
+
+    /* Marginesy dla linków wewnątrz podmenu na telefonie */
+    .dropdown-content a {
+        padding: 12px 16px;
+    }
+    
+    .dropdown-content a:hover {
+        padding-left: 16px; /* Wyłączenie przesunięcia w prawo na telefonie */
+        background: rgba(255, 255, 255, 0.03);
     }
     
     .hero {
