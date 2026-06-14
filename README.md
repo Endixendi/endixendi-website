@@ -1,4 +1,4 @@
-# 🦖 endixendi.pl — Oficjalna Strona Internetowa
+# 🖥️ endixendi.pl — Oficjalna Strona Internetowa
 
 Witaj w oficjalnym repozytorium strony **endixendi.pl**. Jest to moje osobiste miejsce w sieci, w którym gromadzę swoją twórczość, autorskie gry przeglądarkowe, poradniki oraz informacje o sprzęcie i projektach związanych z grami oraz technologią.
 
@@ -21,7 +21,7 @@ Strona wykorzystuje czysty JavaScript do dynamicznego wstrzykiwania powtarzalnyc
 
 ### 📱 Informacje i Multimedia
 * **Strona Główna (`index.html`)** – Centrum dowodzenia. Zawiera sekcję "O mnie", pełną specyfikację mojego PC oraz urządzeń peryferyjnych, odnośniki do social media, widgety Instagrama i Spotify oraz najnowsze filmy z YouTube.
-* **Narzędzia (`tools.html`)** – Zestawienie programów, z których korzystam na co dzień do montażu, streamowania i grafiki (OBS, DaVinci Resolve, Photopea, Vectorpea) wraz z osadzoną playlistą moich poradników z YT.
+* **Narzędzia (`tools-all.html` / `tools-rec.html`)** – Zestawienie programów, z których korzystam na co dzień do montażu, streamowania i grafiki (OBS, DaVinci Resolve, Photopea, Vectorpea) wraz z osadzoną playlistą moich poradników z YT.
 * **Galeria (`gallery.html`)** – Przestrzeń z dynamicznie ładowaną siatką zdjęć, gdzie prezentuję wybrane projekty, screenshoty oraz inspiracje.
 
 ---
@@ -51,6 +51,7 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 │   │   └── tetris.css        # Style dedykowane grze Tetris
 │   ├── images/               # Zasoby graficzne, ikony, kod QR
 │   │   ├── gallery/          # Zdjęcia wyświetlane w galerii
+│	│	│	└── ...
 │   │   ├── 1.png             # Zdjęcie mojego awatara wersja 1
 │   │   ├── 2.png             # Zdjęcie mojego awatara wersja 2
 │   │   ├── 3.png             # Zdjęcie mojego awatara wersja 3
@@ -85,7 +86,7 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 │       │   └── shooter-bg.webm # Muzyka tła dla gry Shooter
 │       ├── statki/
 │       │   └── battle-bg.webm  # Muzyka tła dla gry Statki
-│       └── tertis/
+│       └── tetris/
 │           └── tetris-bg.webm  # Muzyka tła dla gry Tetris
 │
 ├── CNAME                     # Konfiguracja własnej domeny dla GitHub Pages
