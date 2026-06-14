@@ -97,7 +97,7 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 ├── linux.html                # Strona Linux vs Windows
 ├── menu.html                 # Wspólne menu stron (ładowane dynamicznie)
 ├── shooter.html              # Gra Shooter
-├── statki.html               # Gra Statki
+├── battleship.html           # Gra Statki
 ├── tetris.html               # Gra Tetris
 ├── tools-rec.html            # Spis narzędzi i poradniki YT
 └── tools-all.html            # Spis narzędzi online

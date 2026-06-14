@@ -59,12 +59,14 @@
     justify-content: center;
     gap: 40px;
     flex-wrap: wrap;
+    width: 100%; /* Zabezpieczenie przed wychodzeniem */
 }
 
 .board-box {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 100%; /* Bezpieczeństwo na małych ekranach */
 }
 
 .board-header {
@@ -137,7 +139,7 @@
    Stany komórek (Statki, Trafienia, Pudła)
    ========================================================================== */
 
-/* Statek gracza (NAPRAWIONY: dynamicznie miesza aktualny akcent z przezroczystością) */
+/* Statek gracza */
 .player-grid .cell.ship {
     background: color-mix(in srgb, var(--accent) 20%, transparent);
     border-color: var(--accent);
@@ -165,15 +167,19 @@
     animation: flashHit 0.3s ease-out;
 }
 
-.cell.hit::before {
+.cell.hit::before,
+.cell.sunk::before {
     content: '✕';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #ff4d6d;
-    font-size: 18px;
+    font-size: 0.6rem; /* Skalowanie iksa do wielkości komórki */
     font-weight: bold;
+}
+
+.cell.hit::before {
+    color: #ff4d6d;
 }
 
 /* Zatopiony statek (Sunk) */
@@ -204,6 +210,8 @@
     padding: 0;
     overflow: hidden;
     font-family: 'Courier New', Courier, monospace;
+    width: 100%; /* Bezpieczna szerokość */
+    margin-top: 15px;
 }
 
 .log-header {
@@ -221,6 +229,7 @@
     padding: 10px;
     font-size: 13px;
     display: flex;
+    flex-wrap: nowrap;
     flex-direction: column-reverse;
 }
 
@@ -259,30 +268,24 @@
 }
 
 /* ==========================================================================
-   Ustawienia Audio
+   Wsparcie dla CZERWONEGO MOTYWU (Ciało z klasą .theme-red)
    ========================================================================== */
 
-.audio-settings {
-    display: flex;
-    gap: 20px;
-    align-items: center;
+/* Zmiana podświetleń suwaków zunifikowanych na czerwone */
+body.theme-red .volume-control input[type="range"]::-webkit-slider-thumb {
+    background: #ff0000 !important;
+    box-shadow: 0 0 8px #ff0000 !important;
 }
 
-.volume-control {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
+body.theme-red .volume-control input[type="range"]::-moz-range-thumb {
+    background: #ff0000 !important;
+    box-shadow: 0 0 8px #ff0000 !important;
 }
 
-input[type="range"] {
-    accent-color: var(--accent);
-    cursor: pointer;
-}
-
-/* Specjalne zachowanie suwaka dla CZERWONEGO MOTYWU */
-body.theme-red input[type="range"] {
-    accent-color: #ff0000 !important;
+body.theme-red .player-grid .cell.ship {
+    background: rgba(255, 0, 0, 0.15);
+    border-color: #ff0000;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
 }
 
 /* ==========================================================================
@@ -290,6 +293,12 @@ body.theme-red input[type="range"] {
    ========================================================================== */
 
 @media (max-width: 768px) {
+    .game-controls-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
     .battleship-grid {
         grid-template-columns: repeat(10, 26px);
         grid-template-rows: repeat(10, 26px);
@@ -302,5 +311,10 @@ body.theme-red input[type="range"] {
     
     .boards-container {
         gap: 20px;
+    }
+
+    /* Dopasowanie zunifikowanego bloku audio na pełną szerokość */
+    .audio-settings {
+        width: 100%;
     }
 }

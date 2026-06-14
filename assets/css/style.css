@@ -23,6 +23,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 90px; 
 }
 
 body {
@@ -30,6 +31,10 @@ body {
     color: #e6eef6;
     line-height: 1.5;
     min-height: 100vh;
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* ==========================================================================
@@ -42,7 +47,7 @@ header {
     background: rgba(15, 17, 21, 0.75); /* Przezroczyste tło dopasowane do --bg */
     backdrop-filter: blur(12px);       /* Zwiększone rozmycie dla nowoczesnego efektu szkła */
     -webkit-backdrop-filter: blur(12px);
-    z-index: 500;             /* Podniesiony zindex, by menu zawsze było nad elementami gry */
+    z-index: 500;              /* Podniesiony zindex, by menu zawsze było nad elementami gry */
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding: 12px 20px;
     transition: background var(--transition), border-color var(--transition);
@@ -443,28 +448,6 @@ footer {
     position: relative;
 }
 
-.back-to-top {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    color: var(--accent);
-    border-radius: 50%;
-    text-decoration: none;
-    font-weight: bold;
-    margin-bottom: 20px;
-    transition: all var(--transition);
-    cursor: pointer;
-}
-
-.back-to-top:hover {
-    border-color: var(--accent);
-    transform: translateY(-5px);
-    box-shadow: 0 0 15px rgba(0, 170, 255, 0.2);
-}
-
 .footer-brand .brand-name {
     display: block;
     font-size: 1.5rem;
@@ -848,32 +831,6 @@ body.theme-red #main-nav a.active {
    ========================================================================== */
 .floating-back-to-top {
     position: fixed; /* Przykleja przycisk do ekranu, nie do zawartości strony */
-    bottom: 30px;    /* Odległość od dolnej krawędzi ekranu */
-    right: 30px;     /* Odległość od prawej krawędzi ekranu */
-    width: 44px;
-    height: 44px;
-    line-height: 42px; /* Centrowanie strzałki w pionie */
-    text-align: center;
-    background: #14171b; /* Identyczne tło jak karty, by nic nie prześwitywało */
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: var(--muted);
-    border-radius: 50%; /* Okrągły kształt */
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: bold;
-    z-index: 1000;   /* Bardzo wysoki z-index, żeby strzałka była nad grami i sekcjami */
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
-    cursor: pointer;
-    
-    /* Stan początkowy: przycisk jest niewidoczny i lekko obniżony */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-    transition: all 0.3s ease-in-out;
-}
-
-#back-to-top {
-	position: fixed; /* Przykleja przycisk do ekranu, nie do zawartości strony */
     bottom: 30px;    /* Odległość od dolnej krawędzi ekranu */
     right: 30px;     /* Odległość od prawej krawędzi ekranu */
     width: 44px;

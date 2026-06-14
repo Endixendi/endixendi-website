@@ -61,6 +61,7 @@ body {
     align-items: center;
     border-radius: 14px;
     z-index: 10;
+    padding: 15px; /* Bezpieczny wewnętrzny margines na małe ekrany */
 }
 
 .overlay.hidden {
@@ -73,9 +74,11 @@ body {
     border-radius: 12px;
     text-align: center;
     border: 1px solid var(--accent);
+    max-width: 90%; /* Zabezpieczenie przed dotykaniem krawędzi ekranu */
+    box-sizing: border-box;
 }
 
-/* Panel pod grą (Sterowanie i Suwaki) */
+/* Panel pod grą (Sterowanie i Kontenery) */
 .game-footer-controls {
     width: 100%;
     max-width: 800px;
@@ -97,79 +100,7 @@ body {
     font-size: 1rem;
 }
 
-.volume-settings {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 200px;
-}
-
-.volume-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.volume-item label {
-    font-size: 16px;
-    font-weight: 600;
-    color: #ccc;
-    text-align: center;
-}
-
-/* ==========================================================================
-   Suwaki głośności (Idealne centrowanie)
-   ========================================================================== */
-
-.volume-settings input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    background: transparent;
-    height: 20px;
-    cursor: pointer;
-}
-
-/* Linia suwaka - Webkit (Chrome, Safari, Edge, Opera) */
-.volume-settings input[type="range"]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 6px;
-    background: linear-gradient(to right, var(--accent), var(--accent-2));
-    border-radius: 3px;
-    transition: background var(--transition);
-}
-
-/* Kropka suwaka - Webkit */
-.volume-settings input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 18px;
-    width: 18px;
-    background: var(--accent);
-    border: 2px solid var(--bg);
-    border-radius: 50%;
-    margin-top: -6px; 
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    transition: background var(--transition);
-}
-
-/* Linia suwaka - Firefox */
-.volume-settings input[type="range"]::-moz-range-track {
-    height: 6px;
-    background: linear-gradient(to right, var(--accent), var(--accent-2));
-    border-radius: 3px;
-    transition: background var(--transition);
-}
-
-/* Kropka suwaka - Firefox */
-.volume-settings input[type="range"]::-moz-range-thumb {
-    height: 18px;
-    width: 18px;
-    background: var(--accent);
-    border: 2px solid var(--bg);
-    border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    transition: background var(--transition);
-}
+/* Uwaga: Bloki .volume-settings i suwaki zostały usunięte - są pobierane ze style.css */
 
 /* ==========================================================================
    Modyfikacja specyficzna dla CZERWONEGO MOTYWU (Ciało z klasą .theme-red)
@@ -189,24 +120,6 @@ body.theme-red .controls-info h3 {
     color: #ff0000 !important;
 }
 
-body.theme-red .volume-settings input[type="range"]::-webkit-slider-runnable-track {
-    background: #ff0000 !important;
-}
-
-body.theme-red .volume-settings input[type="range"]::-webkit-slider-thumb {
-    background: #ffffff !important;
-    border-color: #ff0000 !important;
-}
-
-body.theme-red .volume-settings input[type="range"]::-moz-range-track {
-    background: #ff0000 !important;
-}
-
-body.theme-red .volume-settings input[type="range"]::-moz-range-thumb {
-    background: #ffffff !important;
-    border-color: #ff0000 !important;
-}
-
 body.theme-red #jumpBtn {
     background: #ff0000 !important;
     color: #ffffff !important;
@@ -221,7 +134,7 @@ body.theme-red #jumpBtn {
     display: none;
     width: 100%;
     max-width: 800px;
-    gap: 12px; /* Odstęp między przyciskiem Skok a Kucanie */
+    gap: 12px;
 }
 
 /* Wspólny styl dla obu przycisków (Komputer / Stan bazowy) */
@@ -281,7 +194,7 @@ body.theme-red #jumpBtn {
         display: block;
     }
 
-    /* Pasek przycisków mobilnych (Zmieniony na flex, by stały w jednej linii) */
+    /* Pasek przycisków mobilnych */
     .mobile-controls {
         display: flex !important;
         width: 100%;
@@ -290,7 +203,7 @@ body.theme-red #jumpBtn {
 
     /* Styl mobilny dla OBU przycisków (Równe ułożenie obok siebie 50/50) */
     #jumpBtn, #crouchBtn {
-        flex: 1; /* Każdy przycisk bierze dokładnie po połowie szerokości ekranu */
+        flex: 1;
         height: 55px; /* Duży, wygodny przycisk pod kciuk */
         font-size: 1.1rem;
         background: var(--accent);
@@ -300,10 +213,10 @@ body.theme-red #jumpBtn {
         box-shadow: 0 4px 12px rgba(0, 170, 255, 0.3);
     }
     
-    /* Efekt kliknięcia na telefonie dla obu przycisków */
+    /* Efekt kliknięcia na telefonie dla obu przycisków - naprawiony */
     #jumpBtn:active, #crouchBtn:active {
-        background: #0088dd;
-        transform: scale(0.98);
+        background: #0088dd !important;
+        transform: scale(0.98) !important;
     }
 
     .game-footer-controls {
@@ -311,12 +224,13 @@ body.theme-red #jumpBtn {
         gap: 12px;
     }
     
+    /* Globalne dopasowanie szerokości ujednoliconego paska audio na mobilkach */
     .audio-settings {
         width: 100%;
     }
 }
 
-/* Wsparcie dla CZERWONEGO MOTYWU dla OBU przycisków */
+/* Wsparcie dla CZERWONEGO MOTYWU dla OBU przycisków mobilnych */
 body.theme-red #jumpBtn, 
 body.theme-red #crouchBtn {
     background: #ff0000 !important;

@@ -22,6 +22,7 @@
 .tools-section-title {
     margin-bottom: 15px; 
     color: var(--accent);
+    transition: color var(--transition);
 }
 
 /* Uniwersalna siatka dla kart z narzędziami */
@@ -46,4 +47,21 @@
 /* Ostatnia sekcja na stronie (wymagała większego marginesu na dole przed stopką) */
 .tools-last-section {
     margin-bottom: 50px;
+}
+
+/* =========================================================================
+   WSPARCIE DLA CZERWONEGO MOTYWU (Ciało z klasą .theme-red)
+   ========================================================================= */
+
+body.theme-red .tools-section-title {
+    color: #ff0000;
+}
+
+/* Wsparcie dla ewentualnych kart narzędzi, jeśli używają klasy .tool-card w tools-all.html */
+body.theme-red .tool-card h4 {
+    color: #ff0000;
+}
+
+body.theme-red .tool-card:hover {
+    border-color: rgba(255, 0, 0, 0.4);
 }

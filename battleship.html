@@ -20,10 +20,12 @@
 
     <main id="home">
 	
-        <section class="mt-16">
+        <section id="battleship-hero" class="mt-16">
             <div class="card">
                 <h1>Statki — Bitwa Morska</h1>
-                <p class="lead">Zmierz się z botem w klasycznej grze w statki. Strategia i szczęście w neonowym wydaniu.</p>
+                <p class="lead">
+                    Klasyczna, turowa gra strategiczna w nowoczesnej, neonowej oprawie. Rozmieść swoją flotę na mapie, wybierz poziom trudności i stań do pojedynku z komputerem. Analizuj Dziennik Pokładowy, namierzaj pozycje wroga i zatop wszystkie okręty przeciwnika, zanim on odkryje Twoje pozycje! ⚓
+                </p>
             </div>
         </section>
 
@@ -73,7 +75,22 @@
                     <div class="log-header">Dziennik pokładowy</div>
                     <div id="game-log" class="log-content"></div>
                 </div>
+
+            </div>
+        </section>
 		
+		<section id="dino-game" class="card mt-22">	
+		
+			<div class="controls-grid mt-16">
+				<div class="controls-left">
+					<h3>Zasady i Interfejs</h3>
+						<ul>
+							<li><strong>Rozpoczęcie gry</strong> – Wybierz poziom trudności (Łatwy, Trudny, Cheater), wylosuj swoją flotę przyciskiem <strong>„Losuj Ustawienie”</strong>, a następnie kliknij „Start Gry”.</li>
+							<li><strong>Prowadzenie ostrzału</strong> – Klikaj na prawą planszę („Komputer”), aby namierzać statki wroga. Czerwone pole z iksem <span style="color: var(--danger, #ff4d6d);">[X]</span> oznacza trafienie, a szara kropka [•] oznacza pudło.</li>
+							<li><strong>Dziennik Pokładowy</strong> – Śledź dolny panel komunikatów, gdzie na bieżąco wyświetlają się współrzędne strzałów oraz meldunki o ruchach Twoich i przeciwnika.</li>
+						</ul>
+				</div>
+					
 				<div class="audio-settings mt-12">
 					<div class="volume-control">
 						<label for="volume-music" class="muted">Głośność muzyki</label>
@@ -85,8 +102,8 @@
 					</div>
 				</div>
 
-            </div>
-        </section>
+			</div>					
+		</section>				
 	
         <section id="credits" class="card mt-16">
             <p>
