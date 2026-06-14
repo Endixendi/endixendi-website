@@ -47,6 +47,7 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 │   │   ├── linux.css         # Style dedykowane stronie linux
 │   │   ├── shooter.css       # Style dedykowane grze Shooter
 │   │   ├── style.css         # Główny arkusz stylów strony
+│   │   ├── tools.css         # Style dedykowane stronie tools-all
 │   │   └── tetris.css        # Style dedykowane grze Tetris
 │   ├── images/               # Zasoby graficzne, ikony, kod QR
 │   │   ├── gallery/          # Zdjęcia wyświetlane w galerii

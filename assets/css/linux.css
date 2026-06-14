@@ -147,3 +147,43 @@
         width: 100%;
     }
 }
+
+/* ==========================================================================
+   Klasy wyciągnięte z inline-styles (oczyszczanie linux.html)
+   ========================================================================== */
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+/* Klasa dla sekcji TOP 5 dystrybucji */
+.distro-grid-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Linki wewnątrz kart dystrybucji */
+.distro-link {
+    font-weight: bold;
+}
+
+/* Krok instalacji - tło */
+.step-card-bg {
+    background: rgba(255, 255, 255, 0.01);
+}
+
+/* Profesjonalna wskazówka Endixendiego */
+.tip-box {
+    border-left: 4px solid var(--accent);
+    background: rgba(0, 170, 255, 0.02);
+    margin-top: 24px;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.color-accent-2 {
+    color: var(--accent-2);
+}
