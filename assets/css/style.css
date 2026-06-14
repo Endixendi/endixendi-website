@@ -8,7 +8,7 @@
     --muted: #98a0aa;         /* Kolor przygaszonego tekstu */
     --accent: #00aaff;        /* Kolor akcentu 1 (np. linki) */
     --accent-2: #ffcc00;      /* Kolor akcentu 2 (np. gradienty) */
-    --border: rgba(255, 255, 255, 0.06); /* Zdefiniowana brakująca zmienna granicy kart */
+    --border: rgba(255, 255, 255, 0.06); /* Zmienna granicy kart */
     --glass: rgba(255, 255, 255, 0.03); /* Efekt szkła */
     --maxw: 1100px;           /* Maksymalna szerokość kontenera */
     --transition: 0.25s ease;
