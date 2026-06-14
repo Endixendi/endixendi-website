@@ -79,27 +79,40 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
    Pływający przycisk "Wróć na górę" - Zoptymalizowany pod kątem bindowania
    ========================================================================== */
   function initFloatingTopBtn() {
-    const floatingTopBtn = document.getElementById('js-floating-top');
-    if (!floatingTopBtn) return;
+		const floatingTopBtn = document.getElementById('js-floating-top');
+		// Łapiemy też tradycyjną strzałkę ze stopki za pomocą jej klasy
+		const staticTopBtn = document.querySelector('.back-to-top'); 
 
-    // Rejestrujemy kliknięcie tylko RAZ przy inicjalizacji, poza eventem scroll
-    floatingTopBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
+		// Uniwersalna funkcja płynnego przewijania na samą górę
+		const scrollToTop = (e) => {
+			e.preventDefault();
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth'
+			});
+		};
 
-    // Event scroll odpowiada TYLKO za pokazywanie/ukrywanie klasy klas wizualnych
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            floatingTopBtn.classList.add('show');
-        } else {
-            floatingTopBtn.classList.remove('show');
-        }
-    });
-  }
+		// Podpinamy przewijanie pod pływający przycisk (jeśli istnieje)
+		if (floatingTopBtn) {
+			floatingTopBtn.addEventListener('click', scrollToTop);
+		}
+
+		// Podpinamy przewijanie pod tradycyjną strzałkę w stopce (jeśli istnieje)
+		if (staticTopBtn) {
+			staticTopBtn.addEventListener('click', scrollToTop);
+		}
+
+		// Nasłuchiwanie scrolla (tylko dla przycisku pływającego)
+		if (floatingTopBtn) {
+			window.addEventListener('scroll', () => {
+				if (window.scrollY > 300) {
+					floatingTopBtn.classList.add('show');
+				} else {
+					floatingTopBtn.classList.remove('show');
+				}
+			});
+		}
+	}
 
   /* =========================
      Inicjalizacja toggle menu (hamburger)
