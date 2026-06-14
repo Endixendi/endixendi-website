@@ -6,7 +6,14 @@
 window.addEventListener("load", function() {
     const loader = document.getElementById("loader");
     if (loader) {
-        loader.classList.add("loader-hidden");
+        // Zintegrowane opóźnienie 1.5s dla płynnego ukrywania loadera
+        setTimeout(() => {
+            loader.classList.add("loader-hidden");
+        }, 1500);
+    }
+    // Bezpieczne uruchomienie systemu sezonowego po pełnym załadowaniu zasobów
+    if (typeof initSeasonalSystem === "function") {
+        initSeasonalSystem();
     }
 });
 
@@ -74,45 +81,36 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
       console.error("Błąd podczas ładowania partiali:", error);
     });
   }
-  
-/* ==========================================================================
-   Pływający przycisk "Wróć na górę" - Zoptymalizowany pod kątem bindowania
-   ========================================================================== */
+
+  /* ==========================================================================
+     Pływający przycisk "Wróć na górę" z płynnym przewijaniem (Przeniesiony i zabezpieczony)
+     ========================================================================== */
   function initFloatingTopBtn() {
-		const floatingTopBtn = document.getElementById('js-floating-top');
-		// Łapiemy też tradycyjną strzałkę ze stopki za pomocą jej klasy
-		const staticTopBtn = document.querySelector('.back-to-top'); 
-
-		// Uniwersalna funkcja płynnego przewijania na samą górę
-		const scrollToTop = (e) => {
-			e.preventDefault();
-			window.scrollTo({
-				top: 0,
-				behavior: 'smooth'
-			});
-		};
-
-		// Podpinamy przewijanie pod pływający przycisk (jeśli istnieje)
-		if (floatingTopBtn) {
-			floatingTopBtn.addEventListener('click', scrollToTop);
-		}
-
-		// Podpinamy przewijanie pod tradycyjną strzałkę w stopce (jeśli istnieje)
-		if (staticTopBtn) {
-			staticTopBtn.addEventListener('click', scrollToTop);
-		}
-
-		// Nasłuchiwanie scrolla (tylko dla przycisku pływającego)
-		if (floatingTopBtn) {
-			window.addEventListener('scroll', () => {
-				if (window.scrollY > 300) {
-					floatingTopBtn.classList.add('show');
-				} else {
-					floatingTopBtn.classList.remove('show');
-				}
-			});
-		}
-	}
+    window.addEventListener('scroll', () => {
+        const floatingTopBtn = document.getElementById('js-floating-top');
+        
+        if (floatingTopBtn) {
+            // 1. Pokazywanie/ukrywanie przycisku
+            if (window.scrollY > 300) {
+                floatingTopBtn.classList.add('show');
+            } else {
+                floatingTopBtn.classList.remove('show');
+            }
+            
+            // 2. Obsługa idealnego przewijania na samą górę po kliknięciu
+            if (!floatingTopBtn.dataset.hasListener) {
+                floatingTopBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); // Blokujemy domyślne skakanie do kotwicy
+                    window.scrollTo({
+                        top: 0,             // Przewiń do absolutnego początku (piksel 0)
+                        behavior: 'smooth' // Płynna animacja
+                    });
+                });
+                floatingTopBtn.dataset.hasListener = 'true'; // Oznaczamy, że nasłuch już działa
+            }
+        }
+    });
+  }
 
   /* =========================
      Inicjalizacja toggle menu (hamburger)
@@ -155,7 +153,7 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
   }
   
   /* =========================
-     Delegacja zdarzeń kliknięcia dla menu mobilnego
+     Otwieranie całego menu na telefonie oraz rozwijanie podkategorii po kliknięciu
      ========================= */
   function initGlobalClickDelegation() {
     document.addEventListener("click", (e) => {
@@ -169,7 +167,7 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
         }
       }
       
-      // 2. OBSŁUGA ROZWIJANIA GRUP NA TELEFONIE
+      // 2. OBSŁUGA ROZWIJANIA GRUP (Narzędzia, Sociale, Gry) NA TELEFONIE
       if (e.target.classList.contains("dropbtn") || e.target.closest(".dropbtn")) {
         if (window.innerWidth <= 1200) {
           e.preventDefault();
@@ -218,7 +216,7 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
   }
 
   /* =========================
-     Smooth scroll (delegacja zdarzeń)
+     Smooth scroll (delegacja zdarzeń) - POPRAWIONY URL
      ========================= */
   function initSmoothScroll() {
     document.addEventListener("click", function (e) {
@@ -272,10 +270,10 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
     checkForRedirects();
     initDonateButton();
     initSmoothScroll();
-    initFloatingTopBtn();
+    initFloatingTopBtn(); // Funkcja jest bezpiecznie zdefiniowana wyżej
     initGlobalClickDelegation();
-  
-    // --- LOGIKA DLA CZERWONEGO PRZYCISKU ---
+    
+    // --- LOGIKA DLA CZERWONEGO PRZYCISKU (Zmiany na czerwony styl) ---
     const redBtn = document.getElementById("red-theme-btn");
     if (redBtn) {
         redBtn.addEventListener("click", () => {
@@ -464,16 +462,8 @@ function toggleEffects() {
 
 window.toggleEffects = toggleEffects;
 
-window.addEventListener('load', () => {
-    const loader = document.getElementById('loader');
-    setTimeout(() => {
-        if (loader) loader.classList.add('loader-hidden');
-    }, 1500);
-    initSeasonalSystem();
-});
-
 /* ==========================================================================
-   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU
+   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU (UX) - WERSJA Z DROPDOWNAMI
    ========================================================================== */
 function highlightActiveNav() {
     const currentPath = window.location.pathname.toLowerCase();
@@ -488,31 +478,24 @@ function highlightActiveNav() {
         }
     });
 
-    const pathMapping = {
-        "dino.html": "nav-games",
-        "tetris.html": "nav-games",
-        "shooter.html": "nav-games",
-        "statki.html": "nav-games",
-        "tools-rec.html": "nav-tools",
-        "tools-all.html": "nav-tools",
-        "linux.html": "nav-tools",
-        "gallery.html": "nav-gallery"
-    };
-
-    const hashMapping = {
-        "#tworczosc": "nav-tworczosc",
-        "#pc": "nav-pc",
-        "#o-mnie": "nav-o-mnie",
-        "#kontakt": "nav-kontakt",
-        "#spotify": "nav-socials" 
-    };
-
-    const matchedPathKey = Object.keys(pathMapping).find(key => currentPath.includes(key));
-
-    if (matchedPathKey) {
-        setActiveLink(pathMapping[matchedPathKey]);
-    } else if (hashMapping[currentHash]) {
-        setActiveLink(hashMapping[currentHash]);
+    if (currentPath.includes("dino.html") || currentPath.includes("tetris.html") || currentPath.includes("shooter.html") || currentPath.includes("statki.html")) {
+        setActiveLink("nav-games");
+    } 
+    else if (currentPath.includes("tools-rec.html") || currentPath.includes("tools-all.html") || currentPath.includes("linux.html")) {
+        setActiveLink("nav-tools");
+    } 
+    else if (currentPath.includes("gallery.html")) {
+        setActiveLink("nav-gallery");
+    } else if (currentHash === "#tworczosc") {
+        setActiveLink("nav-tworczosc");
+    } else if (currentHash === "#pc") {
+        setActiveLink("nav-pc");
+    } else if (currentHash === "#o-mnie") {
+        setActiveLink("nav-o-mnie");
+    } else if (currentHash === "#kontakt") {
+        setActiveLink("nav-kontakt");
+    } else if (currentHash === "#spotify") {
+        setActiveLink("nav-socials");
     } else if (currentPath === "/" || currentPath.includes("index.html") || currentHash === "#home" || currentHash === "") {
         setActiveLink("nav-home");
     }

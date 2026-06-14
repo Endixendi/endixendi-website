@@ -872,6 +872,32 @@ body.theme-red #main-nav a.active {
     transition: all 0.3s ease-in-out;
 }
 
+#back-to-top {
+	position: fixed; /* Przykleja przycisk do ekranu, nie do zawartości strony */
+    bottom: 30px;    /* Odległość od dolnej krawędzi ekranu */
+    right: 30px;     /* Odległość od prawej krawędzi ekranu */
+    width: 44px;
+    height: 44px;
+    line-height: 42px; /* Centrowanie strzałki w pionie */
+    text-align: center;
+    background: #14171b; /* Identyczne tło jak karty, by nic nie prześwitywało */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--muted);
+    border-radius: 50%; /* Okrągły kształt */
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 1000;   /* Bardzo wysoki z-index, żeby strzałka była nad grami i sekcjami */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    
+    /* Stan początkowy: przycisk jest niewidoczny i lekko obniżony */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease-in-out;
+}
+
 /* Klasa aktywowana przez JavaScript, gdy użytkownik przewinie stronę w dół */
 .floating-back-to-top.show {
     opacity: 1;
