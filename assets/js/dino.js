@@ -30,6 +30,8 @@ const bgMusic = new Audio("assets/sounds/dino/dino-bg.webm");
 const jumpSound = new Audio("assets/sounds/global/jump.webm");
 const gameOverSound = new Audio("assets/sounds/global/gameover-sad.webm");
 const milestoneSound = new Audio("assets/sounds/global/point.webm");
+const point1000Sound = new Audio("assets/sounds/global/line-clear.webm");
+const explosionSound = new Audio("assets/sounds/global/explosion.webm");
 
 bgMusic.loop = true;
 
@@ -559,8 +561,8 @@ function animate(timestamp) {
                 player.hasShield = false; 
                 shieldEnergy = 0; // Zużycie energii po pęknięciu tarczy
                 obstacles.splice(i, 1); 
-                milestoneSound.currentTime = 0; 
-                milestoneSound.play().catch(() => {}); 
+                explosionSound.currentTime = 0; 
+                explosionSound.play().catch(() => {}); 
                 continue;
             } else {
                 ctx.restore();
@@ -582,8 +584,8 @@ function animate(timestamp) {
         scoreEl.textContent = score;
         
         if (score > 0 && score % 1000 === 0) {
-            milestoneSound.currentTime = 0;
-            milestoneSound.play().catch(() => {});
+            point1000Sound.currentTime = 0;
+            point1000Sound.play().catch(() => {});
             gameSpeed += 40;
         }
 

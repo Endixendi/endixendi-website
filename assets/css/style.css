@@ -144,14 +144,39 @@ header {
     display: inline-block; 
 }
 
+/* Nowoczesne wyrównanie przycisku menu i przygotowanie pod strzałkę CSS */
+.dropbtn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px; /* Idealny, stały odstęp od tekstu */
+}
+
+/* Automatyczna strzałka geometryczna */
+.dropbtn::after {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid currentColor; /* Dynamicznie przyjmuje kolor tekstu menu */
+    opacity: 0.7;
+    transition: transform var(--transition);
+}
+
+/* Obrót strzałki po najechaniu na menu dropdown (Desktop) */
+.dropdown:hover .dropbtn::after {
+    transform: rotate(180deg);
+}
+
 .dropdown-content {
-    display: block; /* Ustawione na block, ponieważ ukrywaniem steruje opacity/visibility dla animacji */
+    display: block; 
     position: absolute;
-    background-color: #14171b; /* Przypisane na sztywno var(--card) by nie prześwitywało */
+    background-color: #14171b; 
     min-width: 200px;
     border-radius: 10px;
     top: calc(100% + 6px);
-    right: 0; /* Wyrównanie do prawej krawędzi przycisku rodzica */
+    right: 0; 
     padding: 6px 0;
     z-index: 600;
     border: 1px solid rgba(255, 255, 255, 0.08);
