@@ -243,7 +243,8 @@ function jumpBrowserDino() {
 
 // Przechwytywanie spacji globalnie
 window.addEventListener('keydown', function(e) {
-    if (e.key === ' ' && document.getElementById('web-page-arcade').style.display === 'block') {
+    const arcadeTab = document.getElementById('web-page-arcade');
+    if (e.key === ' ' && arcadeTab && arcadeTab.classList.contains('browser-tab-active')) {
         e.preventDefault();
         jumpBrowserDino();
     }
@@ -258,7 +259,7 @@ function resetBrowserDino(event) {
     dinoY = 0;
     dinoVelocity = 0;
     isJumping = false;
-    cactusX = 500;
+    cactusX = 450; // Zmniejszone z 500, żeby kaktus nie wychodził poza obszar ramki
     gameSpeed = 4.5;
 
     document.getElementById('b-gameover').style.display = 'none';
@@ -268,7 +269,8 @@ function resetBrowserDino(event) {
     document.getElementById('b-dino').style.transform = `translateY(0px)`;
     document.getElementById('b-cactus').style.transform = `translateX(${cactusX}px)`;
 
-    if (document.getElementById('web-page-arcade').style.display === 'block') {
+    const arcadeTab = document.getElementById('web-page-arcade');
+    if (arcadeTab && arcadeTab.classList.contains('browser-tab-active')) {
         dinoAnimationId = requestAnimationFrame(updateBrowserDinoGameLoop);
     }
 }
@@ -296,10 +298,10 @@ function updateBrowserDinoGameLoop() {
     }
     document.getElementById('b-dino').style.transform = `translateY(${-dinoY}px)`;
 
-    // 2. Ruch kaktusa
+	// 2. Ruch kaktusa
     cactusX -= gameSpeed;
     if (cactusX < -20) {
-        cactusX = 500;
+        cactusX = 450; // Reset pozycji kaktusa wewnątrz kontenera
         dinoScore += 10;
         document.getElementById('b-score').textContent = `Punkty: ${dinoScore}`;
         
@@ -307,7 +309,7 @@ function updateBrowserDinoGameLoop() {
     }
     document.getElementById('b-cactus').style.transform = `translateX(${cactusX}px)`;
 
-    // 3. Detekcja kolizji
+	// 3. Detekcja kolizji (Skorygowane wartości pod szerokość okna)
     const dinoLeft = 40;
     const dinoRight = 64;
     const cactusLeft = cactusX;
@@ -398,3 +400,28 @@ function triggerShutdown(event) {
         window.location.href = 'index.html';
     }, 3500);
 }
+
+// --- EASTER EGG: WIRUS PO 1 MINUTACH ---
+setTimeout(() => {
+    const virusWin = document.getElementById('win-virus');
+    if (virusWin) {
+        // Otwieramy okno wirusa
+        virusWin.style.display = 'flex';
+        
+        // Centrujemy okno na ekranie, aby wyskoczyło idealnie na środku
+        virusWin.style.top = '25%';
+        virusWin.style.left = '35%';
+        
+        // Wywołujemy istniejącą funkcję focusu, żeby okno było na samym wierzchu
+        if (typeof focusWindow === 'function') {
+            focusWindow(virusWin);
+        }
+        
+        // Opcjonalnie: zmienia status na pasku zadań na alert
+        const taskbarStatus = document.getElementById('taskbar-status');
+        if (taskbarStatus) {
+            taskbarStatus.textContent = "⚠️ SYSTEM INFECTION DETECTED!";
+            taskbarStatus.style.color = "#ff0055";
+        }
+    }
+}, 60000); // 120000 ms = dokładnie 2 minuty

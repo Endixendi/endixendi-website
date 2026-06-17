@@ -603,3 +603,85 @@
     text-align: center;
     color: #718096;
 }
+
+/* ==========================================================================
+   ALERTY I WIRUSY (EASTER EGG)
+   ========================================================================== */
+.virus-window {
+    width: 400px !important;
+    height: 340px !important;
+    border-color: #ff0055 !important;
+    box-shadow: 0 0 40px rgba(255, 0, 85, 0.4) !important;
+}
+
+.virus-header {
+    background: rgba(255, 0, 85, 0.2) !important;
+    border-bottom: 1px solid rgba(255, 0, 85, 0.4) !important;
+}
+
+.virus-body {
+    background: #0d0408 !important;
+}
+
+.virus-content {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.virus-icon-huge {
+    font-size: 40px;
+    animation: virus-bounce 1s infinite alternate;
+}
+
+.virus-title {
+    color: #ff0055 !important;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.virus-text {
+    font-size: 12px;
+    color: #e2e8f0;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.virus-fix-btn {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background: #39ff14;
+    color: #000;
+    font-weight: 800;
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 6px;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: btn-pulse 1.5s infinite ease-in-out;
+}
+
+.virus-fix-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 25px rgba(57, 255, 20, 0.6);
+    background: #2eff05;
+}
+
+@keyframes virus-bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-5px); }
+}
+
+@keyframes btn-pulse {
+    0% { box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
+    50% { box-shadow: 0 0 25px rgba(255, 0, 85, 0.6); }
+    100% { box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
+}
