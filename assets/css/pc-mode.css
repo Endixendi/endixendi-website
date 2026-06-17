@@ -448,13 +448,22 @@
    RESPONSYWNOŚĆ MOBILNA
    ========================================================================== */
 /* ==========================================================================
-   ZAAWANSOWANA RESPONSYWNOŚĆ MOBILNA (PEŁNY TRYB SMARTFONA)
+   ZAAWANSOWANA RESPONSYWNOŚĆ MOBILNA (W PEŁNI ZOPTYMALIZOWANY PION I X)
    ========================================================================== */
 @media screen and (max-width: 768px) {
     /* Dopasowanie areny pulpitu */
     .desktop-arena { 
         padding: 15px !important; 
         height: calc(100vh - 55px);
+    }
+	
+	/* Reset centrowania dla wirusa na telefonie (pełny ekran) */
+    .virus-window {
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100vw !important;
+        height: calc(100vh - 55px) !important;
     }
     
     /* Ikony układają się w czytelną siatkę na telefonie */
@@ -480,33 +489,48 @@
         font-size: 11px;
     }
 
-    /* Ukrywamy tylko zbędne skróty z paska zadań, zostawiamy menu start i zegar */
-    .taskbar-shortcuts, .taskbar-apps, .tray-icons { 
+    /* 1. UKRYWANIE ELEMENTÓW: Chowamy ikony sieci, baterii itp., zostawiając sam zegarek */
+    .taskbar-shortcuts, 
+    .taskbar-apps { 
         display: none !important; 
     }
     
+    /* 2. UKŁAD PASKA ZADAŃ W PIONIE: Start z lewej, zegarek idealnie z prawej */
     .pc-taskbar {
         height: 55px;
-        padding: 0 10px !important;
+        padding: 0 15px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
     }
 
-    .taskbar-start-btn {
-        padding: 8px 16px;
-        font-size: 14px;
+    .taskbar-right {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        margin-left: auto !important;
+    }
+
+    .taskbar-clock-widget {
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-radius: 6px !important;
+        text-align: right !important;
     }
 
     /* Dopasowanie Menu Start na pełną szerokość dołu ekranu */
     .start-menu-panel {
-        left: 0;
-        bottom: 55px;
-        width: 100vw;
-        border-radius: 12px 12px 0 0;
-        border-left: none;
-        border-right: none;
+        left: 0 !important;
+        bottom: 55px !important;
+        width: 100vw !important;
+        border-radius: 12px 12px 0 0 !important;
+        border-left: none !important;
+        border-right: none !important;
         min-height: 380px;
     }
 
-    /* TRANSFORMCJA OKIEN: Na telefonie każde okno działa w trybie pełnoekranowym! */
+    /* 3. PEŁNY EKRAN DLA OKIEN: Każde okno rozciąga się od krawędzi do krawędzi */
     .sys-window, #win-notepad, #win-about, #win-browser, #win-term { 
         width: 100vw !important; 
         height: calc(100vh - 55px) !important; 
@@ -516,17 +540,32 @@
         border: none !important;
     }
 
-    /* Okna wyskakujące z zasobnika (bateria, sieć) na całą szerokość na dole */
-    .sys-window.tray-popup {
-        top: auto !important;
+    /* 4. NAPRAWA KALENDARZA: Wymuszamy pełny ekran i pozycję nagłówka z przyciskiem X */
+    #win-datetime.tray-popup {
+        position: fixed !important;
+        top: 0 !important;
         bottom: 55px !important;
+        left: 0 !important;
         right: 0 !important;
         width: 100vw !important;
-        min-height: 180px;
-        border-radius: 12px 12px 0 0 !important;
+        height: calc(100vh - 55px) !important;
+        border-radius: 0 !important;
+        border: none !important;
+        flex-direction: column !important;
+        z-index: 999999 !important;
     }
 
-    /* Powiększenie nagłówków okien pod obsługę palcem (Touch targets) */
+    /* Wymuszenie idealnego wyglądu nagłówka z widocznym guzikiem zamykania */
+    #win-datetime.tray-popup .window-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        height: 48px !important;
+        padding: 0 15px !important;
+        background: #11141a !important; /* dopasowanie do ciemnego stylu retro */
+    }
+
+    /* Powiększenie nagłówków okien ogólnych pod obsługę palcem */
     .window-header {
         height: 45px;
         padding: 0 15px;
@@ -536,9 +575,13 @@
         font-size: 14px;
     }
 
+    /* Powiększenie przycisku X w systemie pod palec */
     .window-close {
-        font-size: 20px;
-        padding: 5px 10px;
+        font-size: 22px !important;
+        padding: 8px 12px !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     .window-body {
@@ -547,7 +590,7 @@
 
     /* Poprawki widoku wewnętrznego aplikacji na smartfonie */
     .file-manager {
-        grid-template-columns: 1fr; /* Jeden rząd ikon plików zamiast dwóch */
+        grid-template-columns: 1fr;
         gap: 8px;
     }
 
@@ -723,6 +766,10 @@
    ALERTY I WIRUSY (EASTER EGG)
    ========================================================================== */
 .virus-window {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
     width: 400px !important;
     height: 340px !important;
     border-color: #ff0055 !important;

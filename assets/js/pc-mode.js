@@ -410,12 +410,8 @@ function triggerShutdown(event) {
 setTimeout(() => {
     const virusWin = document.getElementById('win-virus');
     if (virusWin) {
-        // Otwieramy okno wirusa
+        // Otwieramy okno wirusa (CSS sam zadba o idealne wyśrodkowanie na PC)
         virusWin.style.display = 'flex';
-        
-        // Centrujemy okno na ekranie, aby wyskoczyło idealnie na środku
-        virusWin.style.top = '25%';
-        virusWin.style.left = '35%';
         
         // Wywołujemy istniejącą funkcję focusu, żeby okno było na samym wierzchu
         if (typeof focusWindow === 'function') {
@@ -429,4 +425,4 @@ setTimeout(() => {
             taskbarStatus.style.color = "#ff0055";
         }
     }
-}, 60000); // 120000 ms = dokładnie 2 minuty
+}, 60000); // 60000 ms = dokładnie 1 minuta
