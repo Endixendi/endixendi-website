@@ -42,13 +42,13 @@ if (!canvas) {
     const sliderHandle = document.getElementById("sliderHandle");
 
     const sounds = {
-        bg: new Audio("assets/sounds/shooter/shooter-bg.webm"),
-        gameover: new Audio("assets/sounds/global/gameover-sad.webm"),
-        playerShoot: new Audio("assets/sounds/global/laser.webm"),
-        enemyShoot: new Audio("assets/sounds/global/laser.webm"),
-        explosion: new Audio("assets/sounds/global/explosion.webm"),
-        hit: new Audio("assets/sounds/global/hit.webm"),
-        overheat: new Audio("assets/sounds/global/point.webm") 
+        bg: new Audio("assets/sounds/shooter/shooter-bg.mp3"),
+        gameover: new Audio("assets/sounds/global/gameover-sad.mp3"),
+        playerShoot: new Audio("assets/sounds/global/laser.mp3"),
+        enemyShoot: new Audio("assets/sounds/global/laser.mp3"),
+        explosion: new Audio("assets/sounds/global/explosion.mp3"),
+        hit: new Audio("assets/sounds/global/hit.mp3"),
+        overheat: new Audio("assets/sounds/global/point.mp3") 
     };
 
     const gameState = {

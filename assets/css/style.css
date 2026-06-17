@@ -272,7 +272,7 @@ header {
 .loader-logo {
     width: 300px;
     height: 300px;
-    animation: spin 5s linear infinite;
+    animation: spin 3s linear infinite;
     object-fit: contain;                                     /* Dodatkowo warto dodać to, aby logo było ostre */
     filter: drop-shadow(0 0 150px rgba(29, 63, 143, 1.0));   /* Efekt niebieskiej poświaty pasującej do Twojego akcentu */
 }

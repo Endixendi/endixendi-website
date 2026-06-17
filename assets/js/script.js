@@ -3,15 +3,16 @@
  * Ładuje częściowe szablony, obsługuje menu i podstawowe funkcje
  */
 
-window.addEventListener("load", function() {
+window.addEventListener("DOMContentLoaded", function() {
     const loader = document.getElementById("loader");
     if (loader) {
-        // Zintegrowane opóźnienie 1.5s dla płynnego ukrywania loadera
+
         setTimeout(() => {
             loader.classList.add("loader-hidden");
-        }, 1500);
+        }, 150); // 500ms
     }
-    // Bezpieczne uruchomienie systemu sezonowego po pełnym załadowaniu zasobów
+    
+    // Bezpieczne uruchomienie systemu sezonowego
     if (typeof initSeasonalSystem === "function") {
         initSeasonalSystem();
     }

@@ -26,12 +26,12 @@ if (window.innerWidth > 768) {
 }
 
 // Dźwięki
-const bgMusic = new Audio("assets/sounds/dino/dino-bg.webm");
-const jumpSound = new Audio("assets/sounds/global/jump.webm");
-const gameOverSound = new Audio("assets/sounds/global/gameover-sad.webm");
-const milestoneSound = new Audio("assets/sounds/global/point.webm");
-const point1000Sound = new Audio("assets/sounds/global/line-clear.webm");
-const explosionSound = new Audio("assets/sounds/global/explosion.webm");
+const bgMusic = new Audio("assets/sounds/dino/dino-bg.mp3");
+const jumpSound = new Audio("assets/sounds/global/jump.mp3");
+const gameOverSound = new Audio("assets/sounds/global/gameover-sad.mp3");
+const milestoneSound = new Audio("assets/sounds/global/point.mp3");
+const point1000Sound = new Audio("assets/sounds/global/line-clear.mp3");
+const explosionSound = new Audio("assets/sounds/global/explosion.mp3");
 
 bgMusic.loop = true;
 

@@ -32,11 +32,11 @@ const gameState = {
 
 // Dźwięki 
 const audio = {
-    music: new Audio("assets/sounds/statki/battle-bg.webm"),
-    hit: new Audio("assets/sounds/global/hit.webm"),
-    splash: new Audio("assets/sounds/global/drop.webm"), 
-    win: new Audio("assets/sounds/global/success.webm"),
-    lose: new Audio("assets/sounds/global/gameover-sad.webm")
+    music: new Audio("assets/sounds/statki/battle-bg.mp3"),
+    hit: new Audio("assets/sounds/global/hit.mp3"),
+    splash: new Audio("assets/sounds/global/drop.mp3"), 
+    win: new Audio("assets/sounds/global/success.mp3"),
+    lose: new Audio("assets/sounds/global/gameover-sad.mp3")
 };
 
 // Głośność

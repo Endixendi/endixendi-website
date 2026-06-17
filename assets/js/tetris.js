@@ -48,12 +48,12 @@ const PIECES = {
 
 // Dźwięki
 const sounds = {
-    music: new Audio("assets/sounds/tetris/tetris-bg.webm"),
-    line: new Audio("assets/sounds/global/line-clear.webm"),
-    levelup: new Audio("assets/sounds/global/success.webm"),
-    drop: new Audio("assets/sounds/global/drop.webm"),
-    rotate: new Audio("assets/sounds/global/rotate.webm"),      
-    gameover: new Audio("assets/sounds/global/gameover-retro.webm")
+    music: new Audio("assets/sounds/tetris/tetris-bg.mp3"),
+    line: new Audio("assets/sounds/global/line-clear.mp3"),
+    levelup: new Audio("assets/sounds/global/success.mp3"),
+    drop: new Audio("assets/sounds/global/drop.mp3"),
+    rotate: new Audio("assets/sounds/global/rotate.mp3"),      
+    gameover: new Audio("assets/sounds/global/gameover-retro.mp3")
 };
 
 // Konfiguracja audio
