@@ -18,9 +18,57 @@ function updateClockAndDate() {
     if(document.getElementById('popup-large-date')) {
         document.getElementById('popup-large-date').textContent = fullDateStr;
     }
+	
 }
 setInterval(updateClockAndDate, 1000);
 updateClockAndDate();
+generateDynamicCalendar();
+
+// --- 1.1 DYNAMICZNY GENERATOR KALENDARZA ---
+function generateDynamicCalendar() {
+    const container = document.getElementById('calendar-days-container');
+    if (!container) return;
+
+    // Czyszczenie starych dni z poprzedniego wywołania
+    container.innerHTML = "";
+
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth(); // 0 = Styczeń, 1 = Luty...
+    const todayDate = now.getDate();
+
+    // 1. Sprawdzamy, którym dniem tygodnia jest pierwszy dzień tego miesiąca
+    // W JS: 0 = Niedziela, 1 = Poniedziałek, ..., 6 = Sobota
+    const firstDayInstance = new Date(currentYear, currentMonth, 1);
+    let startDayOfWeek = firstDayInstance.getDay();
+    
+    // Konwertujemy format JS (Niedziela=0) na format europejski (Poniedziałek=0, ..., Niedziela=6)
+    let blankSpaces = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
+
+    // 2. Sprawdzamy ile dni ma bieżący miesiąc
+    const totalDaysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    // 3. Wstawiamy puste spany na dni z poprzedniego miesiąca, żeby aktualny zaczął się w dobrym kolumnie (np. w Środę)
+    for (let i = 0; i < blankSpaces; i++) {
+        const emptySpan = document.createElement('span');
+        emptySpan.style.opacity = "0"; // Niewidoczne, ale zajmują miejsce w siatce
+        emptySpan.textContent = "-";
+        container.appendChild(emptySpan);
+    }
+
+    // 4. Generujemy właściwe dni miesiąca
+    for (let day = 1; day <= totalDaysInMonth; day++) {
+        const daySpan = document.createElement('span');
+        daySpan.textContent = day;
+
+        // Jeśli generowany dzień to dokładnie DZISIAJ, dodajemy Twoją klasę wyróżniającą
+        if (day === todayDate) {
+            daySpan.classList.add('calendar-day-current');
+        }
+
+        container.appendChild(daySpan);
+    }
+}
 
 // --- 2. OBSŁUGA MENU START ---
 function toggleStartMenu(event) {

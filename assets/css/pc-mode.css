@@ -730,6 +730,10 @@
     opacity: 0.8;
 }
 
+#calendar-days-container {
+    display: contents;
+}
+
 .calendar-day-header-monday {
     color: #ff006e;
     font-weight: bold;
