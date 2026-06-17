@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Mode - Gaming OS</title>
+    <link rel="stylesheet" href="assets/css/style.css"> 
+    <link rel="stylesheet" href="assets/css/pc-mode.css"> 
+</head>
+<body class="pc-mode-body">
+
+    <div id="loader">
+        <img src="assets/images/logo-kolo.png" alt="Loading..." class="loader-logo">
+    </div>
+
+    <div class="crt-lines"></div>
+
+    <main class="desktop-arena">
+        
+        <div class="nebula-glow"></div>
+        <div class="fullscreen-grid-3d"></div>
+        
+        <div class="desktop-grid">
+            <a href="tetris.html" class="desktop-icon">
+                <div class="icon-wrapper"><img src="assets/images/game/game1-icon.png" alt="Tetris"></div>
+                <span class="icon-label">Tetris Retro</span>
+            </a>
+            <a href="battleship.html" class="desktop-icon">
+                <div class="icon-wrapper"><img src="assets/images/game/game2-icon.png" alt="Statki"></div>
+                <span class="icon-label">Statki Retro</span>
+            </a>
+            <a href="dino.html" class="desktop-icon">
+                <div class="icon-wrapper"><img src="assets/images/game/game3-icon.png" alt="Dino"></div>
+                <span class="icon-label">Dino Game</span>
+            </a>
+            <a href="shooter.html" class="desktop-icon">
+                <div class="icon-wrapper"><img src="assets/images/game/game4-icon.png" alt="Shooter"></div>
+                <span class="icon-label">Shooter</span>
+            </a>
+        </div>
+
+        <div id="start-menu" class="start-menu-panel">
+            <div class="start-menu-sidebar">
+                <div class="sidebar-avatar">
+                    <img src="assets/images/logo-kolo.png" alt="User Logo" class="avatar-img">
+                </div>
+            </div>
+            <div class="start-menu-links">
+                <div>
+                    <a href="index.html" class="start-item main-page-btn">
+                        <span class="start-item-icon">🏠</span> Strona Główna
+                    </a>
+                    <hr class="menu-hr">
+                    <div class="menu-section-title">Aplikacje systemowe</div>
+                    <div class="start-item" onclick="openWindow('win-notepad'); toggleStartMenu(event)">
+                        <span class="start-item-icon">📝</span> Notatnik
+                    </div>
+                    <div class="start-item" onclick="openWindow('win-browser'); toggleStartMenu(event)">
+                        <span class="start-item-icon">🌐</span> Przeglądarka
+                    </div>
+                    <div class="start-item" onclick="openWindow('win-files'); toggleStartMenu(event)">
+                        <span class="start-item-icon">📂</span> Eksplorator
+                    </div>
+                    <div class="start-item" onclick="openWindow('win-term'); toggleStartMenu(event)">
+                        <span class="start-item-icon">💻</span> Konsola
+                    </div>
+                    <div class="start-item" onclick="openWindow('win-about'); toggleStartMenu(event)">
+                        <span class="start-item-icon">ℹ️</span> O systemie
+                    </div>
+                </div>
+                <div>
+                    <hr class="menu-hr">
+                    <div class="start-item exit-btn" onclick="triggerShutdown(event)">
+                        <span class="start-item-icon">⭕</span> Wyloguj się
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="win-notepad" class="sys-window" onmousedown="focusWindow(this)">
+            <div class="window-header" onmousedown="dragWindow(event, 'win-notepad')">
+                <span class="window-title">📝 Notatnik</span>
+                <button class="window-close" onclick="closeWindow('win-notepad')">✕</button>
+            </div>
+            <div class="window-body">
+                <div class="notepad-toolbar">
+                    <button onclick="saveNote()">Zapisz</button>
+                    <button onclick="exportNote()">Eksportuj (.txt)</button>
+                    <span id="notepad-status"></span>
+                </div>
+                <textarea id="notepad-text"></textarea>
+            </div>
+        </div>
+
+        <div id="win-about" class="sys-window" onmousedown="focusWindow(this)">
+            <div class="window-header" onmousedown="dragWindow(event, 'win-about')">
+                <span class="window-title">ℹ️ O systemie GamingOS</span>
+                <button class="window-close" onclick="closeWindow('win-about')">✕</button>
+            </div>
+            <div class="window-body">
+                <div class="window-content">
+                    <h3 class="about-title">GamingOS v2.0 Retroware</h3>
+                    <p>Nostalgiczna nakładka systemowa stworzona w klimacie retro cyberpunk.</p>
+                    <hr class="about-hr">
+                    <strong>Źródła biblioteki dźwięków:</strong>
+                    <ul class="about-list">
+                        <li>
+                            <code>windows-xp-startup.mp3</code><br>
+                            Źródło: <a href="https://www.myinstants.com/en/instant/windows-xp-startup-sound-58970/" target="_blank" class="about-link">MyInstants (Windows XP Startup)</a>
+                        </li>
+                        <li>
+                            <code>microsoft-windows-xp-shutdown-sound.mp3</code><br>
+                            Źródło: <a href="https://www.myinstants.com/en/instant/windows-xp-shutdown-noise-7521/" target="_blank" class="about-link">MyInstants (Windows XP Shutdown Noise)</a>
+                        </li>
+                        <li>
+                            <code>bartosz.mp3</code><br>
+                            Źródło: <a href="https://www.myinstants.com/en/instant/bartosz-52107/" target="_blank" class="about-link">MyInstants (Bartosz)</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="win-browser" class="sys-window" onmousedown="focusWindow(this)">
+            <div class="window-header" onmousedown="dragWindow(event, 'win-browser')">
+                <span class="window-title">🌐 Cyber Netscape Browser</span>
+                <button class="window-close" onclick="closeWindow('win-browser')">✕</button>
+            </div>
+            <div class="window-body browser-body-bg">
+                <div class="browser-top-bar">
+                    <div>
+                        <button onclick="changeBrowserContent('home')" title="Wstecz">⬅️</button>
+                        <button onclick="changeBrowserContent('home')" title="Strona Główna">🏠</button>
+                    </div>
+                    <div class="browser-url-custom" id="browser-url-field">
+                        https://gaming-matrix.net
+                    </div>
+                    <span class="browser-indicator-dot" id="browser-loading-indicator"></span>
+                </div>
+
+                <div class="browser-content-area" id="browser-web-space">
+                    
+                    <div id="web-page-home" class="browser-tab-active">
+                        <h3 class="web-headline-blue">Witaj w sieci przyszłości</h3>
+                        <p class="web-subtext">Brak połączenia z zewnętrznym DNS. System działa w bezpiecznym trybie piaskownicy.</p>
+                        
+                        <div class="web-alert-box">
+                            <strong>⚠️ Wykryto serwer lokalny:</strong> Matrix-Node-7 jest online.
+                        </div>
+
+                        <h4 class="web-headline-green">Zarchiwizowane witryny:</h4>
+                        <ul class="web-site-list">
+                            <li>
+                                <button onclick="changeBrowserContent('news')" class="web-site-link-btn">
+                                    📰 Cyber-Wiadomości Neon City (Wydanie wieczorne)
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeBrowserContent('arcade')" class="web-site-link-btn">
+                                    🕹️ Ukryta minigra: Retro-Arcade Offline Center
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div id="web-page-news" class="browser-tab-hidden">
+                        <h3 class="web-headline-pink">Neon City Daily News</h3>
+                        <hr class="web-news-hr">
+                        <p class="web-news-text"><strong>[NEWS #1] Wielki wyciek konfiguracji!</strong><br> Haker posługujący się pseudonimem Player_One wykradł pliki konfiguracyjne systemu i umieścił listę cheatów w pliku <code>cheats.txt</code> w Eksploratorze.</p>
+                        <p class="web-news-text"><strong>[NEWS #2] Audio systemowe podkręcone.</strong><br> Inżynierowie dodali nowy, zapętlony mikser audio działający od 0%. Nowe źródła dźwięków zostały zapisane w sekcji O Systemie.</p>
+                        <button onclick="changeBrowserContent('home')" class="web-back-btn">⬅️ Powrót</button>
+                    </div>
+
+                    <div id="web-page-arcade" class="browser-tab-hidden">
+                        <h3 class="web-headline-green">Mini Dino Arcade (Płynna fizyka)</h3>
+                        <p class="dino-hint">Kliknij w obszar gry i używaj <strong>SPACJI / KLIKNIĘCIA STRONY</strong>, aby skakać!</p>
+                        
+                        <div id="dino-browser-container" onclick="jumpBrowserDino()" class="dino-game-container">
+                            <div id="b-dino" class="dino-character">🦖</div>
+                            <div id="b-cactus" class="dino-obstacle">🌵</div>
+                            <div class="dino-floor-line"></div>
+                            <div id="b-score" class="dino-score-board">Punkty: 0</div>
+                            <div id="b-gameover" class="dino-gameover-overlay">
+                                <span class="dino-gameover-text">GAME OVER</span>
+                                <button onclick="resetBrowserDino(event)" class="dino-retry-btn">Zagraj ponownie</button>
+                            </div>
+                        </div>
+
+                        <div class="dino-footer-bar">
+                            <button onclick="changeBrowserContent('home')" class="web-back-btn">⬅️ Powrót do menu</button>
+                            <span class="dino-engine-version">Engine: requestAnimationFrame v2.2</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="win-files" class="sys-window" onmousedown="focusWindow(this)">
+            <div class="window-header" onmousedown="dragWindow(event, 'win-files')">
+                <span class="window-title">📂 Eksplorator Plików</span>
+                <button class="window-close" onclick="closeWindow('win-files')">✕</button>
+            </div>
+            <div class="window-body">
+                <div class="window-content file-manager">
+                    <div class="file-item file-item-disabled">📁 System32</div>
+                    <div class="file-item file-item-disabled">📁 Gry_Zapisane</div>
+                    
+                    <div class="file-item" onclick="openStaticFile('konfiguracja.ini', '[System]\\nVersion=2.0\\nTheme=CyberRetro_Neon\\nSoundFX=Enabled\\nBootMode=GUI\\nOverclockMode=ULTRA\\n\\n[Hardware]\\nCPU_Allocation=98%\\nGPU_Turbo=Active\\nVRAM_Leak_Fix=True\\nCrtFilterIntensity=0.45\\n\\n[User]\\nUsername=Player_One\\nPrivileges=Root_Access')">📄 konfiguracja.ini</div>
+                    
+                    <div class="file-item" onclick="openStaticFile('cheats.txt', '=== GAMINGOS RETRO CHEATS CORNER ===\\n\\n[TETRIS RETRO]\\n- noclip     : klocki przenikaja przez siebie\\n- lives99    : nieskonczone szanse\\n- slowmo      : spowolnienie czasu o 50%\\n\\n[DINO GAME]\\n- godmode    : niesmiertelnosc na kaktusy\\n- superjump  : wysoki skok (klawisz Space)\\n\\n[SHOOTER]\\n- laser_mega : zmienia podstawowy pistolet w laser\\n- noreload   : brak przeladowania')">📄 cheats.txt</div>
+                    
+                    <div class="file-item" onclick="window.open('https://www.youtube.com/watch?v=jNQXAC9IVRw', '_blank')">📁 fotki_z_imprezy_18+</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="win-term" class="sys-window" onmousedown="focusWindow(this)">
+            <div class="window-header" onmousedown="dragWindow(event, 'win-term')">
+                <span class="window-title">💻 Konsola Systemowa</span>
+                <button class="window-close" onclick="closeWindow('win-term')">✕</button>
+            </div>
+            <div class="window-body terminal-body">
+                <div id="terminal-output" class="terminal-output-area">GamingOS v2.0 Initialization...
+Core Kernel loaded successfully.
+Wpisz 'help', aby zobaczyć listę komend.</div>
+                <div class="term-input-container">
+                    <span class="term-prompt">&gt;</span>
+                    <input type="text" id="terminal-input" onkeydown="handleTerminalCommand(event)" class="term-input-field" autofocus>
+                </div>
+            </div>
+        </div>
+
+        <div id="win-net" class="sys-window tray-popup" onmousedown="focusWindow(this)">
+            <div class="window-header" onmousedown="dragWindow(event, 'win-net')">
+                <span class="window-title">📶 Połączenia sieciowe</span>
+                <button class="window-close" onclick="closeWindow('win-net')">✕</button>
+            </div>
+            <div class="window-body">
+                <div class="window-content">
+                    <div class="tray-pop-line active-net">🟢 Connected: <strong>Cyber_Grid_5G</strong> (100%)</div>
+                    <hr class="win-hr">
+                    <div class="tray-pop-line">🔒 Matrix_Mainframe (Zabezpieczone)</div>
+                    <div class="tray-pop-line">🔓 Guest_Zone_Free</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="win-volume" class="sys-window tray-popup" onmousedown="focusWindow(this)">
+            <div class="window-header" onmousedown="dragWindow(event, 'win-volume')">
+                <span class="window-title">🔊 Mikser głośności</span>
+                <button class="window-close" onclick="closeWindow('win-volume')">✕</button>
+            </div>
+            <div class="window-body">
+                <div class="window-content audio-popup-content">
+                    <label>Master Volume</label>
+                    <input type="range" id="volume-slider" min="0" max="100" value="0" class="win-slider">
+                    <div class="tray-pop-line volume-output-label">Wyjście: Realtek Cyber-Audio Subwoofer</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="win-battery" class="sys-window tray-popup" onmousedown="focusWindow(this)">
+            <div class="window-header" onmousedown="dragWindow(event, 'win-battery')">
+                <span class="window-title">🔋 Zarządzanie energią</span>
+                <button class="window-close" onclick="closeWindow('win-battery')">✕</button>
+            </div>
+            <div class="window-body">
+                <div class="window-content">
+                    <div class="battery-percentage-text">98%</div>
+                    <div class="tray-pop-line">Pozostało: 7 godz. 42 min (Zasilanie z baterii)</div>
+                    <hr class="win-hr">
+                    <div class="tray-pop-line">🚀 Profil: <strong>Tryb Ultra Wydajności</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="win-datetime" class="sys-window tray-popup" onmousedown="focusWindow(this)">
+            <div class="window-header" onmousedown="dragWindow(event, 'win-datetime')">
+                <span class="window-title">📅 Kalendarz i Czas</span>
+                <button class="window-close" onclick="closeWindow('win-datetime')">✕</button>
+            </div>
+            <div class="window-body">
+                <div class="window-content">
+                    <div id="popup-large-time" class="clock-large-time">00:00:00</div>
+                    <div id="popup-large-date" class="clock-large-date">Poniedziałek, 01 Stycznia</div>
+                    <hr class="win-hr">
+                    <div class="calendar-grid-mini">
+                        <span class="calendar-day-header-monday">Pn</span><span>Wt</span><span>Śr</span><span>Cz</span><span>Pt</span><span>Sb</span><span class="calendar-day-header-sunday">Nd</span>
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span class="calendar-day-current">7</span>
+                        <span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span>
+                        <span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span>
+                    </div>
+                    <div class="tray-pop-line calendar-timezone-footer">
+                        Strefa: Central European Summer Time (UTC+2)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="shutdown-screen" class="shutdown-overlay">
+            <div class="shutdown-box">
+                <img src="assets/images/logo-kolo.png" alt="Logo" class="shutdown-logo">
+                <h2 class="shutdown-text">Zamykanie systemu...</h2>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="pc-taskbar">
+        <div class="taskbar-left">
+            <button class="taskbar-start-btn" onclick="toggleStartMenu(event)">
+                <span class="start-icon">🎮</span> Start
+            </button>
+            <div class="taskbar-shortcuts">
+                <span class="taskbar-icon-fake" title="Notatnik" onclick="openWindow('win-notepad')">📝</span>
+                <span class="taskbar-icon-fake" title="Przeglądarka internetowa" onclick="openWindow('win-browser')">🌐</span>
+                <span class="taskbar-icon-fake" title="Eksplorator plików" onclick="openWindow('win-files')">📂</span>
+                <span class="taskbar-icon-fake" title="Konsola systemowa" onclick="openWindow('win-term')">💻</span>
+            </div>
+        </div>
+
+        <div class="taskbar-apps">
+            <div class="active-app-tab" id="taskbar-status">GamingOS v2.0</div>
+        </div>
+
+        <div class="taskbar-right">
+            <div class="tray-icons">
+                <span class="taskbar-icon-fake tray-icon-clickable" title="Połączenie sieciowe" onclick="openWindow('win-net')">📶</span>
+                <span class="taskbar-icon-fake tray-icon-clickable" title="Dźwięk i głośność" onclick="openWindow('win-volume')">🔊</span>
+                <span class="taskbar-icon-fake tray-icon-clickable" title="Zasilanie systemu" onclick="openWindow('win-battery')">🔋</span>
+            </div>
+            <div class="taskbar-clock-widget tray-icon-clickable" title="Otwórz kalendarz" onclick="openWindow('win-datetime')">
+                <span id="pc-time">00:00</span>
+                <span id="pc-date">01.01.2026</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/pc-mode.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

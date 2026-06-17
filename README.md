@@ -45,12 +45,15 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 │   │   ├── dino.css          # Style dedykowane grze Dino
 │   │   ├── gallery.css       # Style dedykowane galerii zdjęć
 │   │   ├── linux.css         # Style dedykowane stronie linux
+│   │   ├── pc-mode.css         # Style dedykowane stronie pc-mode
 │   │   ├── shooter.css       # Style dedykowane grze Shooter
 │   │   ├── style.css         # Główny arkusz stylów strony
-│   │   ├── tools.css         # Style dedykowane stronie tools-all
 │   │   └── tetris.css        # Style dedykowane grze Tetris
+│   │   └── tools.css         # Style dedykowane stronie tools-all
 │   ├── images/               # Zasoby graficzne, ikony, kod QR
 │   │   ├── gallery/          # Zdjęcia wyświetlane w galerii
+│	│	│	└── ...
+│   │   ├── game/          	  # Zdjęcia ikon gier w pc-mode
 │	│	│	└── ...
 │   │   ├── logo.png          # Zdjęcie mojego awatara
 │   │   ├── logo-dc.png       # Logo serwera Discord
@@ -60,46 +63,52 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 │   │   ├── battleship.js     # Logika gry i AI bota w Statki
 │   │   ├── dino.js           # Silnik gry Dino
 │   │   ├── gallery.js        # Dynamiczne ładowanie siatki zdjęć
+│   │   ├── pc-mode.js        # Sylnik gry pc-mode
 │   │   ├── script.js         # Wspólna logika (efekty sezonowe, ładowanie menu)
 │   │   ├── shooter.js        # Silnik gry Shooter
 │   │   └── tetris.js         # Silnik gry Tetris
 │   └── sounds/               # Efekty dźwiękowe i ścieżki dźwiękowe gier
 │       ├── dino/
-│       │   └── dino-bg.webm  # Muzyka tła dla gry Dino
+│       │   └── dino-bg.mp3   # Muzyka tła dla gry Dino
 │       ├── global/           # Dźwięki współdzielone między grami
-│       │   ├── drop.webm
-│       │   ├── explosion.webm
-│       │   ├── gameover-retro.webm
-│       │   ├── gameover-sad.webm
-│       │   ├── hit.webm
-│       │   ├── jump.webm
-│       │   ├── laser.webm
-│       │   ├── line-clear.webm
-│       │   ├── point.webm
-│       │   ├── rotate.webm
-│       │   └── success.webm
+│       │   ├── drop.mp3
+│       │   ├── explosion.mp3
+│       │   ├── gameover-retro.mp3
+│       │   ├── gameover-sad.mp3
+│       │   ├── hit.mp3
+│       │   ├── jump.mp3
+│       │   ├── laser.mp3
+│       │   ├── line-clear.mp3
+│       │   ├── point.mp3
+│       │   ├── rotate.mp3
+│       │   └── success.mp3
 │       ├── shooter/
-│       │   └── shooter-bg.webm # Muzyka tła dla gry Shooter
+│       │   └── shooter-bg.mp3 								# Muzyka tła dla gry Shooter
 │       ├── statki/
-│       │   └── battle-bg.webm  # Muzyka tła dla gry Statki
+│       │   └── battle-bg.mp3  								# Muzyka tła dla gry Statki
+│       ├── system/
+│       │   ├── bartosz.mp3									# Zapętlona muzyka tła sterowana mikserem w pc-mode
+│       │   ├── microsoft-windows-xp-shutdown-sound.mp3		# Dźwięk sekwencji zamykania systemu pc-mode
+│       │   └── windows-xp-startup.mp3  					# Dźwięk powitalny przy starcie systemu pc-mode
 │       └── tetris/
-│           └── tetris-bg.webm  # Muzyka tła dla gry Tetris
+│           └── tetris-bg.mp3  								# Muzyka tła dla gry Tetris
 │
+├── battleship.html           # Gra Statki
 ├── CNAME                     # Konfiguracja własnej domeny dla GitHub Pages
-├── README.md                 # Dokumentacja projektu
 ├── dino.html                 # Gra Dino
 ├── footer.html               # Wspólna stopka stron (ładowana dynamicznie)
 ├── gallery.html              # Galeria projektów
 ├── index.html                # Strona główna (Portfolio & PC Spec)
 ├── linux.html                # Strona Linux vs Windows
 ├── menu.html                 # Wspólne menu stron (ładowane dynamicznie)
+├── pc-mode.html              # Symulator systemu operacyjnego
 ├── polityka.html     		  # Polityka Prywatności
+├── README.md                 # Dokumentacja projektu
 ├── regulamin.html    		  # Regulamin Serwisu
 ├── shooter.html              # Gra Shooter
-├── battleship.html           # Gra Statki
 ├── tetris.html               # Gra Tetris
-├── tools-rec.html            # Spis narzędzi i poradniki YT
-└── tools-all.html            # Spis narzędzi online
+├── tools-all.html            # Spis narzędzi online
+└── tools-rec.html            # Spis narzędzi i poradniki YT
 ```
 ## 📺 Wspieraj moją twórczość!
 
