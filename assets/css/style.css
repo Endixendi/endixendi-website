@@ -31,6 +31,26 @@ body {
     color: #e6eef6;
     line-height: 1.5;
     min-height: 100vh;
+    overflow-x: hidden;
+    color-scheme: dark;
+}
+
+img, video, iframe {
+    max-width: 100%;
+    display: block;
+}
+
+button, input, textarea, select {
+    font: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 .hidden {
@@ -171,6 +191,7 @@ header {
 
 .dropdown-content {
     display: block; 
+    pointer-events: auto;
     position: absolute;
     background-color: #14171b; 
     min-width: 200px;
@@ -253,7 +274,7 @@ header {
     height: 300px;
     animation: spin 5s linear infinite;
     object-fit: contain;                                     /* Dodatkowo warto dodać to, aby logo było ostre */
-    filter: drop-shadow(0 0 15px rgba(0, 170, 255, 0.5)); /* Efekt niebieskiej poświaty pasującej do Twojego akcentu */
+    filter: drop-shadow(0 0 150px rgba(29, 63, 143, 1.0));   /* Efekt niebieskiej poświaty pasującej do Twojego akcentu */
 }
 
 @keyframes spin {
@@ -454,7 +475,7 @@ table.specs th {
 }
 
 /* ==========================================================================
-   Stopka globalna
+   Stopka globalna (Nowoczesny układ wielokolumnowy)
    ========================================================================== */
 
 footer {
@@ -463,7 +484,6 @@ footer {
     background: linear-gradient(180deg, #14171b 0%, #050505 100%);
     border-top: 1px solid rgba(0, 170, 255, 0.1); 
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
-    text-align: center;
     position: relative;
 }
 
@@ -473,14 +493,74 @@ footer {
     position: relative;
 }
 
+/* Kolumna z marką i opisem */
 .footer-brand .brand-name {
     display: block;
     font-size: 1.5rem;
     font-weight: 800;
     color: #fff;
     letter-spacing: 1px;
+    text-align: left;
 }
 
+.footer-info-text {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-top: 10px;
+    max-width: 360px;
+    text-align: left;
+}
+
+/* Główna siatka stopki (Desktop) */
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr repeat(3, 1fr); /* Pierwsza kolumna szeroka, reszta równe */
+    gap: 40px;
+    margin-bottom: 10px;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-column h3 {
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+/* Linki wewnątrz kolumn i mikrointerakcja hoveru */
+.footer-column a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    transition: color var(--transition), transform var(--transition);
+}
+
+.footer-column a:hover {
+    color: var(--accent);
+    transform: translateX(4px); /* Płynne wysunięcie w prawo */
+}
+
+/* Specjalny kolor dla linku Donate */
+.footer-column a.footer-accent-link {
+    color: var(--accent-2);
+    font-weight: 700;
+}
+
+.footer-column a.footer-accent-link:hover {
+    color: #fff;
+}
+
+/* Elementy strukturalne i dolny pasek */
 .footer-divider {
     border: 0;
     height: 1px;
@@ -498,24 +578,52 @@ footer {
     font-size: 13px;
 }
 
-.footer-links a {
+.footer-meta {
     color: var(--muted);
-    text-decoration: none;
-    margin-left: 15px;
-    transition: color var(--transition);
+    font-size: 13px;
+    opacity: 0.7;
 }
 
-.footer-links a:hover {
-    color: var(--accent);
+/* ==========================================================================
+   RESPONSYWNOŚĆ (Media Queries)
+   ========================================================================== */
+
+/* Tablety i mniejsze monitory */
+@media screen and (max-width: 900px) {
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr); /* Przełączenie na 2 kolumny */
+        gap: 30px;
+    }
 }
 
-@media (max-width: 600px) {
+/* Smartfony i ekrany mobilne */
+@media screen and (max-width: 600px) {
+    .footer-brand .brand-name {
+        text-align: center;
+    }
+
+    .footer-info-text {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr; /* Wszystko w jednej kolumnie pionowo */
+        text-align: center;
+        gap: 26px;
+    }
+    
+    .footer-column {
+        align-items: center; /* Wyśrodkowanie nagłówków i linków */
+    }
+
+    .footer-column a:hover {
+        transform: none; /* Wyłączenie efektu przesunięcia na dotyku */
+    }
+
     .footer-bottom {
         flex-direction: column;
         text-align: center;
-    }
-    .footer-links a {
-        margin: 0 10px;
     }
 }
 
@@ -705,7 +813,13 @@ li {
 }
 
 .controls-left::before {
-    background: radial-gradient(circle, color-mix(in srgb, var(--accent) 20%, transparent) 0%, rgba(0, 0, 0, 0) 70%);
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.7;
 }
 
 .ssd-list {
@@ -914,11 +1028,107 @@ body.theme-red .floating-back-to-top:hover {
 }
 
 /* ==========================================================================
+   Sekcja O mnie - Stylizacja z logo
+   ========================================================================== */
+
+.about-me-layout {
+    display: flex;
+    align-items: center; /* Wyśrodkowanie pionowe logo względem bloku tekstu */
+    gap: 30px;           /* Odstęp między zdjęciem a tekstem */
+}
+
+.about-me-thumb {
+    flex: 0 0 180px;     /* Stała szerokość kolumny z logo na desktopie */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-me-logo {
+    width: 100%;
+    max-width: 180px;    /* Bezpieczny wymiar grafiki */
+    height: auto;
+    border-radius: 16px; /* Pasujące zaokrąglenie do Twoich kart */
+    border: 2px solid var(--border);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 30%, transparent); /* Neonowy glow */
+    object-fit: cover;
+    transition: transform var(--transition), border-color var(--transition);
+}
+
+.about-me-text {
+    flex: 1;             /* Tekst zajmuje całą pozostałą przestrzeń */
+}
+
+/* Zachowanie spójności akapitów wewnątrz bloku */
+.about-me-text p + p {
+    margin-top: 12px;
+}
+
+/* Mikrointerakcja powiązana z hoverem całej karty (zgodnie z Twoim stylem) */
+.card:hover .about-me-logo {
+    transform: rotate(-3deg) scale(1.03); /* Delikatne wychylenie w lewo */
+    border-color: var(--accent);
+}
+
+/* REPOZYTORIUM MOBILNE (Media Query dla ekranów mniejszych niż desktop) */
+@media screen and (max-width: 768px) {
+    .about-me-layout {
+        flex-direction: column; /* Układ pionowy na smartfonach */
+        gap: 20px;
+        text-align: center;     /* Wyśrodkowanie tekstu i nagłówka */
+    }
+
+    .about-me-thumb {
+        flex: 0 0 auto;
+    }
+
+    .about-me-logo {
+        max-width: 140px;       /* Nieco mniejsze logo na ekranach telefonów */
+    }
+}
+
+/* ==========================================================================
+   Stylizacja ujednoliconej listy źródeł audio (Sekcja #controls)
+   ========================================================================== */
+
+/* Główna lista (Muzyka i Efekty) */
+#controls ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 12px 0 0 0;
+}
+
+#controls ul li {
+    margin: 6px 0;
+    line-height: 1.5;
+}
+
+/* Wewnętrzna podlista (konkretne akcje SFX) */
+#controls ul ul {
+    list-style-type: disc; /* Przywraca standardowe okrągłe kropki */
+    list-style-position: outside; /* Gwarantuje, że kropki stoją w równej kolumnie poza tekstem */
+    padding-left: 24px; /* Bezpieczne odsunięcie w prawo - kropki nie najeżdżają na tekst */
+    margin-top: 6px;
+    margin-bottom: 0;
+}
+
+#controls ul ul li {
+    margin: 4px 0;
+    position: relative;
+    padding-left: 4px;
+}
+
+/* Kolorowanie kropek podlisty na kolor akcentu (zgodnie z Twoim stylem list w specs) */
+#controls ul ul li::marker {
+    color: var(--accent);
+}
+
+/* ==========================================================================
    RESPONSYWNOŚĆ I MEDIA QUERIES (Mobilne Menu Hamburgerowe)
    ========================================================================== */
 
 section { 
-    scroll-margin-top: 80px; 
+    scroll-margin-top: 90px; 
 }
 
 @media screen and (max-width: 1200px) {
@@ -944,6 +1154,8 @@ section {
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         z-index: 499;
         text-align: center; /* Wyśrodkowanie linków głównych */
+        max-height: calc(100vh - 72px);
+        overflow-y: auto;
     }
 
     /* Klasa aktywowana przez skrypt JS po kliknięciu hamburgera */

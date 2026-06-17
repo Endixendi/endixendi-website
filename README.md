@@ -52,13 +52,9 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 │   ├── images/               # Zasoby graficzne, ikony, kod QR
 │   │   ├── gallery/          # Zdjęcia wyświetlane w galerii
 │	│	│	└── ...
-│   │   ├── 1.png             # Zdjęcie mojego awatara wersja 1
-│   │   ├── 2.png             # Zdjęcie mojego awatara wersja 2
-│   │   ├── 3.png             # Zdjęcie mojego awatara wersja 3
-│   │   ├── 4.png             # Zdjęcie mojego awatara wersja 4
-│   │   ├── ECv2.png          # Logo serwera Discord
-│   │   ├── baner.jpg         # Baner z mojego kanału YouTube
-│   │   ├── kolo.png          # Zdjęcie mojego awatara wersja koło
+│   │   ├── logo.png          # Zdjęcie mojego awatara
+│   │   ├── logo-dc.png       # Logo serwera Discord
+│   │   ├── logo-kolo.png     # Zdjęcie mojego awatara wersja koło
 │   │   └── qr-mobile.webp    # Kod QR dla urządzeń mobilnych
 │   ├── js/
 │   │   ├── battleship.js     # Logika gry i AI bota w Statki
@@ -97,6 +93,8 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 ├── index.html                # Strona główna (Portfolio & PC Spec)
 ├── linux.html                # Strona Linux vs Windows
 ├── menu.html                 # Wspólne menu stron (ładowane dynamicznie)
+├── polityka.html     		  # Polityka Prywatności
+├── regulamin.html    		  # Regulamin Serwisu
 ├── shooter.html              # Gra Shooter
 ├── battleship.html           # Gra Statki
 ├── tetris.html               # Gra Tetris
