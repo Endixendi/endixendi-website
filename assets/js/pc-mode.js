@@ -77,6 +77,11 @@ function focusWindow(win) {
 
 // --- 4. PRZECIĄGANIE OKIEN Z BLOKADĄ KRAWĘDZI ---
 function dragWindow(e, id) {
+    // BLOKADA DLA TELEFONÓW: Wyłączamy przeciąganie na małych ekranach dotykowych
+    if (window.innerWidth <= 768) {
+        return;
+    }
+
     if (e.target.classList.contains('window-close')) return;
     
     const win = document.getElementById(id);
