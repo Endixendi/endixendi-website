@@ -631,6 +631,11 @@ footer {
    Widgety zewnętrzne (Snapwidget, Spotify) i Klasy pomocnicze
    ========================================================================== */
 
+.widget-margin-top {
+	margin-top: 20px;
+}
+
+
 .snapwidget-widget {
     border: none;
     overflow: hidden;
@@ -1234,7 +1239,7 @@ section {
     
     .snapwidget-widget { 
         width: 100%; 
-        height: auto; 
+        height: 1000px%; 
         aspect-ratio: 25 / 10; 
     }
 }
