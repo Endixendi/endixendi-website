@@ -42,6 +42,11 @@ let scoreTimer = 0;
 let highScore = parseInt(localStorage.getItem("highScore")) || 0;
 highScoreEl.textContent = highScore;
 
+// Funkcja pobierająca aktualny kolor akcentu z CSS
+function getAccentColor(fallback) {
+    return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || fallback;
+}
+
 class Player {
     constructor() {
         this.width = 50;
@@ -55,7 +60,8 @@ class Player {
     }
     
     draw() {
-        ctx.fillStyle = "green";
+        // DINOZAUR: Przyjmuje główny kolor akcentu ze stylów CSS strony
+        ctx.fillStyle = getAccentColor("#06b6d4");
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
     
@@ -96,7 +102,8 @@ class Obstacle {
     }
     
     draw() {
-        ctx.fillStyle = "brown";
+        // PRZESZKODY: Kolorowane na jaskrawy czerwony/różowy (kolor niebezpieczeństwa)
+        ctx.fillStyle = "#ff4d6d";
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
     
@@ -206,7 +213,8 @@ function detectCollision(a, b) {
 }
 
 function drawGround() {
-    ctx.fillStyle = "#2e2e2e";
+    // PODŁOŻE: Subtelny szary dopasowany do ciemnego tła
+    ctx.fillStyle = "#22252a";
     ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
 }
 
@@ -222,7 +230,7 @@ function animate(currentTime) {
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#0a0a0a";
+    ctx.fillStyle = "#0f1115"; // Dopasowane do var(--bg)
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     stars.forEach(star => star.update(dt));
