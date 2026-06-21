@@ -204,17 +204,19 @@ let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
     initDonateButton();
     initSmoothScroll();
 	
-	// --- NOWA LOGIKA DLA CZERWONEGO PRZYCISKU ---
+	// --- LOGIKA DLA CZERWONEGO PRZYCISKU (Zmiany na czerwony styl) ---
     const redBtn = document.getElementById("red-theme-btn");
     if (redBtn) {
         redBtn.addEventListener("click", () => {
             const isRed = document.body.classList.toggle("theme-red");
             
+            // ZAPISUJEMY DO PAMIĘCI STAN MOTYWU
+            localStorage.setItem("theme-red-active", isRed);
+            
             if (isRed) {
                 redBtn.textContent = "Wygląd fabryczny";
                 
                 // Jeśli użytkownik wymusił czerwony, usuwamy automatyczną klasę święta/pory roku, żeby się nie gryzły
-                // Wyciągamy listę klas i usuwamy te, które zaczynają się od "theme-" (oprócz theme-red)
                 Array.from(document.body.classList).forEach(className => {
                     if (className.startsWith("theme-") && className !== "theme-red") {
                         document.body.classList.remove(className);
@@ -274,6 +276,36 @@ function initSeasonalSystem() {
 
     const isSameDay = (d1, d2) => d1.toDateString() === d2.toDateString();
 
+    // === TUTAJ WKLEJAMY SPRAWDZANIE CZERWONEGO MOTYWU NA START ===
+    const redBtn = document.getElementById("red-theme-btn");
+    if (localStorage.getItem("theme-red-active") === "true") {
+        document.body.classList.add("theme-red");
+        if (redBtn) redBtn.textContent = "Wygląd fabryczny";
+        
+        // Pokaż przycisk wyłączania efektów, aby użytkownik mógł nimi sterować
+        const toggleBtn = document.getElementById('toggle-effects-btn');
+        if (toggleBtn) toggleBtn.style.display = 'block';
+
+        // Jeśli efekty są wyłączone w pamięci, dodajemy klasę i zmieniamy tekst
+        if (localStorage.getItem('effects-disabled') === 'true') {
+            document.body.classList.add('effects-off');
+            if (toggleBtn) toggleBtn.innerText = "Włącz efekty";
+        } else {
+            // Ponieważ czerwony motyw ukrywa tła świąt, cząsteczki pory roku nadal mogą ładnie latać w tle.
+            // Sprawdzamy jaka jest dzisiaj domyślna ikona na podstawie miesiąca:
+            let defaultIcon = "❄️"; // zima
+            if (month >= 3 && month <= 5) defaultIcon = "🌱"; // wiosna
+            if (month >= 6 && month <= 8) defaultIcon = "☀️"; // lato
+            if (month >= 9 && month <= 11) defaultIcon = "🍂"; // jesień
+            
+            currentSeasonalIcon = defaultIcon;
+            startParticles(currentSeasonalIcon);
+        }
+        
+        return; // Przerywamy dalsze sprawdzanie kolorów świątecznych, bo czerwony jest nadrzędny!
+    }
+    // ==============================================================
+
     let eventInfo = { theme: "", icon: "", active: false };
 
     // --- SPRAWDZANIE ŚWIĄT ---
@@ -310,7 +342,7 @@ function initSeasonalSystem() {
         }
     }
 
-	// Aplikowanie motywu
+    // Aplikowanie motywu
     if (eventInfo.active) {
         document.body.classList.add(eventInfo.theme);
         currentSeasonalIcon = eventInfo.icon; // Zapamiętujemy ikonę globalnie
