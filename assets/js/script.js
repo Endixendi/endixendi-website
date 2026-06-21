@@ -210,13 +210,13 @@ let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
         redBtn.addEventListener("click", () => {
             const isRed = document.body.classList.toggle("theme-red");
             
-            // ZAPISUJEMY DO PAMIĘCI STAN MOTYWU
+            // Zapisujemy stan (true/false) do pamięci przeglądarki
             localStorage.setItem("theme-red-active", isRed);
             
             if (isRed) {
                 redBtn.textContent = "Wygląd fabryczny";
                 
-                // Jeśli użytkownik wymusił czerwony, usuwamy automatyczną klasę święta/pory roku, żeby się nie gryzły
+                // Czyszczenie innych motywów, żeby się nie gryzły
                 Array.from(document.body.classList).forEach(className => {
                     if (className.startsWith("theme-") && className !== "theme-red") {
                         document.body.classList.remove(className);
@@ -224,13 +224,20 @@ let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
                 });
             } else {
                 redBtn.textContent = "Włącz czerwony styl";
-                // Po wyłączeniu czerwonego, ponownie odpalamy system sezonowy, by przywrócić właściwe kolory dnia
+                
+                // ZABEZPIECZENIE: Czyścimy stary stoper i cząsteczki przed przywróceniem święta
+                if (particleInterval) {
+                    clearInterval(particleInterval);
+                    particleInterval = null;
+                }
+                document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
+
+                // Po wyłączeniu czerwonego, ponownie odpalamy system sezonowy
                 if (typeof initSeasonalSystem === "function") {
                     initSeasonalSystem();
                 }
             }
             
-            // Odświeżamy podświetlenie menu, aby podłapało nowy kolor akcentu
             if (typeof highlightActiveNav === "function") {
                 highlightActiveNav();
             }
@@ -276,33 +283,38 @@ function initSeasonalSystem() {
 
     const isSameDay = (d1, d2) => d1.toDateString() === d2.toDateString();
 
-    // === TUTAJ WKLEJAMY SPRAWDZANIE CZERWONEGO MOTYWU NA START ===
+    // === SPRAWDZANIE CZERWONEGO MOTYWU NA KAŻDEJ PODSTRONIE ===
     const redBtn = document.getElementById("red-theme-btn");
+    
     if (localStorage.getItem("theme-red-active") === "true") {
+        // Aplikujemy czerwony kolor na body (to zadziała na KAŻDEJ podstronie)
         document.body.classList.add("theme-red");
+        
+        // Zmieniamy tekst przycisku TYLKO JEŚLI fizycznie istnieje na danej stronie (np. na index.html)
         if (redBtn) redBtn.textContent = "Wygląd fabryczny";
         
-        // Pokaż przycisk wyłączania efektów, aby użytkownik mógł nimi sterować
+        // Zarządzanie przyciskiem wyłączania efektów na czerwonym motywie
         const toggleBtn = document.getElementById('toggle-effects-btn');
         if (toggleBtn) toggleBtn.style.display = 'block';
 
-        // Jeśli efekty są wyłączone w pamięci, dodajemy klasę i zmieniamy tekst
         if (localStorage.getItem('effects-disabled') === 'true') {
             document.body.classList.add('effects-off');
             if (toggleBtn) toggleBtn.innerText = "Włącz efekty";
         } else {
-            // Ponieważ czerwony motyw ukrywa tła świąt, cząsteczki pory roku nadal mogą ładnie latać w tle.
-            // Sprawdzamy jaka jest dzisiaj domyślna ikona na podstawie miesiąca:
-            let defaultIcon = "❄️"; // zima
-            if (month >= 3 && month <= 5) defaultIcon = "🌱"; // wiosna
-            if (month >= 6 && month <= 8) defaultIcon = "☀️"; // lato
-            if (month >= 9 && month <= 11) defaultIcon = "🍂"; // jesień
+            // Domyślne ikony cząsteczek dla czerwonego motywu w zależności od miesiąca
+            let defaultIcon = "❄️";
+            if (month >= 3 && month <= 5) defaultIcon = "🌱";
+            if (month >= 6 && month <= 8) defaultIcon = "☀️";
+            if (month >= 9 && month <= 11) defaultIcon = "🍂";
             
             currentSeasonalIcon = defaultIcon;
             startParticles(currentSeasonalIcon);
         }
         
-        return; // Przerywamy dalsze sprawdzanie kolorów świątecznych, bo czerwony jest nadrzędny!
+        return; // Przerywamy sprawdzanie innych świąt – czerwony styl jest aktywny!
+    } else {
+        // Jeśli czerwony styl NIE jest aktywny w pamięci, upewniamy się, że przycisk (jeśli istnieje) ma właściwy tekst
+        if (redBtn) redBtn.textContent = "Włącz czerwony styl";
     }
     // ==============================================================
 
@@ -327,7 +339,6 @@ function initSeasonalSystem() {
     
     // --- PORY ROKU (Jeśli nie ma święta) ---
     else {
-        // Sprawdzamy, czy jest któryś z dni przesilenia
         if (month === 3 && day === 21) {
             eventInfo = { theme: "theme-spring", icon: "🌱", active: true };
         } else if (month === 6 && day === 21) {
@@ -337,7 +348,6 @@ function initSeasonalSystem() {
         } else if (month === 12 && day === 21) {
             eventInfo = { theme: "theme-winter", icon: "❄️", active: true };
         } else {
-            // Jeśli nie jest świętem i nie jest dniem przesilenia
             console.log("Dzisiaj nie ma żadnego święta ani pory roku, więc zostawiamy wygląd fabryczny.");
         }
     }
@@ -345,17 +355,13 @@ function initSeasonalSystem() {
     // Aplikowanie motywu
     if (eventInfo.active) {
         document.body.classList.add(eventInfo.theme);
-        currentSeasonalIcon = eventInfo.icon; // Zapamiętujemy ikonę globalnie
+        currentSeasonalIcon = eventInfo.icon;
 
-        // Pokaż przycisk wyłączania
         const toggleBtn = document.getElementById('toggle-effects-btn');
         if (toggleBtn) toggleBtn.style.display = 'block';
 
-        // --- TUTAJ DOPISUJEMY POPRAWNĄ LOGIKĘ ---
         if (localStorage.getItem('effects-disabled') === 'true') {
             document.body.classList.add('effects-off');
-            
-            // Ustawiamy poprawny tekst na przycisku od razu po załadowaniu strony:
             if (toggleBtn) toggleBtn.innerText = "Włącz efekty";
         } else {
             startParticles(currentSeasonalIcon);
