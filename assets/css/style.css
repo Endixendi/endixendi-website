@@ -346,12 +346,14 @@ table.specs {
 table.specs td,
 table.specs th {
     padding: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    /* Delikatna linia podziału, która też lekko barwi się pod kolor święta */
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 /* Styl dla kategorii w tabeli specyfikacji */
 .cat {
-    background: linear-gradient(90deg, rgba(0, 170, 255, 0.15), transparent); 
+    /* Pasek za napisem PROCESOR automatycznie dostosuje się do koloru dnia specjalnego */
+    background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 15%, transparent), transparent); 
     color: var(--accent); 
     font-weight: 700;
     padding-left: 12px;
@@ -676,6 +678,18 @@ li {
     margin-top: 15px !important;
 }
 
+/* Tworzy poświatę pod sekcją PC dopasowaną do aktualnego święta */
+.controls-left {
+    position: relative;
+    z-index: 1;
+}
+
+.controls-left::before {
+    /* Miksuje kolor aktualnego motywu (20% widoczności) z przezroczystością */
+    background: radial-gradient(circle, color-mix(in srgb, var(--accent) 20%, transparent) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+
 /* ==========================================================================
    SYSTEM SEZONOWY
    ========================================================================== */
@@ -703,6 +717,15 @@ body.theme-patriotic  { --accent: #ffffff; --accent-2: #ff4d4d; }
 body.theme-birthday   { --accent: #f472b6; --accent-2: #22d3ee; }
 body.theme-youtube    { --accent: #ff1606; --accent-2: #ffffff; }
 body.theme-new        { --accent: #ffff06; --accent-2: #ffa12c; }
+
+/* NOWY: Czerwony styl bez gradientów */
+body.theme-red        { --accent: #ff0000; --accent-2: #ff0000; }
+
+/* Zmiana tła przycisku na jednolity kolor, gdy aktywny jest czerwony motyw */
+body.theme-red .btn {
+    background: #ff0000 !important;
+    color: #ffffff !important; /* Biały tekst, bo czarny na czerwonym tle słabo widać */
+}
 
 /* Przycisk wyłączania (domyślnie ukryty) */
 #toggle-effects-btn {
@@ -780,4 +803,14 @@ section {
    ========================================================================== */
 .ssd-list {
     white-space: pre-line;
+}
+
+/* ==========================================================================
+   Modyfikacje dla czerwonego motywu
+   ========================================================================== */
+
+/* Zmiana tła przycisku na jednolity czerwony, gdy motyw jest aktywny */
+body.theme-red .btn {
+    background: #ff0000 !important;
+    color: #ffffff !important; 
 }

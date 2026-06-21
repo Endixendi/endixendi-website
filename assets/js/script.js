@@ -203,6 +203,37 @@ let currentSeasonalIcon = "❄️"; // Domyślna ikona awaryjna
     checkForRedirects();
     initDonateButton();
     initSmoothScroll();
+	
+	// --- NOWA LOGIKA DLA CZERWONEGO PRZYCISKU ---
+    const redBtn = document.getElementById("red-theme-btn");
+    if (redBtn) {
+        redBtn.addEventListener("click", () => {
+            const isRed = document.body.classList.toggle("theme-red");
+            
+            if (isRed) {
+                redBtn.textContent = "Wygląd fabryczny";
+                
+                // Jeśli użytkownik wymusił czerwony, usuwamy automatyczną klasę święta/pory roku, żeby się nie gryzły
+                // Wyciągamy listę klas i usuwamy te, które zaczynają się od "theme-" (oprócz theme-red)
+                Array.from(document.body.classList).forEach(className => {
+                    if (className.startsWith("theme-") && className !== "theme-red") {
+                        document.body.classList.remove(className);
+                    }
+                });
+            } else {
+                redBtn.textContent = "Włącz czerwony styl";
+                // Po wyłączeniu czerwonego, ponownie odpalamy system sezonowy, by przywrócić właściwe kolory dnia
+                if (typeof initSeasonalSystem === "function") {
+                    initSeasonalSystem();
+                }
+            }
+            
+            // Odświeżamy podświetlenie menu, aby podłapało nowy kolor akcentu
+            if (typeof highlightActiveNav === "function") {
+                highlightActiveNav();
+            }
+        });
+    }
     
     // Nasłuchuj zmian hash dla redirectów
     window.addEventListener("hashchange", checkForRedirects);
@@ -279,7 +310,7 @@ function initSeasonalSystem() {
         }
     }
 
-    // Aplikowanie motywu
+	// Aplikowanie motywu
     if (eventInfo.active) {
         document.body.classList.add(eventInfo.theme);
         currentSeasonalIcon = eventInfo.icon; // Zapamiętujemy ikonę globalnie
@@ -288,9 +319,12 @@ function initSeasonalSystem() {
         const toggleBtn = document.getElementById('toggle-effects-btn');
         if (toggleBtn) toggleBtn.style.display = 'block';
 
-        // Sprawdź czy użytkownik wcześniej nie wyłączył
+        // --- TUTAJ DOPISUJEMY POPRAWNĄ LOGIKĘ ---
         if (localStorage.getItem('effects-disabled') === 'true') {
             document.body.classList.add('effects-off');
+            
+            // Ustawiamy poprawny tekst na przycisku od razu po załadowaniu strony:
+            if (toggleBtn) toggleBtn.innerText = "Włącz efekty";
         } else {
             startParticles(currentSeasonalIcon);
         }
@@ -331,7 +365,13 @@ function toggleEffects() {
     const isOff = document.body.classList.toggle('effects-off');
     localStorage.setItem('effects-disabled', isOff);
 
+    // Pobieramy przycisk, aby móc zmienić jego tekst
+    const btn = document.getElementById('toggle-effects-btn');
+
     if (isOff) {
+        // Zmieniamy napis na "Włącz efekty", bo właśnie zostały wyłączone
+        if (btn) btn.innerText = "Włącz efekty";
+
         // 1. Wyłączamy stoper generujący nowe elementy
         if (particleInterval) {
             clearInterval(particleInterval);
@@ -340,6 +380,9 @@ function toggleEffects() {
         // 2. Natychmiast kasujemy z ekranu cząsteczki, które zdążyły się pojawić
         document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
     } else {
+        // Zmieniamy napis na "Wyłącz efekty", bo właśnie zostały włączone z powrotem
+        if (btn) btn.innerText = "Wyłącz efekty";
+
         // 3. Jeśli włączono ponownie, odpalamy generator od nowa
         startParticles(currentSeasonalIcon);
     }
