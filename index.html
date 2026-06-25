@@ -226,19 +226,21 @@
         </section>
 -->		
 		
-		<div id="ad-left" class="main-sidebar-ad pc-only">
-            <button class="main-ad-close-btn" onclick="closeMainAd('ad-left')">×</button>
-            <div class="main-ad-content"></div>
+		<!-- Kontenery na panele partnerskie boczki (Tylko PC) -->
+        <div id="side-box-l" class="partner-sidebar pc-only">
+            <button class="partner-x-btn" onclick="hidePartnerBox('side-box-l')">×</button>
+            <div class="partner-inner-content"></div>
         </div>
         
-        <div id="ad-right" class="main-sidebar-ad pc-only">
-            <button class="main-ad-close-btn" onclick="closeMainAd('ad-right')">×</button>
-            <div class="main-ad-content"></div>
+        <div id="side-box-r" class="partner-sidebar pc-only">
+            <button class="partner-x-btn" onclick="hidePartnerBox('side-box-r')">×</button>
+            <div class="partner-inner-content"></div>
         </div>
 
-        <div id="ad-mobile-popup" class="main-mobile-ad mobile-only">
-            <button class="main-ad-close-btn" onclick="closeMainAd('ad-mobile-popup')">×</button>
-            <div class="main-ad-content"></div>
+        <!-- Kontener na panel dolny (Tylko Telefon) -->
+        <div id="phone-popup-box" class="partner-mobile-popup mobile-only">
+            <button class="partner-x-btn" onclick="hidePartnerBox('phone-popup-box')">×</button>
+            <div class="partner-inner-content"></div>
         </div>
 
     </main>

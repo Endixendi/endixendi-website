@@ -1136,7 +1136,7 @@ section {
 }
 
 /* ==========================================================================
-   SYSTEM REKLAM AUTOPROMOCYJNYCH (INDEX)
+   SYSTEM PANELU PARTNERSKIEGO (INDEX) - CAMOUFLAGE VERSION
    ========================================================================== */
 
 /* Podział na wersje PC i Mobile */
@@ -1149,40 +1149,40 @@ section {
     .mobile-only { display: block !important; }
 }
 
-/* Banery boczne na komputerach */
-.main-sidebar-ad {
-    display: none; /* JS aktywuje jeśli są zdjęcia */
+/* Banery boczne na komputerach (udają panele boczne) */
+.partner-sidebar {
+    display: none; /* Aktywowane przez skrypt JS po wylosowaniu partnera */
     position: fixed;
     top: 15%;
-    width: 140px; /* Szerokość dostosowana pod standardowe banery */
-    height: 600px; /* Klasyczny pionowy wieżowiec reklamowy */
+    width: 140px; /* Szerokość dostosowana pod standardowe pionowe banery */
+    height: 600px; /* Klasyczny pionowy format */
     background: rgba(20, 24, 33, 0.9);
-    border: 2px dashed var(--accent);
+    border: 2px dashed var(--accent); /* Używa Twojego koloru akcentowego strony */
     border-radius: 8px;
     z-index: 100;
     overflow: hidden;
     box-shadow: 0 0 15px rgba(255, 0, 110, 0.2);
 }
 
-#ad-left { left: 20px; }
-#ad-right { right: 20px; }
+#side-box-l { left: 20px; }
+#side-box-r { right: 20px; }
 
-/* Wnętrze reklamy (Twoje obrazki) */
-.main-ad-content, .main-ad-content img {
+/* Wnętrze panelu (Obrazki partnerów) */
+.partner-inner-content, .partner-inner-content img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
 /* Zapewnia klikalność całego obszaru baneru */
-.main-ad-content a {
+.partner-inner-content a {
     display: block;
     width: 100%;
     height: 100%;
 }
 
 /* Stylowy przycisk zamknięcia X */
-.main-ad-close-btn {
+.partner-x-btn {
     position: absolute;
     top: 4px;
     right: 4px;
@@ -1201,37 +1201,36 @@ section {
     z-index: 110;
     transition: background 0.2s;
 }
-.main-ad-close-btn:hover {
+.partner-x-btn:hover {
     background: #ef4444;
 }
 
-/* --- WERSJA MOBILNA (Wyskakujący dyskretny pasek dolny) --- */
-.main-mobile-ad {
+/* --- WERSJA MOBILNA (Dyskretny wyskakujący pasek dolny) --- */
+.partner-mobile-popup {
     display: none !important; /* Odpalany przez skrypt JS */
     position: fixed;
     bottom: 20px; /* Odstęp od dołu ekranu smartfona */
     left: 5%;
     width: 90%;
-    height: 75px; /* Wysokość idealna dla banerów 400x80px */
+    height: 75px; /* Wysokość idealna dla banerów mobilnych 400x80px */
     background: rgba(20, 24, 33, 0.95);
     border: 2px dashed var(--accent);
     border-radius: 8px;
     z-index: 9999;
     overflow: hidden;
     box-shadow: 0 -4px 15px rgba(0, 170, 255, 0.3);
-    animation: slideUpMainAd 0.4s ease-out forwards;
+    animation: slideUpPartner 0.4s ease-out forwards;
 }
 
 /* Animacja wjazdu baneru od dołu na telefonie */
-@keyframes slideUpMainAd {
+@keyframes slideUpPartner {
     from { transform: translateY(120px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
 
-@keyframes slideUpMainAd {
-    from { transform: translateY(120px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
+/* ==========================================================================
+   WERSJA MOBILNA
+   ========================================================================== */
 
 @media screen and (max-width: 1200px) {
     .menu-icon { 

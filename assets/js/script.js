@@ -513,82 +513,79 @@ function highlightActiveNav() {
 
 window.addEventListener("hashchange", highlightActiveNav);
 
-// --- SYSTEM REKLAM Z LINKAMI (INDEX) ---
-const INDEX_ADS = [
+// --- SYSTEM WIDGETÓW PARTNERSKICH (INDEX) ---
+const PARTNER_ITEMS = [
     {
-        image: "goldsaver.jpg", // 140x600px
-		mobile: "mcs.jpg", // 400x80px
+        image: "goldsaver.jpg", 
+        mobile: "mcs.jpg", 
         link: "https://goldsaver.pl/pl/kod/4TK7PP"
     },
     {
         image: "dc.jpg",
-		mobile: "mdc.jpg",
+        mobile: "mdc.jpg",
         link: "https://discord.com/invite/MwGVnXWUaW"
     },
     {
         image: "instantgaming.jpg",
-		mobile: "minstantgaming.jpg",
+        mobile: "minstantgaming.jpg",
         link: "https://www.instant-gaming.com/pl/?igr=endixendi"
     },
     {
         image: "tipply.jpg",
-		mobile: "mtipply.jpg",
+        mobile: "mtipply.jpg",
         link: "https://tipply.pl/@endixendi"
     },
     {
         image: "cs.jpg",
-		mobile: "mcs.jpg",
+        mobile: "mcs.jpg",
         link: "https://csgo-skins.com/?ref=ENDIXENDI"
     }
 ];
 
-function initIndexAds() {
-    if (INDEX_ADS.length === 0) return;
+function initPartnerWidgets() {
+    if (PARTNER_ITEMS.length === 0) return;
 
-    const leftAd = document.querySelector("#ad-left .main-ad-content");
-    const rightAd = document.querySelector("#ad-right .main-ad-content");
-    const mobileAd = document.querySelector("#ad-mobile-popup .main-ad-content");
+    const leftBox = document.querySelector("#side-box-l .partner-inner-content");
+    const rightBox = document.querySelector("#side-box-r .partner-inner-content");
+    const mobileBox = document.querySelector("#phone-popup-box .partner-inner-content");
 
-    // Skalowanie/Włączanie reklam na PC
-    if (leftAd && rightAd && window.innerWidth > 1200) {
-        let randLeft = INDEX_ADS[Math.floor(Math.random() * INDEX_ADS.length)];
-        let randRight = INDEX_ADS[Math.floor(Math.random() * INDEX_ADS.length)];
+    // Wersja PC
+    if (leftBox && rightBox && window.innerWidth > 1200) {
+        let randLeft = PARTNER_ITEMS[Math.floor(Math.random() * PARTNER_ITEMS.length)];
+        let randRight = PARTNER_ITEMS[Math.floor(Math.random() * PARTNER_ITEMS.length)];
         
-        // Zabezpieczenie przed wylosowaniem dwóch identycznych grafik obok siebie
-        if (INDEX_ADS.length > 1) {
+        if (PARTNER_ITEMS.length > 1) {
             while (randLeft.image === randRight.image) {
-                randRight = INDEX_ADS[Math.floor(Math.random() * INDEX_ADS.length)];
+                randRight = PARTNER_ITEMS[Math.floor(Math.random() * PARTNER_ITEMS.length)];
             }
         }
 
-        // Generujemy obrazek owinięty w klikalny link dla PC (pionowy wieżowiec)
-        leftAd.innerHTML = `<a href="${randLeft.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randLeft.image}" alt="Reklama"></a>`;
-        rightAd.innerHTML = `<a href="${randRight.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randRight.image}" alt="Reklama"></a>`;
+        leftBox.innerHTML = `<a href="${randLeft.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randLeft.image}" alt="Partner"></a>`;
+        rightBox.innerHTML = `<a href="${randRight.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randRight.image}" alt="Partner"></a>`;
         
-        document.getElementById("ad-left").style.display = "block";
-        document.getElementById("ad-right").style.display = "block";
+        document.getElementById("side-box-l").style.display = "block";
+        document.getElementById("side-box-r").style.display = "block";
     }
 
-    // Wyświetlenie reklamy mobilnej (po 5 sekundach od uruchomienia strony)
-    if (mobileAd && window.innerWidth <= 1200) {
+    // Wersja Mobilna (zostawiłem ultra szybkie 50ms tak jak miałeś w teście)
+    if (mobileBox && window.innerWidth <= 1200) {
         setTimeout(() => {
-            const randMobile = INDEX_ADS[Math.floor(Math.random() * INDEX_ADS.length)];
+            const randMobile = PARTNER_ITEMS[Math.floor(Math.random() * PARTNER_ITEMS.length)];
             
-            // Tutaj pobieramy klucz .mobile zamiast .image!
-            mobileAd.innerHTML = `<a href="${randMobile.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randMobile.mobile}" alt="Reklama"></a>`;
+            mobileBox.innerHTML = `<a href="${randMobile.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randMobile.mobile}" alt="Partner"></a>`;
             
-            document.getElementById("ad-mobile-popup").style.setProperty("display", "block", "important");
+            document.getElementById("phone-popup-box").style.setProperty("display", "block", "important");
         }, 50);
     }
 }
 
-// Funkcja zamykania okna reklamy na krzyżyk
-function closeMainAd(elementId) {
-    const targetAd = document.getElementById(elementId);
-    if (targetAd) {
-        targetAd.style.setProperty("display", "none", "important");
+// Funkcja zamykania okna
+function hidePartnerBox(elementId) {
+    const targetBox = document.getElementById(elementId);
+    if (targetBox) {
+        targetBox.style.setProperty("display", "none", "important");
     }
 }
 
-// Uruchomienie skryptu po pełnym załadowaniu drzewa DOM strony
-document.addEventListener("DOMContentLoaded", initIndexAds);
+// Uruchomienie skryptu
+document.addEventListener("DOMContentLoaded", initPartnerWidgets);
