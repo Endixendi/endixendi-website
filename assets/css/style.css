@@ -57,6 +57,10 @@ textarea:focus-visible {
     display: none !important;
 }
 
+.center {
+  text-align: center;
+}
+
 /* ==========================================================================
    Nagłówek i menu główne (Nowoczesny Glassmorphism & Sticky)
    ========================================================================== */
@@ -638,7 +642,7 @@ footer {
 .snapwidget-widget {
     border: none;
     overflow: hidden;
-    width: 100%; 
+    width: 100%;
 	/*height: 380px;*/
     margin-top: 20px;
 }

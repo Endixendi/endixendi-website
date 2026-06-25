@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media & Spotify — Endixendi</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/gallery.css">
+    <link rel="icon" href="assets/images/logo-kolo.png" type="image/png">
+</head>
+<body>
+
+    <div id="loader">
+        <img src="assets/images/logo-kolo.png" alt="Loading..." class="loader-logo">
+    </div>
+
+    <div id="menu-placeholder"></div>
+
+    <main id="home" class="container">
+	
+	    <main id="home" class="container">
+        
+		<section class="card mt-22 text-center">
+            <h1>Instagram & Spotify</h1>
+            <p class="mt-12">Zobacz, co wrzucam na bieżąco i czego słucham w tle.</p>
+        </section>
+
+        <!-- <section id="ig" class="card mt-22">
+            <h2>Instagram — <a class="inline-link" href="https://www.instagram.com/endixendi/">@Endixendi</a></h2>
+            <script src="https://snapwidget.com/js/snapwidget.js"></script>
+            <iframe src="https://snapwidget.com/embed/1105116" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Posts from Instagram"></iframe>
+        </section> -->		
+        
+        <section id="ig" class="card mt-22">
+            <h2>Instagram — <a class="inline-link" href="https://www.instagram.com/endixendi/">@Endixendi</a></h2>
+            
+            <behold-widget feed-id="0H5vNR8S0FpsINYyWoOD" class="widget-margin-top"></behold-widget>
+            <script>
+                (() => {
+                    const d=document,s=d.createElement("script");s.type="module";
+                    s.src="https://w.behold.so/widget.js";d.head.append(s);
+                })();
+            </script>
+        </section>
+        
+		<section id="spotify" class="card mt-22">
+            <h2>Playlista Spotify</h2>
+            <p>Muzyka, którą sam wybrałem i polecam!</p>
+            <iframe class="mt-12" 
+                style="border-radius:12px" 
+                src="https://open.spotify.com/embed/playlist/2qrALXJZta6M1PdaW8QRCE?utm_source=generator&theme=0&si=c0dc9e348cc04604" 
+                width="100%" 
+                height="700" 
+                frameBorder="0" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                loading="lazy">
+            </iframe>
+        </section>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/gallery.js"></script>
+
+</body>
+</html>

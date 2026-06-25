@@ -100,6 +100,7 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 ├── gallery.html              # Galeria projektów
 ├── index.html                # Strona główna (Portfolio & PC Spec)
 ├── linux.html                # Strona Linux vs Windows
+├── media.html                # Podstrona z mediami: widżet profilu Instagram oraz playlista Spotify 
 ├── menu.html                 # Wspólne menu stron (ładowane dynamicznie)
 ├── pc-mode.html              # Symulator systemu operacyjnego
 ├── polityka.html     		  # Polityka Prywatności
