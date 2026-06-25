@@ -516,28 +516,28 @@ window.addEventListener("hashchange", highlightActiveNav);
 // --- SYSTEM REKLAM Z LINKAMI (INDEX) ---
 const INDEX_ADS = [
     {
-        image: "goldsaver.png", // 140x600px
-		mobile: "mcs.png", // 400x80px
+        image: "goldsaver.jpg", // 140x600px
+		mobile: "mcs.jpg", // 400x80px
         link: "https://goldsaver.pl/pl/kod/4TK7PP"
     },
     {
-        image: "dc.png",
-		mobile: "mdc.png",
+        image: "dc.jpg",
+		mobile: "mdc.jpg",
         link: "https://discord.com/invite/MwGVnXWUaW"
     },
     {
-        image: "instantgaming.png",
-		mobile: "minstantgaming.png",
+        image: "instantgaming.jpg",
+		mobile: "minstantgaming.jpg",
         link: "https://www.instant-gaming.com/pl/?igr=endixendi"
     },
     {
-        image: "tipply.png",
-		mobile: "mtipply.png",
+        image: "tipply.jpg",
+		mobile: "mtipply.jpg",
         link: "https://tipply.pl/@endixendi"
     },
     {
-        image: "cs.png",
-		mobile: "mcs.png",
+        image: "cs.jpg",
+		mobile: "mcs.jpg",
         link: "https://csgo-skins.com/?ref=ENDIXENDI"
     }
 ];
