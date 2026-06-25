@@ -512,3 +512,83 @@ function highlightActiveNav() {
 }
 
 window.addEventListener("hashchange", highlightActiveNav);
+
+// --- SYSTEM REKLAM Z LINKAMI (INDEX) ---
+const INDEX_ADS = [
+    {
+        image: "goldsaver.png", // 140x600px
+		mobile: "mcs.png", // 400x80px
+        link: "https://goldsaver.pl/pl/kod/4TK7PP"
+    },
+    {
+        image: "dc.png",
+		mobile: "mdc.png",
+        link: "https://discord.com/invite/MwGVnXWUaW"
+    },
+    {
+        image: "instantgaming.png",
+		mobile: "minstantgaming.png",
+        link: "https://www.instant-gaming.com/pl/?igr=endixendi"
+    },
+    {
+        image: "tipply.png",
+		mobile: "mtipply.png",
+        link: "https://tipply.pl/@endixendi"
+    },
+    {
+        image: "cs.png",
+		mobile: "mcs.png",
+        link: "https://csgo-skins.com/?ref=ENDIXENDI"
+    }
+];
+
+function initIndexAds() {
+    if (INDEX_ADS.length === 0) return;
+
+    const leftAd = document.querySelector("#ad-left .main-ad-content");
+    const rightAd = document.querySelector("#ad-right .main-ad-content");
+    const mobileAd = document.querySelector("#ad-mobile-popup .main-ad-content");
+
+    // Skalowanie/Włączanie reklam na PC
+    if (leftAd && rightAd && window.innerWidth > 1200) {
+        let randLeft = INDEX_ADS[Math.floor(Math.random() * INDEX_ADS.length)];
+        let randRight = INDEX_ADS[Math.floor(Math.random() * INDEX_ADS.length)];
+        
+        // Zabezpieczenie przed wylosowaniem dwóch identycznych grafik obok siebie
+        if (INDEX_ADS.length > 1) {
+            while (randLeft.image === randRight.image) {
+                randRight = INDEX_ADS[Math.floor(Math.random() * INDEX_ADS.length)];
+            }
+        }
+
+        // Generujemy obrazek owinięty w klikalny link dla PC (pionowy wieżowiec)
+        leftAd.innerHTML = `<a href="${randLeft.link}" target="_blank" rel="noopener"><img src="assets/images/ads/${randLeft.image}" alt="Reklama"></a>`;
+        rightAd.innerHTML = `<a href="${randRight.link}" target="_blank" rel="noopener"><img src="assets/images/ads/${randRight.image}" alt="Reklama"></a>`;
+        
+        document.getElementById("ad-left").style.display = "block";
+        document.getElementById("ad-right").style.display = "block";
+    }
+
+    // Wyświetlenie reklamy mobilnej (po 5 sekundach od uruchomienia strony)
+    if (mobileAd && window.innerWidth <= 1200) {
+        setTimeout(() => {
+            const randMobile = INDEX_ADS[Math.floor(Math.random() * INDEX_ADS.length)];
+            
+            // Tutaj pobieramy klucz .mobile zamiast .image!
+            mobileAd.innerHTML = `<a href="${randMobile.link}" target="_blank" rel="noopener"><img src="assets/images/ads/${randMobile.mobile}" alt="Reklama"></a>`;
+            
+            document.getElementById("ad-mobile-popup").style.setProperty("display", "block", "important");
+        }, 50);
+    }
+}
+
+// Funkcja zamykania okna reklamy na krzyżyk
+function closeMainAd(elementId) {
+    const targetAd = document.getElementById(elementId);
+    if (targetAd) {
+        targetAd.style.setProperty("display", "none", "important");
+    }
+}
+
+// Uruchomienie skryptu po pełnym załadowaniu drzewa DOM strony
+document.addEventListener("DOMContentLoaded", initIndexAds);

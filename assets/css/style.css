@@ -1135,6 +1135,104 @@ section {
     scroll-margin-top: 90px; 
 }
 
+/* ==========================================================================
+   SYSTEM REKLAM AUTOPROMOCYJNYCH (INDEX)
+   ========================================================================== */
+
+/* Podział na wersje PC i Mobile */
+@media screen and (min-width: 1201px) {
+    .pc-only { display: block !important; }
+    .mobile-only { display: none !important; }
+}
+@media screen and (max-width: 1200px) {
+    .pc-only { display: none !important; }
+    .mobile-only { display: block !important; }
+}
+
+/* Banery boczne na komputerach */
+.main-sidebar-ad {
+    display: none; /* JS aktywuje jeśli są zdjęcia */
+    position: fixed;
+    top: 15%;
+    width: 140px; /* Szerokość dostosowana pod standardowe banery */
+    height: 600px; /* Klasyczny pionowy wieżowiec reklamowy */
+    background: rgba(20, 24, 33, 0.9);
+    border: 2px dashed var(--accent);
+    border-radius: 8px;
+    z-index: 100;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.2);
+}
+
+#ad-left { left: 20px; }
+#ad-right { right: 20px; }
+
+/* Wnętrze reklamy (Twoje obrazki) */
+.main-ad-content, .main-ad-content img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Zapewnia klikalność całego obszaru baneru */
+.main-ad-content a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Stylowy przycisk zamknięcia X */
+.main-ad-close-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 20px;
+    height: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 110;
+    transition: background 0.2s;
+}
+.main-ad-close-btn:hover {
+    background: #ef4444;
+}
+
+/* --- WERSJA MOBILNA (Wyskakujący dyskretny pasek dolny) --- */
+.main-mobile-ad {
+    display: none !important; /* Odpalany przez skrypt JS */
+    position: fixed;
+    bottom: 20px; /* Odstęp od dołu ekranu smartfona */
+    left: 5%;
+    width: 90%;
+    height: 75px; /* Wysokość idealna dla banerów 400x80px */
+    background: rgba(20, 24, 33, 0.95);
+    border: 2px dashed var(--accent);
+    border-radius: 8px;
+    z-index: 9999;
+    overflow: hidden;
+    box-shadow: 0 -4px 15px rgba(0, 170, 255, 0.3);
+    animation: slideUpMainAd 0.4s ease-out forwards;
+}
+
+/* Animacja wjazdu baneru od dołu na telefonie */
+@keyframes slideUpMainAd {
+    from { transform: translateY(120px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideUpMainAd {
+    from { transform: translateY(120px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
 @media screen and (max-width: 1200px) {
     .menu-icon { 
         display: block; 
