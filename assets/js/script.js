@@ -513,79 +513,61 @@ function highlightActiveNav() {
 
 window.addEventListener("hashchange", highlightActiveNav);
 
-// --- SYSTEM WIDGETÓW PARTNERSKICH (INDEX) ---
-const PARTNER_ITEMS = [
-    {
-        image: "goldsaver.jpg", 
-        mobile: "mcs.jpg", 
-        link: "https://goldsaver.pl/pl/kod/4TK7PP"
-    },
-    {
-        image: "dc.jpg",
-        mobile: "mdc.jpg",
-        link: "https://discord.com/invite/MwGVnXWUaW"
-    },
-    {
-        image: "instantgaming.jpg",
-        mobile: "minstantgaming.jpg",
-        link: "https://www.instant-gaming.com/pl/?igr=endixendi"
-    },
-    {
-        image: "tipply.jpg",
-        mobile: "mtipply.jpg",
-        link: "https://tipply.pl/@endixendi"
-    },
-    {
-        image: "cs.jpg",
-        mobile: "mcs.jpg",
-        link: "https://csgo-skins.com/?ref=ENDIXENDI"
-    }
-];
+// --- SYSTEM ZAKAMUFLOWANEGO INTERFEJSU PANELÓW (INDEX) ---
+function initSitePanels() {
+    const leftPanel = document.getElementById("navigation-left-panel");
+    const rightPanel = document.getElementById("navigation-right-panel");
+    const mobilePanel = document.getElementById("mobile-sticky-footer");
 
-function initPartnerWidgets() {
-    if (PARTNER_ITEMS.length === 0) return;
+    // Identyfikatory kafelków zgodne z kodem HTML (data-id)
+    const availableIds = ["goldsaver", "dc", "instant", "tipply", "cs"];
 
-    const leftBox = document.querySelector("#side-box-l .partner-inner-content");
-    const rightBox = document.querySelector("#side-box-r .partner-inner-content");
-    const mobileBox = document.querySelector("#phone-popup-box .partner-inner-content");
+    // Obsługa Komputerów (PC)
+    if (leftPanel && rightPanel && window.innerWidth > 1200) {
+        // Losujemy identyfikatory dla lewej i prawej strony
+        const idLeft = availableIds[Math.floor(Math.random() * availableIds.length)];
+        let idRight = availableIds[Math.floor(Math.random() * availableIds.length)];
 
-    // Wersja PC
-    if (leftBox && rightBox && window.innerWidth > 1200) {
-        let randLeft = PARTNER_ITEMS[Math.floor(Math.random() * PARTNER_ITEMS.length)];
-        let randRight = PARTNER_ITEMS[Math.floor(Math.random() * PARTNER_ITEMS.length)];
-        
-        if (PARTNER_ITEMS.length > 1) {
-            while (randLeft.image === randRight.image) {
-                randRight = PARTNER_ITEMS[Math.floor(Math.random() * PARTNER_ITEMS.length)];
+        // Zabezpieczenie przed powtórzeniem
+        if (availableIds.length > 1 && idLeft === idRight) {
+            while (idLeft === idRight) {
+                idRight = availableIds[Math.floor(Math.random() * availableIds.length)];
             }
         }
 
-        leftBox.innerHTML = `<a href="${randLeft.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randLeft.image}" alt="Partner"></a>`;
-        rightBox.innerHTML = `<a href="${randRight.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randRight.image}" alt="Partner"></a>`;
-        
-        document.getElementById("side-box-l").style.display = "block";
-        document.getElementById("side-box-r").style.display = "block";
+        // Aktywujemy wylosowany element po lewej stronie
+        const activeLeft = leftPanel.querySelector(`.shortcut-item[data-id="${idLeft}"]`);
+        if (activeLeft) activeLeft.classList.add("is-active");
+
+        // Aktywujemy wylosowany element po prawej stronie
+        const activeRight = rightPanel.querySelector(`.shortcut-item[data-id="${idRight}"]`);
+        if (activeRight) activeRight.classList.add("is-active");
+
+        // Wyświetlamy całe kontenery na ekranie
+        leftPanel.style.display = "block";
+        rightPanel.style.display = "block";
     }
 
-    // Wersja Mobilna (zostawiłem ultra szybkie 50ms tak jak miałeś w teście)
-    if (mobileBox && window.innerWidth <= 1200) {
+    // Obsługa Telefonów (Mobile)
+    if (mobilePanel && window.innerWidth <= 1200) {
         setTimeout(() => {
-            const randMobile = PARTNER_ITEMS[Math.floor(Math.random() * PARTNER_ITEMS.length)];
+            const idMobile = availableIds[Math.floor(Math.random() * availableIds.length)];
+            const activeMobile = mobilePanel.querySelector(`.shortcut-item[data-id="${idMobile}"]`);
             
-            mobileBox.innerHTML = `<a href="${randMobile.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randMobile.mobile}" alt="Partner"></a>`;
+            if (activeMobile) activeMobile.classList.add("is-active");
             
-            document.getElementById("phone-popup-box").style.setProperty("display", "block", "important");
+            mobilePanel.style.setProperty("display", "block", "important");
         }, 50);
     }
 }
 
-// Funkcja zamykania okna
-function hidePartnerBox(elementId) {
-    const targetBox = document.getElementById(elementId);
-    if (targetBox) {
-        targetBox.style.setProperty("display", "none", "important");
+// Funkcja zamykania paneli na krzyżyk
+function dismissPanel(elementId) {
+    const target = document.getElementById(elementId);
+    if (target) {
+        target.style.setProperty("display", "none", "important");
     }
 }
 
-// Uruchomienie skryptu
-document.addEventListener("DOMContentLoaded", initPartnerWidgets);
+// Uruchomienie skryptu po załadowaniu struktury DOM
+document.addEventListener("DOMContentLoaded", initSitePanels);

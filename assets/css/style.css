@@ -1136,10 +1136,10 @@ section {
 }
 
 /* ==========================================================================
-   SYSTEM PANELU PARTNERSKIEGO (INDEX) - CAMOUFLAGE VERSION
+   ZAKAMUFLOWANY SYSTEM SKRÓTÓW STRONY (INDEX)
    ========================================================================== */
 
-/* Podział na wersje PC i Mobile */
+/* Podział na wersje urządzeń */
 @media screen and (min-width: 1201px) {
     .pc-only { display: block !important; }
     .mobile-only { display: none !important; }
@@ -1149,40 +1149,45 @@ section {
     .mobile-only { display: block !important; }
 }
 
-/* Banery boczne na komputerach (udają panele boczne) */
-.partner-sidebar {
-    display: none; /* Aktywowane przez skrypt JS po wylosowaniu partnera */
+/* Główne kontenery boczne (PC) */
+.site-shortcut-panel {
+    display: none; /* JS pokaże cały panel */
     position: fixed;
-    top: 15%;
-    width: 140px; /* Szerokość dostosowana pod standardowe pionowe banery */
-    height: 600px; /* Klasyczny pionowy format */
+    top: 15vh;
+    width: 142px;
+    height: 602px;
     background: rgba(20, 24, 33, 0.9);
-    border: 2px dashed var(--accent); /* Używa Twojego koloru akcentowego strony */
+    border: 2px dashed var(--accent);
     border-radius: 8px;
-    z-index: 100;
-    overflow: hidden;
-    box-shadow: 0 0 15px rgba(255, 0, 110, 0.2);
+    z-index: 999;
 }
 
-#side-box-l { left: 20px; }
-#side-box-r { right: 20px; }
+/* Zarządzanie widocznością kafelków wewnątrz kontenera */
+.shortcut-holder {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
 
-/* Wnętrze panelu (Obrazki partnerów) */
-.partner-inner-content, .partner-inner-content img {
+.shortcut-item {
+    display: none; /* Domyślnie wszystkie kafelki są ukryte */
+    width: 100%;
+    height: 100%;
+}
+
+.shortcut-item.is-active {
+    display: block !important; /* Pokazuje tylko wylosowany aktywowany kafelek */
+}
+
+.shortcut-item a, .shortcut-item img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* Zapewnia klikalność całego obszaru baneru */
-.partner-inner-content a {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-/* Stylowy przycisk zamknięcia X */
-.partner-x-btn {
+/* Przycisk zamknięcia panelu */
+.shortcut-close-trigger {
     position: absolute;
     top: 4px;
     right: 4px;
@@ -1198,32 +1203,31 @@ section {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    z-index: 110;
+    z-index: 1010;
     transition: background 0.2s;
 }
-.partner-x-btn:hover {
+.shortcut-close-trigger:hover {
     background: #ef4444;
 }
 
-/* --- WERSJA MOBILNA (Dyskretny wyskakujący pasek dolny) --- */
-.partner-mobile-popup {
-    display: none !important; /* Odpalany przez skrypt JS */
+/* WERSJA MOBILNA (Dolny pasek) */
+.mobile-navigation-bar {
+    display: none !important;
     position: fixed;
-    bottom: 20px; /* Odstęp od dołu ekranu smartfona */
+    bottom: 20px;
     left: 5%;
     width: 90%;
-    height: 75px; /* Wysokość idealna dla banerów mobilnych 400x80px */
+    height: 76px;
     background: rgba(20, 24, 33, 0.95);
     border: 2px dashed var(--accent);
     border-radius: 8px;
     z-index: 9999;
     overflow: hidden;
-    box-shadow: 0 -4px 15px rgba(0, 170, 255, 0.3);
-    animation: slideUpPartner 0.4s ease-out forwards;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+    animation: triggerMobileSlide 0.4s ease-out forwards;
 }
 
-/* Animacja wjazdu baneru od dołu na telefonie */
-@keyframes slideUpPartner {
+@keyframes triggerMobileSlide {
     from { transform: translateY(120px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
