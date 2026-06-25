@@ -562,8 +562,8 @@ function initIndexAds() {
         }
 
         // Generujemy obrazek owinięty w klikalny link dla PC (pionowy wieżowiec)
-        leftAd.innerHTML = `<a href="${randLeft.link}" target="_blank" rel="noopener"><img src="assets/images/ads/${randLeft.image}" alt="Reklama"></a>`;
-        rightAd.innerHTML = `<a href="${randRight.link}" target="_blank" rel="noopener"><img src="assets/images/ads/${randRight.image}" alt="Reklama"></a>`;
+        leftAd.innerHTML = `<a href="${randLeft.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randLeft.image}" alt="Reklama"></a>`;
+        rightAd.innerHTML = `<a href="${randRight.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randRight.image}" alt="Reklama"></a>`;
         
         document.getElementById("ad-left").style.display = "block";
         document.getElementById("ad-right").style.display = "block";
@@ -575,7 +575,7 @@ function initIndexAds() {
             const randMobile = INDEX_ADS[Math.floor(Math.random() * INDEX_ADS.length)];
             
             // Tutaj pobieramy klucz .mobile zamiast .image!
-            mobileAd.innerHTML = `<a href="${randMobile.link}" target="_blank" rel="noopener"><img src="assets/images/ads/${randMobile.mobile}" alt="Reklama"></a>`;
+            mobileAd.innerHTML = `<a href="${randMobile.link}" target="_blank" rel="noopener"><img src="assets/images/promos/${randMobile.mobile}" alt="Reklama"></a>`;
             
             document.getElementById("ad-mobile-popup").style.setProperty("display", "block", "important");
         }, 50);
