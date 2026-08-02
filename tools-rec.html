@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Endixendi - Tools</title>
+    <title>Endixendi - Tools & Software Guide</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
-
     <link rel="icon" href="assets/images/logo-kolo.png" type="image/png">
 </head>
 <body id="top">
@@ -19,65 +18,245 @@
 
     <main id="home">
 
+        <!-- Hero Section -->
         <section id="tools-hero" class="mt-16">
             <div class="card">
-                <h1>Tools — Narzędzia których używam — Endixendi</h1>
-                <p class="lead">Przydatne programy do nagrywania, montażu i tworzenia grafiki. Wszystko w jednym miejscu!</p>
+                <h1>Tools & Poradnik Oprogramowania — Endixendi</h1>
+                <p class="lead">Kompleksowe zestawienie narzędzi do nagrywania, montażu i tworzenia grafiki. Dowiedz się, jak wycisnąć z nich 100% możliwości!</p>
             </div>
         </section>
 
-        <section id="tools-list" class="card mt-22">
-            <h2>Programy</h2>
+        <!-- OBS Studio Section -->
+        <section id="obs-studio" class="card mt-22">
+            <h2>OBS Studio (Open Broadcaster Software)</h2>
+            <p class="muted">Potężne, darmowe oprogramowanie open-source do nagrywania ekranu i transmisji na żywo.</p>
+            
+            <div class="grid mt-16">
+                <div>
+                    <img src="https://obsproject.com/assets/images/features-new/hero_32_1_1.png" alt="Zrzut ekranu OBS Studio" style="width: 100%; border-radius: 8px;">
+                </div>
+                <div>
+                    <h3>Dlaczego warto używać OBS Studio?</h3>
+                    <ul>
+                        <li><strong>Brak znaków wodnych i limitów:</strong> Całkowicie darmowy program bez ukrytych opłat.</li>
+                        <li><strong>Wieloźródłowe nagrywanie:</strong> Łączenie scen, obrazu z kamerki, przechwytywania okien i dźwięku z mikrofonu.</li>
+                        <li><strong>Niskie obciążenie systemu:</strong> Obsługa sprzętowej akceleracji enkodowania (NVIDIA NVENC, AMD AMF, Intel QuickSync).</li>
+                        <li><strong>Obsługa wtyczek (Plugins):</strong> Ogromna społeczność tworząca rozszerzenia (np. obs-websocket, filtro-efekty).</li>
+                    </ul>
+                    <p class="mt-12"><strong>Wskazówka:</strong> Pamiętaj, aby nagrywać w formacie <code>.mkv</code> lub <code>.fragmented mp4</code> – w przypadku awarii zasilania lub crashu nie stracisz nagranego pliku!</p>
+                    <br>
+                    <a class="btn" href="https://obsproject.com/" target="_blank" rel="noopener">Pobierz OBS Studio</a>
+                </div>
+            </div>
 
+            <!-- Dedykowane poradniki wideo z OBS Studio -->
+            <div class="mt-22" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
+                <h3>📹 Moje Poradniki do OBS Studio</h3>
+                <p class="muted">Obejrzyj dedykowane materiały wideo, w których krok po kroku wyjaśniam konfigurację i funkcje OBS:</p>
+
+                <!-- Pełne Odcinki -->
+                <h4 class="mt-16">Pełne poradniki:</h4>
+                <div class="grid mt-12" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                    <div>
+                        <iframe width="100%" height="200" src="https://www.youtube.com/embed/I3KZOvUW2gQ" title="Jak rozdzielić dźwięki w OBS - win capture audio" style="border:0; border-radius:8px;" allowfullscreen></iframe>
+                        <p class="mt-12">
+                            <a href="https://youtu.be/I3KZOvUW2gQ" target="_blank" rel="noopener" class="inline-link">
+                                Jak rozdzielić dźwięki w OBS - gry, muzyka, Discord, Spotify - wszystko osobno! | win capture audio
+                            </a>
+                        </p>
+                    </div>
+                    <div>
+                        <iframe width="100%" height="200" src="https://www.youtube.com/embed/p6oncXwdj5o" title="Rozdzielenie dźwięku w OBS - Virtual Audio Cable" style="border:0; border-radius:8px;" allowfullscreen></iframe>
+                        <p class="mt-12">
+                            <a href="https://youtu.be/p6oncXwdj5o" target="_blank" rel="noopener" class="inline-link">
+                                Rozdzielenie dźwięku w OBS - gry, muzyka, Discord, Spotify - wszystko osobno! | Virtual Audio Cable
+                            </a>
+                        </p>
+                    </div>
+                    <div>
+                        <iframe width="100%" height="200" src="https://www.youtube.com/embed/Fv0z8ZAhk90" title="Rozdzielenie dźwięku w OBS bez wtyczek" style="border:0; border-radius:8px;" allowfullscreen></iframe>
+                        <p class="mt-12">
+                            <a href="https://youtu.be/Fv0z8ZAhk90" target="_blank" rel="noopener" class="inline-link">
+                                Rozdzielenie dźwięku w OBS bez wtyczek - gry, Discord, Spotify - wszystko osobno! | NO PLUGINS
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Shorts -->
+                <h4 class="mt-16">Szybkie wskazówki (Shorts):</h4>
+                <div class="grid mt-12" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <div>
+                        <iframe width="100%" height="350" src="https://www.youtube.com/embed/CKVyv3S1ngc" title="Ścieżka Twitch VOD - Poradnik/Tutorial" style="border:0; border-radius:8px;" allowfullscreen></iframe>
+                        <p class="mt-12">
+                            <a href="https://youtu.be/CKVyv3S1ngc" target="_blank" rel="noopener" class="inline-link">
+                                Ścieżka Twitch VOD - Poradnik/Tutorial
+                            </a>
+                        </p>
+                    </div>
+                    <div>
+                        <iframe width="100%" height="350" src="https://www.youtube.com/embed/88mT1t0unDU" title="Przyciszanie gry kiedy mówimy - Ustawienia kompresora" style="border:0; border-radius:8px;" allowfullscreen></iframe>
+                        <p class="mt-12">
+                            <a href="https://youtu.be/88mT1t0unDU" target="_blank" rel="noopener" class="inline-link">
+                                Przyciszanie gry kiedy mówimy - Ustawienia kompresora | Poradnik OBS
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DaVinci Resolve Section -->
+        <section id="davinci-resolve" class="card mt-22">
+            <h2>DaVinci Resolve & DaVinci Resolve Studio</h2>
+            <p class="muted">Przemysłowy standard w branży filmowej do montażu wideo, korekcji barw (Color Grading) i postprodukcji dźwięku.</p>
+            
+            <div class="mt-16">
+                <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80" alt="Stacja robocza do montażu wideo i korekcji kolorów" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px;">
+            </div>
+
+            <h3 class="mt-22">Moduły DaVinci Resolve</h3>
             <div class="grid full mt-16">
-
                 <div class="card">
-                    <h3>OBS Studio</h3>
-                    <p class="muted">Profesjonalne oprogramowanie do nagrywania i streamowania rozgrywki.</p>
-                    <br>
-                    <a class="btn" href="https://obsproject.com/" target="_blank" rel="noopener">Otwórz OBS</a>
+                    <h4>🎬 Cut & Edit</h4>
+                    <p class="muted">Zaawansowana linia czasowa do szybkiego układania scen, cięć oraz precyzyjnego montażu audio-wideo.</p>
                 </div>
-
                 <div class="card">
-                    <h3>DaVinci Resolve</h3>
-                    <p class="muted">Potężny program do montażu wideo, korekcji kolorów i postprodukcji.</p>
-                    <br>
-                    <a class="btn" href="https://www.blackmagicdesign.com/pl/products/davinciresolve" target="_blank" rel="noopener">Otwórz DaVinci Resolve</a>
+                    <h4>🎨 Color</h4>
+                    <p class="muted">Niedościgniony system korekcji barw oparty na węzłach (Nodes), obsługujący tablice LUT i profesjonalne scopery.</p>
                 </div>
-
                 <div class="card">
-                    <h3>Photopea</h3>
-                    <p class="muted">Edytor grafiki online przypominający Photoshop, działa w przeglądarce.</p>
-                    <br>
-                    <a class="btn" href="https://www.photopea.com/" target="_blank" rel="noopener">Otwórz Photopea</a>
+                    <h4>🪄 Fusion</h4>
+                    <p class="muted">Zintegrowany moduł do efektów specjalnych (VFX), kompozycji 2D/3D oraz zaawansowanych animacji napisów.</p>
                 </div>
-
                 <div class="card">
-                    <h3>Vectorpea</h3>
-                    <p class="muted">Edytor grafiki wektorowej online, idealny do tworzenia logo i ilustracji.</p>
-                    <br>
-                    <a class="btn" href="https://www.vectorpea.com/" target="_blank" rel="noopener">Otwórz Vectorpea</a>
+                    <h4>🔊 Fairlight</h4>
+                    <p class="muted">Pełny cyfrowy edytor audio (DAW) z obsługą miksowania przestrzennego, korektorów i wtyczek VST.</p>
                 </div>
+            </div>
 
+            <h3 class="mt-22">DaVinci Resolve (Darmowy) vs. Studio (Płatny)</h3>
+            <p class="muted">Darmowa wersja oferuje niemal 90% funkcjonalności profesjonalnego studia, ale wersja Studio odblokowuje pełną moc sprzętową.</p>
+            
+            <div style="overflow-x: auto;" class="mt-16">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #444;">
+                            <th style="padding: 12px;">Funkcja</th>
+                            <th style="padding: 12px;">DaVinci Resolve (Darmowy)</th>
+                            <th style="padding: 12px;">DaVinci Resolve Studio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #333;">
+                            <td style="padding: 12px;"><strong>Cena i licencja</strong></td>
+                            <td style="padding: 12px;"><strong>100% Darmowy</strong></td>
+                            <td style="padding: 12px;">
+                                <strong>Jednorazowa licencja wieczysta</strong><br>
+                                <span class="muted" style="font-size: 0.9em;">(Brak subskrypcji, darmowe aktualizacje)</span><br>
+                                <a href="https://www.blackmagicdesign.com/pl/products/davinciresolve" target="_blank" rel="noopener" class="inline-link">👉 Sprawdź aktualną cenę na stronie Blackmagic</a>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #333;">
+                            <td style="padding: 12px;"><strong>Maksymalna rozdzielczość</strong></td>
+                            <td style="padding: 12px;">4K Ultra HD (3840×2160)</td>
+                            <td style="padding: 12px;">Do 32K (Bez ograniczeń)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #333;">
+                            <td style="padding: 12px;"><strong>Wykorzystanie GPU</strong></td>
+                            <td style="padding: 12px;">Podstawowe (1 GPU)</td>
+                            <td style="padding: 12px;">Pełna akceleracja multi-GPU</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #333;">
+                            <td style="padding: 12px;"><strong>Funkcje AI (Neural Engine)</strong></td>
+                            <td style="padding: 12px;">Brak</td>
+                            <td style="padding: 12px;">Magic Mask, Voice Isolation, Speed Warp, Face Refinement</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #333;">
+                            <td style="padding: 12px;"><strong>Redukcja Szumów (Noise Reduction)</strong></td>
+                            <td style="padding: 12px;">Brak</td>
+                            <td style="padding: 12px;">Zaawansowana (Temporal & Spatial)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card mt-22" style="background-color: rgba(255,255,255,0.03);">
+                <h3>🐧 DaVinci Resolve na systemie Linux</h3>
+                <p>Uruchamianie DaVinci Resolve na dystrybucjach Linuksa (np. Ubuntu, Fedora, Arch) wymaga kilku ważnych kroków:</p>
+                <ul class="mt-12">
+                    <li><strong>Wymagane Sterowniki GPU:</strong> Koniecznie musisz posiadać zainstalowane własnościowe sterowniki <strong>NVIDIA</strong> (z obsługą CUDA) lub sterowniki <strong>AMD ROCm</strong>. Otwarte sterowniki Nouveau nie zadziałają.</li>
+                    <li><strong>Problem z kodekami H.264/H.265 w darmowej wersji:</strong> Darmowa wersja DaVinci Resolve na Linuksie nie posiada wbudowanych licencji dekodowania formatów MP4/H.264 i audio AAC. Aby montować darmową wersją, materiały należy przekonwertować do formatu <code>ProRes</code> lub <code>DNxHR</code> za pomocą programu <code>FFmpeg</code>. Wersja Studio eliminuje to ograniczenie pod warunkiem obsługi sprzętowej przez GPU.</li>
+                </ul>
+            </div>
+
+            <br>
+            <a class="btn" href="https://www.blackmagicdesign.com/pl/products/davinciresolve" target="_blank" rel="noopener">Przejdź do oficjalnej strony DaVinci Resolve</a>
+        </section>
+
+        <!-- Photopea Section -->
+        <section id="photopea" class="card mt-22">
+            <h2>Photopea</h2>
+            <p class="muted">Zaawansowany, darmowy edytor grafiki rastrowej działający bezpośrednio w Twojej przeglądarce internetowej.</p>
+            
+            <div class="grid mt-16">
+                <div>
+                    <img src="https://img.fixthephoto.com/blog/UserFiles/Image/222/5/39/29/photopea-interface.png" alt="Interfejs programu Photopea" style="width: 100%; border-radius: 8px;">
+                </div>
+                <div>
+                    <h3>Dlaczego Photopea to świetny wybór?</h3>
+                    <ul>
+                        <li><strong>Darmowa alternatywa dla Photoshopa:</strong> Posiada niemal identyczny interfejs oraz zestaw narzędzi (warstwy, maski, inteligentne obiekty).</li>
+                        <li><strong>Brak konieczności instalacji:</strong> Działa na dowolnym komputerze (Linux, Windows, macOS) prosto z przeglądarki.</li>
+                        <li><strong>Szeroka obsługa formatów:</strong> Otwiera i zapisuje pliki <code>.PSD</code> (Photoshop), <code>.AI</code> (Illustrator), <code>.XCF</code> (GIMP), <code>.Sketch</code> oraz <code>.PDF</code>.</li>
+                        <li><strong>Prywatność:</strong> Wszystkie operacje graficzne wykonywane są lokalnie w pamięci RAM Twojej przeglądarki – pliki nie są wysyłane na zewnętrzny serwer.</li>
+                    </ul>
+                    <br>
+                    <a class="btn" href="https://www.photopea.com/" target="_blank" rel="noopener">Otwórz Photopea w przeglądarce</a>
+                </div>
             </div>
         </section>
 
+        <!-- Vectorpea Section -->
+        <section id="vectorpea" class="card mt-22">
+            <h2>Vectorpea</h2>
+            <p class="muted">Nowoczesne narzędzie przeglądarkowe do projektowania grafiki wektorowej, stanowiące darmowy odpowiednik Adobe Illustrator.</p>
+            
+            <div class="grid mt-16">
+                <div>
+                    <img src="https://res.mmmnote.com/upload/image/202311/07/6383497374675512158677175.png" alt="Projektowanie grafiki wektorowej" style="width: 100%; border-radius: 8px;">
+                </div>
+                <div>
+                    <h3>Do czego przydaje się Vectorpea?</h3>
+                    <ul>
+                        <li><strong>Tworzenie Logo i Ilustracji:</strong> Idealny wybór do projektowania grafiki scalowalnej, która nie traci jakości przy powiększaniu.</li>
+                        <li><strong>Bezpośrednia integracja z formatami wektorowymi:</strong> Świetna obsługa plików <code>.SVG</code>, <code>.AI</code> oraz <code>.EPS</code>.</li>
+                        <li><strong>Narzędzia ścieżek (Pen Tool):</strong> Precyzyjne rysowanie węzłów, krzywych Beziera oraz przekształcanie kształtów.</li>
+                        <li><strong>Brak instalacji:</strong> Uruchamia się natychmiastowo z poziomu przeglądarki internetowej.</li>
+                    </ul>
+                    <br>
+                    <a class="btn" href="https://www.vectorpea.com/" target="_blank" rel="noopener">Otwórz Vectorpea w przeglądarce</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- YouTube Section -->
         <section id="tools-youtube" class="card mt-22">
-            <h2>Poradniki na YouTube</h2>
-            <p class="muted">Wybierz film z playlisty poniżej.</p>
+            <h2>Wszystkie Poradniki na YouTube</h2>
+            <p class="muted">Chcesz zobaczyć pozostałe materiały i poradniki? Poniżej znajdziesz całą moją playlistę.</p>
 
             <p class="mt-12">
                 <a href="https://www.youtube.com/playlist?list=PLYamA4_P1kCyv75qBLehcRAGPNgbJ2LYP" target="_blank" rel="noopener" class="inline-link">
-                    Otwórz playlistę na YouTube
+                    👉 Otwórz pełną playlistę na YouTube w nowym oknie
                 </a>
             </p>
-          
+            
             <iframe 
                 width="100%" 
                 height="480"
                 src="https://www.youtube.com/embed/videoseries?list=PLYamA4_P1kCyv75qBLehcRAGPNgbJ2LYP"
                 title="Poradniki Endixendi"
-                style="border: 0;"
+                style="border: 0; border-radius: 8px;"
                 allow="autoplay; encrypted-media; fullscreen;">
             </iframe>
         </section>
