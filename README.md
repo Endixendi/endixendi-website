@@ -66,7 +66,8 @@ Projekt stawia na szybkość działania, lekkość i brak ciężkich frameworkó
 │   │   ├── pc-mode.js        # Sylnik gry pc-mode
 │   │   ├── script.js         # Wspólna logika (efekty sezonowe, ładowanie menu)
 │   │   ├── shooter.js        # Silnik gry Shooter
-│   │   └── tetris.js         # Silnik gry Tetris
+│   │   ├── tetris.js         # Silnik gry Tetris
+│   │   └── tools.js          # Logika wyszukiwarki w Przydatne Strony i Narzędzia
 │   └── sounds/               # Efekty dźwiękowe i ścieżki dźwiękowe gier
 │       ├── dino/
 │       │   └── dino-bg.mp3   # Muzyka tła dla gry Dino
