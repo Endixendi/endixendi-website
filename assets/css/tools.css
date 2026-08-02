@@ -12,7 +12,6 @@
     margin-top: 10px;
 }
 
-/* Przycisk efektów sezonowych */
 .tools-toggle-btn {
     margin: 15px auto 0 auto; 
     display: none;
@@ -25,39 +24,247 @@
     transition: color var(--transition);
 }
 
-/* Uniwersalna siatka dla kart z narzędziami */
-.tools-grid {
+/* Uniwersalne siatki */
+.tools-grid,
+.grid-tutorials {
     display: grid; 
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
     gap: 16px;
 }
 
-/* Tekst opisowy wewnątrz kart z narzędziami */
+.grid-shorts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+/* Tekst opisowy wewnątrz kart */
 .tool-card-desc {
     font-size: 0.9rem; 
     margin: 8px 0 15px 0;
 }
 
-/* Klasa pomocnicza dla przycisków, aby rozciągały się na całą szerokość karty */
 .btn-full-width {
     width: 100%;
     text-align: center;
 }
 
-/* Ostatnia sekcja na stronie (wymagała większego marginesu na dole przed stopką) */
 .tools-last-section {
     margin-bottom: 50px;
 }
 
 /* =========================================================================
-   WSPARCIE DLA CZERWONEGO MOTYWU (Ciało z klasą .theme-red)
+   MEDIA, RAMKI IFRAME I TABELE
    ========================================================================= */
 
-body.theme-red .tools-section-title {
-    color: #ff0000;
+.tool-img,
+.davinci-hero-img {
+    width: 100%;
+    border-radius: 8px;
 }
 
-/* Wsparcie dla ewentualnych kart narzędzi, jeśli używają klasy .tool-card w tools-all.html */
+.davinci-hero-img {
+    max-height: 400px;
+    object-fit: cover;
+}
+
+/* Odtwarzacze wideo YouTube - wspólne właściwości */
+.video-iframe,
+.shorts-iframe,
+.playlist-iframe {
+    width: 100%;
+    border: 0;
+    border-radius: 8px;
+}
+
+.video-iframe    { height: 200px; }
+.shorts-iframe   { height: 350px; }
+.playlist-iframe { height: 480px; }
+
+/* Poradniki OBS */
+.obs-tutorials-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+}
+
+/* Tabela porównawcza DaVinci Resolve */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 12px;
+}
+
+.comparison-table thead tr {
+    border-bottom: 2px solid #444;
+}
+
+.comparison-table tbody tr {
+    border-bottom: 1px solid #333;
+}
+
+.table-subtext {
+    font-size: 0.9em;
+}
+
+.card-subtle {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* =========================================================================
+   WYSZUKIWARKA, PRZYCISKI FILTRÓW I ETYKIETY (BADGES)
+   ========================================================================= */
+
+/* Wyszukiwarka kart */
+.tools-search-box {
+    max-width: 500px;
+    margin: 15px auto 0 auto;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: var(--accent, #ff0000);
+    box-shadow: 0 0 10px var(--accent-glow, rgba(255, 0, 0, 0.3));
+}
+
+/* Nagłówek karty z Badge'em */
+.tool-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.tool-card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* Badge (Etykiety stanu) */
+.badge {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badge-free {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+    border: 1px solid rgba(46, 204, 113, 0.4);
+}
+
+.badge-freemium {
+    background-color: rgba(241, 196, 15, 0.2);
+    color: #f1c40f;
+    border: 1px solid rgba(241, 196, 15, 0.4);
+}
+
+.badge-paid {
+    background-color: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.4);
+}
+
+/* Styling dla przycisków filtrów w Hero */
+.category-filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 22px 0 10px 0;
+}
+
+/* Zwykły, nieaktywny przycisk (z gradientem, ale stonowany) */
+.filter-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    /* Twój oryginalny niebiesko-żółty gradient */
+    background: linear-gradient(90deg, #00c6ff, #f1c40f); 
+    color: #000000; /* Czarny tekst usuwa problem braku czytelności */
+    border: none;   /* Usuwamy białą ramkę, która tworzyła jasną poświatę */
+    opacity: 0.7;   /* Przyciemnienie nieaktywnych, żeby nie odciągały uwagi */
+    transition: all 0.25s ease;
+}
+
+.filter-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* TYLKO AKTYWNY PRZYCISK (podświetlony z dynamicznym kolorem motywu) */
+.filter-btn.active {
+    background: var(--accent, #00aaff) !important; /* Pełny kolor akcentu strony */
+    color: #000000 !important;                     /* Czarny, czytelny napis */
+    font-weight: 700;
+    opacity: 1 !important;                         /* Pełna widoczność */
+    border: none !important;
+    /* Dynamiczny cień idealnie pod kolor motywu (--accent) */
+    box-shadow: 0 0 16px color-mix(in srgb, var(--accent, #00aaff) 60%, transparent) !important;
+    transform: translateY(-1px);
+}
+
+/* Przycisk "Powrót do góry" */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 45px;
+    height: 45px;
+    background-color: #1e1e24;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    transform: translateY(-4px);
+    background-color: #2a2a32;
+}
+
+/* =========================================================================
+   CZERWONY MOTYW (.theme-red)
+   ========================================================================= */
+
+body.theme-red .tools-section-title,
 body.theme-red .tool-card h4 {
     color: #ff0000;
 }

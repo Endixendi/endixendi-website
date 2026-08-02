@@ -6,6 +6,7 @@
     <title>Endixendi - Tools & Software Guide</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/tools.css">
     <link rel="icon" href="assets/images/logo-kolo.png" type="image/png">
 </head>
 <body id="top">
@@ -33,7 +34,7 @@
             
             <div class="grid mt-16">
                 <div>
-                    <img src="https://obsproject.com/assets/images/features-new/hero_32_1_1.png" alt="Zrzut ekranu OBS Studio" style="width: 100%; border-radius: 8px;">
+                    <img src="https://obsproject.com/assets/images/features-new/hero_32_1_1.png" alt="Zrzut ekranu OBS Studio" class="tool-img">
                 </div>
                 <div>
                     <h3>Dlaczego warto używać OBS Studio?</h3>
@@ -50,15 +51,15 @@
             </div>
 
             <!-- Dedykowane poradniki wideo z OBS Studio -->
-            <div class="mt-22" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
+            <div class="obs-tutorials-section mt-22">
                 <h3>📹 Moje Poradniki do OBS Studio</h3>
                 <p class="muted">Obejrzyj dedykowane materiały wideo, w których krok po kroku wyjaśniam konfigurację i funkcje OBS:</p>
 
                 <!-- Pełne Odcinki -->
                 <h4 class="mt-16">Pełne poradniki:</h4>
-                <div class="grid mt-12" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                <div class="grid grid-tutorials mt-12">
                     <div>
-                        <iframe width="100%" height="200" src="https://www.youtube.com/embed/I3KZOvUW2gQ" title="Jak rozdzielić dźwięki w OBS - win capture audio" style="border:0; border-radius:8px;" allowfullscreen></iframe>
+                        <iframe class="video-iframe" src="https://www.youtube.com/embed/I3KZOvUW2gQ" title="Jak rozdzielić dźwięki w OBS - win capture audio" allowfullscreen></iframe>
                         <p class="mt-12">
                             <a href="https://youtu.be/I3KZOvUW2gQ" target="_blank" rel="noopener" class="inline-link">
                                 Jak rozdzielić dźwięki w OBS - gry, muzyka, Discord, Spotify - wszystko osobno! | win capture audio
@@ -66,7 +67,7 @@
                         </p>
                     </div>
                     <div>
-                        <iframe width="100%" height="200" src="https://www.youtube.com/embed/p6oncXwdj5o" title="Rozdzielenie dźwięku w OBS - Virtual Audio Cable" style="border:0; border-radius:8px;" allowfullscreen></iframe>
+                        <iframe class="video-iframe" src="https://www.youtube.com/embed/p6oncXwdj5o" title="Rozdzielenie dźwięku w OBS - Virtual Audio Cable" allowfullscreen></iframe>
                         <p class="mt-12">
                             <a href="https://youtu.be/p6oncXwdj5o" target="_blank" rel="noopener" class="inline-link">
                                 Rozdzielenie dźwięku w OBS - gry, muzyka, Discord, Spotify - wszystko osobno! | Virtual Audio Cable
@@ -74,7 +75,7 @@
                         </p>
                     </div>
                     <div>
-                        <iframe width="100%" height="200" src="https://www.youtube.com/embed/Fv0z8ZAhk90" title="Rozdzielenie dźwięku w OBS bez wtyczek" style="border:0; border-radius:8px;" allowfullscreen></iframe>
+                        <iframe class="video-iframe" src="https://www.youtube.com/embed/Fv0z8ZAhk90" title="Rozdzielenie dźwięku w OBS bez wtyczek" allowfullscreen></iframe>
                         <p class="mt-12">
                             <a href="https://youtu.be/Fv0z8ZAhk90" target="_blank" rel="noopener" class="inline-link">
                                 Rozdzielenie dźwięku w OBS bez wtyczek - gry, Discord, Spotify - wszystko osobno! | NO PLUGINS
@@ -85,9 +86,9 @@
 
                 <!-- Shorts -->
                 <h4 class="mt-16">Szybkie wskazówki (Shorts):</h4>
-                <div class="grid mt-12" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <div class="grid grid-shorts mt-12">
                     <div>
-                        <iframe width="100%" height="350" src="https://www.youtube.com/embed/CKVyv3S1ngc" title="Ścieżka Twitch VOD - Poradnik/Tutorial" style="border:0; border-radius:8px;" allowfullscreen></iframe>
+                        <iframe class="shorts-iframe" src="https://www.youtube.com/embed/CKVyv3S1ngc" title="Ścieżka Twitch VOD - Poradnik/Tutorial" allowfullscreen></iframe>
                         <p class="mt-12">
                             <a href="https://youtu.be/CKVyv3S1ngc" target="_blank" rel="noopener" class="inline-link">
                                 Ścieżka Twitch VOD - Poradnik/Tutorial
@@ -95,7 +96,7 @@
                         </p>
                     </div>
                     <div>
-                        <iframe width="100%" height="350" src="https://www.youtube.com/embed/88mT1t0unDU" title="Przyciszanie gry kiedy mówimy - Ustawienia kompresora" style="border:0; border-radius:8px;" allowfullscreen></iframe>
+                        <iframe class="shorts-iframe" src="https://www.youtube.com/embed/88mT1t0unDU" title="Przyciszanie gry kiedy mówimy - Ustawienia kompresora" allowfullscreen></iframe>
                         <p class="mt-12">
                             <a href="https://youtu.be/88mT1t0unDU" target="_blank" rel="noopener" class="inline-link">
                                 Przyciszanie gry kiedy mówimy - Ustawienia kompresora | Poradnik OBS
@@ -112,7 +113,7 @@
             <p class="muted">Przemysłowy standard w branży filmowej do montażu wideo, korekcji barw (Color Grading) i postprodukcji dźwięku.</p>
             
             <div class="mt-16">
-                <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80" alt="Stacja robocza do montażu wideo i korekcji kolorów" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px;">
+                <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80" alt="Stacja robocza do montażu wideo i korekcji kolorów" class="davinci-hero-img">
             </div>
 
             <h3 class="mt-22">Moduły DaVinci Resolve</h3>
@@ -127,7 +128,7 @@
                 </div>
                 <div class="card">
                     <h4>🪄 Fusion</h4>
-                    <p class="muted">Zintegrowany moduł do efektów specjalnych (VFX), kompozycji 2D/3D oraz zaawansowanych animacji napisów.</p>
+                    <p class="muted">Zintegowany moduł do efektów specjalnych (VFX), kompozycji 2D/3D oraz zaawansowanych animacji napisów.</p>
                 </div>
                 <div class="card">
                     <h4>🔊 Fairlight</h4>
@@ -138,50 +139,50 @@
             <h3 class="mt-22">DaVinci Resolve (Darmowy) vs. Studio (Płatny)</h3>
             <p class="muted">Darmowa wersja oferuje niemal 90% funkcjonalności profesjonalnego studia, ale wersja Studio odblokowuje pełną moc sprzętową.</p>
             
-            <div style="overflow-x: auto;" class="mt-16">
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <div class="table-wrapper mt-16">
+                <table class="comparison-table">
                     <thead>
-                        <tr style="border-bottom: 2px solid #444;">
-                            <th style="padding: 12px;">Funkcja</th>
-                            <th style="padding: 12px;">DaVinci Resolve (Darmowy)</th>
-                            <th style="padding: 12px;">DaVinci Resolve Studio</th>
+                        <tr>
+                            <th>Funkcja</th>
+                            <th>DaVinci Resolve (Darmowy)</th>
+                            <th>DaVinci Resolve Studio</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="border-bottom: 1px solid #333;">
-                            <td style="padding: 12px;"><strong>Cena i licencja</strong></td>
-                            <td style="padding: 12px;"><strong>100% Darmowy</strong></td>
-                            <td style="padding: 12px;">
+                        <tr>
+                            <td><strong>Cena i licencja</strong></td>
+                            <td><strong>100% Darmowy</strong></td>
+                            <td>
                                 <strong>Jednorazowa licencja wieczysta</strong><br>
-                                <span class="muted" style="font-size: 0.9em;">(Brak subskrypcji, darmowe aktualizacje)</span><br>
+                                <span class="muted table-subtext">(Brak subskrypcji, darmowe aktualizacje)</span><br>
                                 <a href="https://www.blackmagicdesign.com/pl/products/davinciresolve" target="_blank" rel="noopener" class="inline-link">👉 Sprawdź aktualną cenę na stronie Blackmagic</a>
                             </td>
                         </tr>
-                        <tr style="border-bottom: 1px solid #333;">
-                            <td style="padding: 12px;"><strong>Maksymalna rozdzielczość</strong></td>
-                            <td style="padding: 12px;">4K Ultra HD (3840×2160)</td>
-                            <td style="padding: 12px;">Do 32K (Bez ograniczeń)</td>
+                        <tr>
+                            <td><strong>Maksymalna rozdzielczość</strong></td>
+                            <td>4K Ultra HD (3840×2160)</td>
+                            <td>Do 32K (Bez ograniczeń)</td>
                         </tr>
-                        <tr style="border-bottom: 1px solid #333;">
-                            <td style="padding: 12px;"><strong>Wykorzystanie GPU</strong></td>
-                            <td style="padding: 12px;">Podstawowe (1 GPU)</td>
-                            <td style="padding: 12px;">Pełna akceleracja multi-GPU</td>
+                        <tr>
+                            <td><strong>Wykorzystanie GPU</strong></td>
+                            <td>Podstawowe (1 GPU)</td>
+                            <td>Pełna akceleracja multi-GPU</td>
                         </tr>
-                        <tr style="border-bottom: 1px solid #333;">
-                            <td style="padding: 12px;"><strong>Funkcje AI (Neural Engine)</strong></td>
-                            <td style="padding: 12px;">Brak</td>
-                            <td style="padding: 12px;">Magic Mask, Voice Isolation, Speed Warp, Face Refinement</td>
+                        <tr>
+                            <td><strong>Funkcje AI (Neural Engine)</strong></td>
+                            <td>Brak</td>
+                            <td>Magic Mask, Voice Isolation, Speed Warp, Face Refinement</td>
                         </tr>
-                        <tr style="border-bottom: 1px solid #333;">
-                            <td style="padding: 12px;"><strong>Redukcja Szumów (Noise Reduction)</strong></td>
-                            <td style="padding: 12px;">Brak</td>
-                            <td style="padding: 12px;">Zaawansowana (Temporal & Spatial)</td>
+                        <tr>
+                            <td><strong>Redukcja Szumów (Noise Reduction)</strong></td>
+                            <td>Brak</td>
+                            <td>Zaawansowana (Temporal & Spatial)</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="card mt-22" style="background-color: rgba(255,255,255,0.03);">
+            <div class="card card-subtle mt-22">
                 <h3>🐧 DaVinci Resolve na systemie Linux</h3>
                 <p>Uruchamianie DaVinci Resolve na dystrybucjach Linuksa (np. Ubuntu, Fedora, Arch) wymaga kilku ważnych kroków:</p>
                 <ul class="mt-12">
@@ -201,7 +202,7 @@
             
             <div class="grid mt-16">
                 <div>
-                    <img src="https://img.fixthephoto.com/blog/UserFiles/Image/222/5/39/29/photopea-interface.png" alt="Interfejs programu Photopea" style="width: 100%; border-radius: 8px;">
+                    <img src="https://img.fixthephoto.com/blog/UserFiles/Image/222/5/39/29/photopea-interface.png" alt="Interfejs programu Photopea" class="tool-img">
                 </div>
                 <div>
                     <h3>Dlaczego Photopea to świetny wybór?</h3>
@@ -224,7 +225,7 @@
             
             <div class="grid mt-16">
                 <div>
-                    <img src="https://i3.wp.com/free.com.tw/wp-content/uploads/2023/10/vectorpea-1.jpg" alt="Projektowanie grafiki wektorowej" style="width: 100%; border-radius: 8px;">
+                    <img src="https://i3.wp.com/free.com.tw/wp-content/uploads/2023/10/vectorpea-1.jpg" alt="Projektowanie grafiki wektorowej" class="tool-img">
                 </div>
                 <div>
                     <h3>Do czego przydaje się Vectorpea?</h3>
@@ -251,14 +252,14 @@
                 </a>
             </p>
             
-            <iframe 
-                width="100%" 
-                height="480"
-                src="https://www.youtube.com/embed/videoseries?list=PLYamA4_P1kCyv75qBLehcRAGPNgbJ2LYP"
-                title="Poradniki Endixendi"
-                style="border: 0; border-radius: 8px;"
-                allow="autoplay; encrypted-media; fullscreen;">
-            </iframe>
+				<section class="card mt-22">
+					<iframe 
+						class="playlist-iframe"
+						src="https://www.youtube.com/embed/videoseries?list=PLYamA4_P1kCyv75qBLehcRAGPNgbJ2LYP"
+						title="Poradniki Endixendi"
+						allow="autoplay; encrypted-media; fullscreen;">
+					</iframe> 
+				</section>
         </section>
 
     </main>
