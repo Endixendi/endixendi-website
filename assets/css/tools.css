@@ -227,6 +227,10 @@
     transform: translateY(-1px);
 }
 
+#no-results {
+    display: none;
+}
+
 /* Przycisk "Powrót do góry" */
 .back-to-top {
     position: fixed;
