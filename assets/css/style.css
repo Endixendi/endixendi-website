@@ -1351,3 +1351,25 @@ section {
         aspect-ratio: 25 / 10; 
     }
 }
+
+/* ==========================================================================
+   SEKCJA LICZNIKÓW NA ŻYWO (LIVECOUNTS)
+   ========================================================================== */
+
+/* Kontener na liczniki Livecounts */
+.live-counters-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin: 25px 0 10px 0;
+}
+
+/* Pojedyncza ramka z licznikiem */
+.counter-iframe {
+    border: none;
+    width: 280px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+}
