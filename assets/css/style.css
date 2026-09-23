@@ -440,8 +440,11 @@ a.btn.mt-12 {
 } 
 
 table.specs {
-    width: 100%;
     border-collapse: collapse;
+}
+
+table.specs td:first-child {
+    width: 230px;
 }
 
 table.specs td,
