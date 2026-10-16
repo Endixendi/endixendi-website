@@ -7,7 +7,7 @@
     --card: #14171b;          /* Tło kart/sekcji */
     --muted: #98a0aa;         /* Kolor przygaszonego tekstu */
     --accent: #00aaff;        /* Kolor akcentu 1 (np. linki) */
-    --accent-2: #ffcc00;      /* Kolor akcentu 2 (np. gradienty) */
+    --accent-2: #00aaff;      /* Kolor akcentu 2 (np. gradienty) #ffcc00;*/
     --border: rgba(255, 255, 255, 0.06); /* Zmienna granicy kart */
     --glass: rgba(255, 255, 255, 0.03); /* Efekt szkła */
     --maxw: 1100px;           /* Maksymalna szerokość kontenera */
