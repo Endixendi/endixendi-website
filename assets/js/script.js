@@ -11,9 +11,18 @@ window.addEventListener("DOMContentLoaded", function() {
         }, 150);
     }
     
-    // Bezpieczne uruchomienie systemu sezonowego
-    if (typeof initSeasonalSystem === "function") {
-        initSeasonalSystem();
+    // Natychmiastowe przywrócenie zapisanego stylu z localStorage na każdej podstronie
+    const savedThemeIndex = parseInt(localStorage.getItem("theme-cycle-index") || "0", 10);
+    const manualThemes = ["", "theme-red", "theme-green", "theme-blue"];
+    
+    if (savedThemeIndex > 0 && manualThemes[savedThemeIndex]) {
+        document.body.classList.remove("theme-red", "theme-green", "theme-blue");
+        document.body.classList.add(manualThemes[savedThemeIndex]);
+    } else {
+        // Jeśli indeks to 0, dopiero wtedy uruchamiamy system sezonowy / kalendarz
+        if (typeof initSeasonalSystem === "function") {
+            initSeasonalSystem();
+        }
     }
 });
 
