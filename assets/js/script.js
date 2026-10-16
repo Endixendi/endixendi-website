@@ -11,7 +11,7 @@ window.addEventListener("DOMContentLoaded", function() {
         }, 150);
     }
     
-    // Natychmiastowe przywrócenie zapisanego stylu z localStorage na każdej podstronie
+    // Precyzyjne dopasowanie indeksów localStorage do klas CSS
     const savedThemeIndex = parseInt(localStorage.getItem("theme-cycle-index") || "0", 10);
     const manualThemes = ["", "theme-red", "theme-green", "theme-blue"];
     
@@ -19,7 +19,6 @@ window.addEventListener("DOMContentLoaded", function() {
         document.body.classList.remove("theme-red", "theme-green", "theme-blue");
         document.body.classList.add(manualThemes[savedThemeIndex]);
     } else {
-        // Jeśli indeks to 0, dopiero wtedy uruchamiamy system sezonowy / kalendarz
         if (typeof initSeasonalSystem === "function") {
             initSeasonalSystem();
         }
@@ -277,10 +276,10 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
     if (redBtn) {
         // Dokładna tablica 4 stanów z jasnymi opisami dla kolejnych kliknięć
         const themes = [
-            { class: "", text: "Styl: Kalendarz" },       			// Stan 0: Jesteśmy w trybie domyślnym lub kalendarza
-            { class: "theme-red", text: "Styl: Czerwony" },         // Stan 1: Jesteśmy w stylu czerwonym
-            { class: "theme-green", text: "Styl: Zielony" },        // Stan 2: Jesteśmy w stylu zielonym
-            { class: "theme-blue", text: "Styl: Niebieski" }        // Stan 3: Jesteśmy w stylu niebieskim (wymuszonym)
+            { class: "", text: "Styl: Kalendarz" },       			// Stan 0: Kalendarz / Domyślny
+            { class: "theme-red", text: "Styl: Czerwony" },         // Stan 1: Czerwony
+            { class: "theme-green", text: "Styl: Zielony" },        // Stan 2: Zielony
+            { class: "theme-blue", text: "Styl: Niebieski" }        // Stan 3: Niebieski
         ];
 
         // 1. Sprawdzamy kalendarz jako pierwsi
