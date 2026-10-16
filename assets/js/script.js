@@ -6,10 +6,9 @@
 window.addEventListener("DOMContentLoaded", function() {
     const loader = document.getElementById("loader");
     if (loader) {
-
         setTimeout(() => {
             loader.classList.add("loader-hidden");
-        }, 150); // 500ms
+        }, 150);
     }
     
     // Bezpieczne uruchomienie systemu sezonowego
@@ -72,7 +71,6 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
       loadHTML("menu-placeholder", MENU_PATH).then(() => {
         state.menuLoaded = true;
         initMenuToggle();
-        // Podświetlenie zakładki odpali się natychmiast po wczytaniu menu.html
         highlightActiveNav(); 
       }),
       loadHTML("footer-placeholder", FOOTER_PATH).then(() => {
@@ -84,30 +82,28 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
   }
 
   /* ==========================================================================
-     Pływający przycisk "Wróć na górę" z płynnym przewijaniem (Przeniesiony i zabezpieczony)
+     Pływający przycisk "Wróć na górę" z płynnym przewijaniem
      ========================================================================== */
   function initFloatingTopBtn() {
     window.addEventListener('scroll', () => {
         const floatingTopBtn = document.getElementById('js-floating-top');
         
         if (floatingTopBtn) {
-            // 1. Pokazywanie/ukrywanie przycisku
             if (window.scrollY > 300) {
                 floatingTopBtn.classList.add('show');
             } else {
                 floatingTopBtn.classList.remove('show');
             }
             
-            // 2. Obsługa idealnego przewijania na samą górę po kliknięciu
             if (!floatingTopBtn.dataset.hasListener) {
                 floatingTopBtn.addEventListener('click', (e) => {
-                    e.preventDefault(); // Blokujemy domyślne skakanie do kotwicy
+                    e.preventDefault();
                     window.scrollTo({
-                        top: 0,             // Przewiń do absolutnego początku (piksel 0)
-                        behavior: 'smooth' // Płynna animacja
+                        top: 0,
+                        behavior: 'smooth'
                     });
                 });
-                floatingTopBtn.dataset.hasListener = 'true'; // Oznaczamy, że nasłuch już działa
+                floatingTopBtn.dataset.hasListener = 'true';
             }
         }
     });
@@ -122,7 +118,6 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
     
     if (!menuToggle || !mainNav) return;
 
-    // Ustaw stan początkowy menu
     const updateMenuVisibility = () => {
       if (window.innerWidth <= 1200) {
         mainNav.style.display = "none";
@@ -133,13 +128,11 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
 
     updateMenuVisibility();
 
-    // Kliknięcie ikony hamburgera
     menuToggle.addEventListener("click", () => {
       const isVisible = window.getComputedStyle(mainNav).display !== "none";
       mainNav.style.display = isVisible ? "none" : "flex";
     });
 
-    // Zamknij menu po kliknięciu linku (tylko na mobile)
     const navLinks = mainNav.querySelectorAll("a");
     navLinks.forEach(link => {
       link.addEventListener("click", () => {
@@ -149,17 +142,14 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
       });
     });
 
-    // Reakcja na zmianę rozmiaru okna
     window.addEventListener("resize", updateMenuVisibility);
   }
   
   /* =========================
-     Otwieranie całego menu na telefonie oraz rozwijanie podkategorii po kliknięciu
+     Otwieranie menu i rozwijanie grup na mobilkach
      ========================= */
   function initGlobalClickDelegation() {
     document.addEventListener("click", (e) => {
-      
-      // 1. OBSŁUGA HAMBURGERA
       if (e.target.id === "menu-toggle") {
         const mainNav = document.getElementById("main-nav");
         if (mainNav) {
@@ -168,7 +158,6 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
         }
       }
       
-      // 2. OBSŁUGA ROZWIJANIA GRUP (Narzędzia, Sociale, Gry) NA TELEFONIE
       if (e.target.classList.contains("dropbtn") || e.target.closest(".dropbtn")) {
         if (window.innerWidth <= 1200) {
           e.preventDefault();
@@ -217,7 +206,7 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
   }
 
   /* =========================
-     Smooth scroll (delegacja zdarzeń) - POPRAWIONY URL
+     Smooth scroll
      ========================= */
   function initSmoothScroll() {
     document.addEventListener("click", function (e) {
@@ -271,38 +260,74 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
     checkForRedirects();
     initDonateButton();
     initSmoothScroll();
-    initFloatingTopBtn(); // Funkcja jest bezpiecznie zdefiniowana wyżej
+    initFloatingTopBtn();
     initGlobalClickDelegation();
     
-    // --- LOGIKA DLA CZERWONEGO PRZYCISKU (Zmiany na czerwony styl) ---
+    // --- LOGIKA CYKLICZNEJ ZMIANY STYLÓW ---
     const redBtn = document.getElementById("red-theme-btn");
     if (redBtn) {
+        // Dokładna tablica 4 stanów z jasnymi opisami dla kolejnych kliknięć
+        const themes = [
+            { class: "", text: "Styl: Kalendarz" },       			// Stan 0: Jesteśmy w trybie domyślnym lub kalendarza
+            { class: "theme-red", text: "Styl: Czerwony" },         // Stan 1: Jesteśmy w stylu czerwonym
+            { class: "theme-green", text: "Styl: Zielony" },        // Stan 2: Jesteśmy w stylu zielonym
+            { class: "theme-blue", text: "Styl: Niebieski" }        // Stan 3: Jesteśmy w stylu niebieskim (wymuszonym)
+        ];
+
+        // 1. Sprawdzamy kalendarz jako pierwsi
+        const isSpecialDayActive = initSeasonalSystem();
+
+        // 2. Pobieramy zapisany stan z pamięci
+        let currentThemeIndex = parseInt(localStorage.getItem("theme-cycle-index") || "0", 10);
+        if (isNaN(currentThemeIndex) || currentThemeIndex >= themes.length) currentThemeIndex = 0;
+        
+        const applyTheme = (index) => {
+            // Usuwamy wszystkie klasy motywów ręcznych
+            document.body.classList.remove("theme-red", "theme-green", "theme-blue");
+
+            // Dodajemy nową klasę, jeśli istnieje
+            if (themes[index].class) {
+                document.body.classList.add(themes[index].class);
+            }
+
+            // Zapisujemy indeks w pamięci
+            localStorage.setItem("theme-cycle-index", index);
+
+            // Ustawiamy tekst na przycisku tak, aby informował, co stanie się po KLIKNIĘCIU
+            const nextIndex = (index + 1) % themes.length;
+            redBtn.textContent = themes[nextIndex].text;
+
+            if (typeof highlightActiveNav === "function") {
+                highlightActiveNav();
+            }
+        };
+
+        // 3. Aplikujemy styl natychmiast przy starcie strony (żeby nie było rozjeżdżania kolorów)
+        if (!isSpecialDayActive) {
+            applyTheme(currentThemeIndex);
+        } else {
+            // Jeśli kalendarz ma święto, przycisk pokazuje opcję przejścia do czerwonego
+            redBtn.textContent = themes[1].text;
+        }
+
         redBtn.addEventListener("click", () => {
-            const isRed = document.body.classList.toggle("theme-red");
-            localStorage.setItem("theme-red-active", isRed);
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
             
-            if (isRed) {
-                redBtn.textContent = "Wygląd fabryczny";
-                Array.from(document.body.classList).forEach(className => {
-                    if (className.startsWith("theme-") && className !== "theme-red") {
-                        document.body.classList.remove(className);
-                    }
-                });
-            } else {
-                redBtn.textContent = "Włącz czerwony styl";
+            // Jeśli użytkownik klika w trakcie święta, zdejmujemy motyw daty
+            if (isSpecialDayActive) {
+                document.body.classList.remove("theme-birthday", "theme-new", "theme-winter", "theme-spring", "theme-summer", "theme-autumn", "theme-patriotic", "theme-youtube");
+            }
+
+            applyTheme(currentThemeIndex);
+
+            // Jeśli wróciliśmy do stanu 0 (auto/kalendarz), odświeżamy system sezonowy
+            if (currentThemeIndex === 0) {
                 if (particleInterval) {
                     clearInterval(particleInterval);
                     particleInterval = null;
                 }
                 document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
-
-                if (typeof initSeasonalSystem === "function") {
-                    initSeasonalSystem();
-                }
-            }
-            
-            if (typeof highlightActiveNav === "function") {
-                highlightActiveNav();
+                initSeasonalSystem();
             }
         });
     }
@@ -310,7 +335,6 @@ let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
     window.addEventListener("hashchange", checkForRedirects);
   }
 
-  // Uruchom inicjalizację gdy DOM jest gotowy
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else {
@@ -331,6 +355,19 @@ function getEaster(year) {
 }
 
 function initSeasonalSystem() {
+	// 1. Sprawdzamy czy użytkownik ma włączony ręczny styl (1 = czerwony, 2 = zielony)
+    const currentThemeIndex = parseInt(localStorage.getItem("theme-cycle-index") || "0", 10);
+    
+    // JEŚLI UŻYTKOWNIK WYBRAŁ RĘCZNIE KOLOR, TO KALENDARZ MILCZY I NIE NADPISUJE NICZEGO!
+    if (currentThemeIndex > 0) {
+        if (particleInterval) { 
+            clearInterval(particleInterval); 
+            particleInterval = null; 
+        }
+        document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
+        return false; // Zwracamy false, bo kalendarz jest zablokowany przez wybór użytkownika
+    }
+	
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth() + 1;
@@ -344,24 +381,8 @@ function initSeasonalSystem() {
 
     const isSameDay = (d1, d2) => d1.toDateString() === d2.toDateString();
 
-    const redBtn = document.getElementById("red-theme-btn");
     const toggleBtn = document.getElementById('toggle-effects-btn');
-    
     if (toggleBtn) toggleBtn.style.display = 'none';
-
-    if (localStorage.getItem("theme-red-active") === "true") {
-        document.body.classList.add("theme-red");
-        if (redBtn) redBtn.textContent = "Wygląd fabryczny";
-        if (toggleBtn) toggleBtn.style.display = 'none';
-        if (particleInterval) { 
-            clearInterval(particleInterval); 
-            particleInterval = null; 
-        }
-        document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
-        return; 
-    } else {
-        if (redBtn) redBtn.textContent = "Włącz czerwony styl";
-    }
 
     let eventInfo = { theme: "", icon: "", active: false };
 
@@ -389,13 +410,15 @@ function initSeasonalSystem() {
             eventInfo = { theme: "theme-autumn", icon: "🍂", active: true };
         } else if (month === 12 && day === 21) {
             eventInfo = { theme: "theme-winter", icon: "❄️", active: true };
-        } else {
-            if (particleInterval) { clearInterval(particleInterval); particleInterval = null; }
-            document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
         }
     }
 
+    // JEŚLI JEST SPECJALNY DZIEŃ -> MA PIERWSZEŃSTWO
     if (eventInfo.active) {
+        // Usuwamy ręczne style, żeby data rządziła
+        document.body.classList.remove("theme-red", "theme-green");
+        localStorage.removeItem("theme-cycle-index");
+
         document.body.classList.add(eventInfo.theme);
         currentSeasonalIcon = eventInfo.icon;
 
@@ -411,6 +434,12 @@ function initSeasonalSystem() {
             if (toggleBtn) toggleBtn.innerText = "Wyłącz efekty";
             startParticles(currentSeasonalIcon);
         }
+        
+        return true; // Informujemy, że motyw kalendarzowy jest aktywny
+    } else {
+        if (particleInterval) { clearInterval(particleInterval); particleInterval = null; }
+        document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
+        return false;
     }
 }
 
@@ -464,7 +493,7 @@ function toggleEffects() {
 window.toggleEffects = toggleEffects;
 
 /* ==========================================================================
-   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU (UX) - WERSJA Z DROPDOWNAMI
+   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU
    ========================================================================== */
 function highlightActiveNav() {
     const currentPath = window.location.pathname.toLowerCase();
@@ -519,36 +548,28 @@ function initSitePanels() {
     const rightPanel = document.getElementById("navigation-right-panel");
     const mobilePanel = document.getElementById("mobile-sticky-footer");
 
-    // Identyfikatory kafelków zgodne z kodem HTML (data-id)
     const availableIds = ["goldsaver", "dc", "instant", "tipply", "cs"];
 
-    // Obsługa Komputerów (PC)
     if (leftPanel && rightPanel && window.innerWidth > 1200) {
-        // Losujemy identyfikatory dla lewej i prawej strony
         const idLeft = availableIds[Math.floor(Math.random() * availableIds.length)];
         let idRight = availableIds[Math.floor(Math.random() * availableIds.length)];
 
-        // Zabezpieczenie przed powtórzeniem
         if (availableIds.length > 1 && idLeft === idRight) {
             while (idLeft === idRight) {
                 idRight = availableIds[Math.floor(Math.random() * availableIds.length)];
             }
         }
 
-        // Aktywujemy wylosowany element po lewej stronie
         const activeLeft = leftPanel.querySelector(`.shortcut-item[data-id="${idLeft}"]`);
         if (activeLeft) activeLeft.classList.add("is-active");
 
-        // Aktywujemy wylosowany element po prawej stronie
         const activeRight = rightPanel.querySelector(`.shortcut-item[data-id="${idRight}"]`);
         if (activeRight) activeRight.classList.add("is-active");
 
-        // Wyświetlamy całe kontenery na ekranie
         leftPanel.style.display = "block";
         rightPanel.style.display = "block";
     }
 
-    // Obsługa Telefonów (Mobile)
     if (mobilePanel && window.innerWidth <= 1200) {
         setTimeout(() => {
             const idMobile = availableIds[Math.floor(Math.random() * availableIds.length)];
@@ -561,7 +582,6 @@ function initSitePanels() {
     }
 }
 
-// Funkcja zamykania paneli na krzyżyk
 function dismissPanel(elementId) {
     const target = document.getElementById(elementId);
     if (target) {
@@ -569,5 +589,4 @@ function dismissPanel(elementId) {
     }
 }
 
-// Uruchomienie skryptu po załadowaniu struktury DOM
 document.addEventListener("DOMContentLoaded", initSitePanels);

@@ -948,14 +948,21 @@ body.theme-youtube    { --accent: #ff1606; --accent-2: #ffffff; }
 body.theme-new        { --accent: #ffff06; --accent-2: #ffa12c; }
 
 /* Motyw: CZERWONY (Jednolity) */
-body.theme-red        { --accent: #ff0000; --accent-2: #ff0000; }
+body.theme-red	 	{ --accent: #ff0000; --accent-2: #ff0000; }
 
+/* Motyw: ZIELONY (Jednolity) */
+body.theme-green 	{ --accent: #00dc04; --accent-2: #00dc04; }
+
+/* Motyw: FABRYCZNY (Niebieski) */
+/* body.theme-default { --accent: #00aaff; --accent-2: #00aaff; } */
+body.theme-blue 	{ --accent: #00aaff; --accent-2: #00aaff; }
+
+/* Nowe, dynamiczne dopasowanie menu do czerwonego motywu */
 body.theme-red .btn {
     background: #ff0000 !important;
     color: #ffffff !important; 
 }
 
-/* Nowe, dynamiczne dopasowanie menu do czerwonego motywu */
 body.theme-red header {
     background: rgba(20, 10, 10, 0.85);
     border-bottom-color: rgba(255, 0, 0, 0.2);
@@ -974,6 +981,32 @@ body.theme-red .dropdown-content a:hover {
 body.theme-red #main-nav a.active {
     color: #ff4d4d;
     background: rgba(255, 0, 0, 0.08);
+}
+
+/* Nowe, dynamiczne dopasowanie menu do zielonego motywu */
+body.theme-green .btn {
+    background: #00dc04 !important;
+    color: #000000 !important; 
+}
+
+body.theme-green header {
+    background: rgba(10, 20, 10, 0.85);
+    border-bottom-color: rgba(0, 128, 0, 0.3);
+}
+
+body.theme-green .dropdown-content {
+    background: #0a140a;
+    border-color: rgba(0, 128, 0, 0.3);
+}
+
+body.theme-green .dropdown-content a:hover {
+    background: rgba(0, 128, 0, 0.2);
+    color: #2eaf2e;
+}
+
+body.theme-green #main-nav a.active {
+    color: #2eaf2e;
+    background: rgba(0, 128, 0, 0.15);
 }
 
 /* ==========================================================================
