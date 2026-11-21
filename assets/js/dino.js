@@ -33,6 +33,8 @@ const milestoneSound = new Audio("assets/sounds/global/point.mp3");
 const point1000Sound = new Audio("assets/sounds/global/line-clear.mp3");
 const explosionSound = new Audio("assets/sounds/global/explosion.mp3");
 
+const effectSounds = [jumpSound, gameOverSound, milestoneSound, point1000Sound, explosionSound];
+
 bgMusic.loop = true;
 
 // Stan gry
@@ -73,12 +75,12 @@ let scale = 1;
 function resizeCanvas() {
     const container = canvas.parentElement;
     if (!container) return;
-    
+
     let targetWidth = container.clientWidth;
     if (targetWidth > 800) targetWidth = 800;
-    
+
     scale = targetWidth / V_WIDTH;
-    
+
     canvas.width = targetWidth;
     canvas.height = V_HEIGHT * scale;
 }
@@ -95,17 +97,17 @@ class Dino {
         this.crouchHeight = 22;
         this.width = 44;
         this.height = this.normalHeight;
-        
+
         this.x = 60;
         this.groundY = V_HEIGHT - this.normalHeight - 15;
         this.y = this.groundY;
-        
+
         this.vy = 0;
-        this.gravity = 1600; 
+        this.gravity = 1600;
         this.jumpForce = -520;
         this.isJumping = false;
         this.isCrouching = false;
-        
+
         this.hasShield = false;
     }
 
@@ -148,7 +150,7 @@ class Dino {
 
     draw() {
         ctx.save();
-        
+
         if (this.hasShield) {
             ctx.strokeStyle = 'rgba(0, 255, 100, 0.8)';
             ctx.lineWidth = 3;
@@ -162,11 +164,11 @@ class Dino {
         ctx.fillStyle = getAccentColor('#00aaff');
         ctx.shadowBlur = this.isCrouching ? 0 : 5;
         ctx.shadowColor = getAccentColor('#00aaff');
-        
+
         ctx.beginPath();
         ctx.roundRect(this.x, this.y, this.width, this.height, this.isCrouching ? 4 : 8);
         ctx.fill();
-        
+
         ctx.restore();
     }
 }
@@ -174,7 +176,7 @@ class Dino {
 class Obstacle {
     constructor() {
         this.type = Math.random() < 0.25 ? 'drone' : 'ground';
-        
+
         if (this.type === 'ground') {
             this.width = 18 + Math.random() * 16;
             this.height = 35 + Math.random() * 25;
@@ -204,7 +206,7 @@ class Obstacle {
         ctx.fillStyle = this.color;
         ctx.shadowBlur = 8;
         ctx.shadowColor = this.color;
-        
+
         ctx.beginPath();
         if (this.type === 'ground') {
             ctx.roundRect(this.x, this.y, this.width, this.height, 5);
@@ -236,9 +238,9 @@ class PickupItem {
         const hoverOffset = Math.sin(this.bounceTime) * 3;
 
         ctx.shadowBlur = 10;
-        ctx.fillStyle = '#bd00ff'; // Kryształ energetyczny
+        ctx.fillStyle = '#bd00ff';
         ctx.shadowColor = '#bd00ff';
-        
+
         ctx.beginPath();
         ctx.moveTo(this.x + this.width / 2, this.y + hoverOffset);
         ctx.lineTo(this.x + this.width, this.y + this.height / 2 + hoverOffset);
@@ -246,7 +248,7 @@ class PickupItem {
         ctx.lineTo(this.x, this.y + this.height / 2 + hoverOffset);
         ctx.closePath();
         ctx.fill();
-        
+
         ctx.restore();
     }
 }
@@ -256,11 +258,11 @@ class Cloud {
         this.x = startX !== null ? startX : V_WIDTH + Math.random() * 150;
         this.y = 30 + Math.random() * 65;
         this.speed = 25 + Math.random() * 15;
-        
+
         this.circles = [];
         const baseRadius = 12 + Math.random() * 8;
         const numCircles = 3 + Math.floor(Math.random() * 2);
-        
+
         let currentOffset = 0;
         for (let i = 0; i < numCircles; i++) {
             this.circles.push({
@@ -274,7 +276,7 @@ class Cloud {
         this.pulseTime = Math.random() * 100;
         this.pulseSpeed = 1 + Math.random() * 1.5;
     }
-    
+
     update(dt) {
         this.x -= this.speed * dt;
         this.pulseTime += dt * this.pulseSpeed;
@@ -284,14 +286,14 @@ class Cloud {
             this.y = 30 + Math.random() * 65;
         }
     }
-    
+
     draw() {
         ctx.save();
         const scalePulse = 1 + Math.sin(this.pulseTime) * 0.05;
         ctx.shadowColor = 'rgba(255, 255, 255, 0.05)';
         ctx.shadowBlur = 10;
         ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
-        
+
         this.circles.forEach(circle => {
             ctx.beginPath();
             ctx.arc(this.x + circle.offsetX, this.y + circle.offsetY, circle.radius * scalePulse, 0, Math.PI * 2);
@@ -309,9 +311,9 @@ class Star {
         this.alpha = 0.3 + Math.random() * 0.7;
         this.blinkSpeed = 1 + Math.random() * 2;
         this.speed = (Math.random() * 0.3 + 0.1) * 60;
-        this.spawnThreshold = Math.random() * 6000; // Niektóre gwiazdy pojawią się dopiero w głębokiej nocy
+        this.spawnThreshold = Math.random() * 6000;
     }
-    
+
     update(dt) {
         this.x -= this.speed * dt;
         if (this.x < 0) {
@@ -324,9 +326,8 @@ class Star {
             this.blinkSpeed = -this.blinkSpeed;
         }
     }
-    
+
     draw() {
-        // Rysuj gwiazdę tylko jeśli zdobyliśmy wymagany próg punktowy (efekt zagęszczania gwiazd nocą)
         if (score >= this.spawnThreshold) {
             ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
             ctx.fillRect(this.x, this.y, this.size, this.size);
@@ -365,7 +366,7 @@ class UFO {
 
         const lightToggle = Math.floor(this.lightTimer) % 2 === 0;
         ctx.shadowBlur = 5;
-        
+
         ctx.fillStyle = lightToggle ? '#ff0055' : '#ffe600';
         ctx.beginPath();
         ctx.arc(this.x - 12, this.y + 5, 2, 0, Math.PI * 2);
@@ -381,7 +382,6 @@ class UFO {
     }
 }
 
-// Funkcja rysująca pasek energii tarczy na ekranie
 function drawShieldBar() {
     ctx.save();
     const barWidth = 100;
@@ -389,25 +389,21 @@ function drawShieldBar() {
     const x = V_WIDTH - barWidth - 20;
     const y = 20;
 
-    // Tło paska
     ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
     ctx.beginPath();
     ctx.roundRect(x, y, barWidth, barHeight, 3);
     ctx.fill();
 
-    // Wypełnienie paska energii
     if (shieldEnergy > 0) {
-        // Kolor zmienia się na zielony, gdy tarcza jest w 100% gotowa
         ctx.fillStyle = player && player.hasShield ? '#00ff64' : '#bd00ff';
         ctx.shadowBlur = player && player.hasShield ? 8 : 4;
         ctx.shadowColor = ctx.fillStyle;
-        
+
         ctx.beginPath();
         ctx.roundRect(x, y, (shieldEnergy / 100) * barWidth, barHeight, 3);
         ctx.fill();
     }
 
-    // Tekst pomocniczy nad paskiem
     ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'right';
@@ -448,8 +444,7 @@ function initGame() {
 
     bgMusic.currentTime = 0;
     bgMusic.play().catch(() => {});
-    
-    // Włączenie przycisków na urządzeniach mobilnych
+
     if (window.innerWidth <= 768) {
         if (jumpBtn) jumpBtn.style.display = "block";
         if (crouchBtn) crouchBtn.style.display = "block";
@@ -472,21 +467,19 @@ function animate(timestamp) {
     if (dt > 0.1) dt = 0.1;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     ctx.save();
     ctx.scale(scale, scale);
 
-    // KROK PO KROKU ŚCIEMNIANIE NIEBA (Płynny miks od #0f1115 do czystego #000000 wraz z punktami)
-    let darknessFactor = Math.min(1, score / 6000); // Pełna czerń przy 6000 pkt
+    let darknessFactor = Math.min(1, score / 6000);
     let r = Math.floor(15 * (1 - darknessFactor));
     let g = Math.floor(17 * (1 - darknessFactor));
     let b = Math.floor(21 * (1 - darknessFactor));
     ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
     ctx.fillRect(0, 0, V_WIDTH, V_HEIGHT);
 
-    // Aktualizacja tła
     stars.forEach(star => { star.update(dt); star.draw(); });
-    
+
     if (activeUfo) {
         activeUfo.update(dt);
         activeUfo.draw();
@@ -494,8 +487,7 @@ function animate(timestamp) {
     }
 
     clouds.forEach(cloud => { cloud.update(dt); cloud.draw(); });
-    
-    // Linia podłoża
+
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
     ctx.lineWidth = 2;
     ctx.beginPath();
@@ -503,14 +495,11 @@ function animate(timestamp) {
     ctx.lineTo(V_WIDTH, V_HEIGHT - 15);
     ctx.stroke();
 
-    // Dinozaur
     player.update(dt);
     player.draw();
 
-    // Rysowanie UI interfejsu tarczy ochronnej
     drawShieldBar();
 
-    // Spawnowanie fioletowych kryształów (tylko, gdy gracz nie ma jeszcze pełnej tarczy)
     if (!player.hasShield) {
         itemSpawnTimer += dt;
         if (itemSpawnTimer > 4.0 + Math.random() * 2.0) {
@@ -519,23 +508,21 @@ function animate(timestamp) {
         }
     }
 
-    // Obsługa zbierania kryształów
     for (let i = items.length - 1; i >= 0; i--) {
         let it = items[i];
         it.update(dt);
         it.draw();
 
         if (checkCollision(player, it)) {
-            // Dodajemy 25% energii za każdy kryształ
             shieldEnergy += 25;
             if (shieldEnergy >= 100) {
                 shieldEnergy = 100;
-                player.hasShield = true; // Włączenie tarczy przy 100%
+                player.hasShield = true;
             }
-            
+
             milestoneSound.currentTime = 0;
             milestoneSound.play().catch(() => {});
-            
+
             items.splice(i, 1);
             continue;
         }
@@ -543,9 +530,8 @@ function animate(timestamp) {
         if (it.x + it.width < 0) items.splice(i, 1);
     }
 
-    // Przeszkody
     spawnTimer += dt;
-    let spawnInterval = Math.max(0.9, 2.2 - (gameSpeed / 400)); 
+    let spawnInterval = Math.max(0.9, 2.2 - (gameSpeed / 400));
     if (spawnTimer > spawnInterval) {
         obstacles.push(new Obstacle());
         spawnTimer = 0;
@@ -558,11 +544,11 @@ function animate(timestamp) {
 
         if (checkCollision(player, obs)) {
             if (player.hasShield) {
-                player.hasShield = false; 
-                shieldEnergy = 0; // Zużycie energii po pęknięciu tarczy
-                obstacles.splice(i, 1); 
-                explosionSound.currentTime = 0; 
-                explosionSound.play().catch(() => {}); 
+                player.hasShield = false;
+                shieldEnergy = 0;
+                obstacles.splice(i, 1);
+                explosionSound.currentTime = 0;
+                explosionSound.play().catch(() => {});
                 continue;
             } else {
                 ctx.restore();
@@ -576,13 +562,12 @@ function animate(timestamp) {
         }
     }
 
-    // Płynne naliczanie punktów czasowych
     scoreTimer += dt;
-    if (scoreTimer >= 0.05) { 
-        score += 5; 
+    if (scoreTimer >= 0.05) {
+        score += 5;
         scoreTimer = 0;
         scoreEl.textContent = score;
-        
+
         if (score > 0 && score % 1000 === 0) {
             point1000Sound.currentTime = 0;
             point1000Sound.play().catch(() => {});
@@ -614,12 +599,11 @@ function endGame() {
     finalScoreEl.textContent = score;
     finalHighScoreEl.textContent = highScore;
     gameOverMenu.classList.remove("hidden");
-    
+
     if (jumpBtn) jumpBtn.style.display = "none";
     if (crouchBtn) crouchBtn.style.display = "none";
 }
 
-// Listenery globalne i obsługa klawiatury
 window.addEventListener("load", () => {
     window.addEventListener("resize", () => {
         resizeCanvas();
@@ -635,13 +619,13 @@ window.addEventListener("load", () => {
             bgMusic.volume = volumeControl.value;
         });
     }
-    
+
     if (volumeControl1) {
         volumeControl1.addEventListener('input', () => {
             const vol = volumeControl1.value;
-            jumpSound.volume = vol;
-            gameOverSound.volume = vol;
-            milestoneSound.volume = vol;
+            effectSounds.forEach(snd => {
+                snd.volume = vol;
+            });
         });
     }
 
@@ -664,9 +648,6 @@ window.addEventListener("load", () => {
         }
     });
 
-    // --- OBSŁUGA DOTYKU DLA URZĄDZEŃ MOBILNYCH ---
-
-    // Przycisk SKOKU
     if (jumpBtn) {
         jumpBtn.addEventListener("touchstart", (e) => {
             e.preventDefault();
@@ -674,21 +655,20 @@ window.addEventListener("load", () => {
         }, { passive: false });
     }
 
-    // Przycisk KUCANIA (Dino kuca tylko wtedy, gdy trzymasz palec)
     if (crouchBtn) {
         crouchBtn.addEventListener("touchstart", (e) => {
             e.preventDefault();
-            keys.ArrowDown = true; // Aktywuje kucanie w pętli gry
+            keys.ArrowDown = true;
         }, { passive: false });
 
         crouchBtn.addEventListener("touchend", (e) => {
             e.preventDefault();
-            keys.ArrowDown = false; // Wyłącza kucanie po puszczeniu palca
+            keys.ArrowDown = false;
         }, { passive: false });
-        
+
         crouchBtn.addEventListener("touchcancel", (e) => {
             e.preventDefault();
-            keys.ArrowDown = false; // Zabezpieczenie na wypadek zsunięcia palca
+            keys.ArrowDown = false;
         }, { passive: false });
     }
 

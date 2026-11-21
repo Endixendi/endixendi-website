@@ -31,7 +31,7 @@ body {
     color: #e6eef6;
     line-height: 1.5;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: clip;
     color-scheme: dark;
 }
 
@@ -66,12 +66,11 @@ textarea:focus-visible {
    ========================================================================== */
 
 header {
-    position: sticky;         /* Zawsze przyklejony u góry */
-    top: 0;
-    background: rgba(15, 17, 21, 0.75); /* Przezroczyste tło dopasowane do --bg */
-    backdrop-filter: blur(12px);       /* Zwiększone rozmycie dla nowoczesnego efektu szkła */
+    position: static;          /* Przewija się razem ze stroną */
+    background: rgba(15, 17, 21, 0.75);
+    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    z-index: 500;              /* Podniesiony zindex, by menu zawsze było nad elementami gry */
+    z-index: 500;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding: 12px 20px;
     transition: background var(--transition), border-color var(--transition);
@@ -277,8 +276,8 @@ header {
     width: 300px;
     height: 300px;
     animation: spin 3s linear infinite;
-    object-fit: contain;                                     /* Dodatkowo warto dodać to, aby logo było ostre */
-    filter: drop-shadow(0 0 150px rgba(29, 63, 143, 1.0));   /* Efekt niebieskiej poświaty pasującej do Twojego akcentu */
+    object-fit: contain;
+    filter: drop-shadow(0 0 150px rgba(29, 63, 143, 1.0));
 }
 
 @keyframes spin {
@@ -386,9 +385,9 @@ a.btn {
 .btn:active,
 a.btn:active,
 .ghost:active {
-    transform: scale(0.96); /* Lekkie zmniejszenie (efekt wciśnięcia) */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* Zmniejszenie cienia, by przycisk wydawał się bliżej tła */
-    opacity: 0.9; /* Delikatna zmiana przezroczystości */
+    transform: scale(0.96);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    opacity: 0.9;
 }
 
 /* Efekty hover zunifikowane pod kątem wydajności przejść */
@@ -440,6 +439,7 @@ a.btn.mt-12 {
 } 
 
 table.specs {
+    width: 100%;
     border-collapse: collapse;
 }
 
@@ -451,6 +451,7 @@ table.specs td,
 table.specs th {
     padding: 10px;
     border-bottom: 1px solid color-mix(in srgb, var(--accent) 8%, transparent);
+    vertical-align: top;
 }
 
 .cat {
@@ -460,6 +461,45 @@ table.specs th {
     padding-left: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    border-radius: 6px;
+}
+
+@media screen and (max-width: 700px) {
+    table.specs,
+    table.specs tbody,
+    table.specs tr,
+    table.specs td {
+        display: block;
+        width: 100%;
+    }
+
+    table.specs tr {
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    table.specs tr:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    table.specs td:first-child {
+        width: 100%;
+    }
+
+    table.specs td,
+    table.specs th {
+        padding: 8px 10px;
+        border-bottom: none;
+    }
+
+    table.specs td:not(.cat) {
+        padding-top: 8px;
+        padding-left: 12px;
+        color: #eef4fa;
+    }
 }
 
 .videos {
@@ -646,7 +686,6 @@ footer {
     border: none;
     overflow: hidden;
     width: 100%;
-	/*height: 380px;*/
     margin-top: 20px;
 }
 
@@ -954,7 +993,6 @@ body.theme-red	 	{ --accent: #ff0000; --accent-2: #ff0000; }
 body.theme-green 	{ --accent: #00dc04; --accent-2: #00dc04; }
 
 /* Motyw: FABRYCZNY (Niebieski) */
-/* body.theme-default { --accent: #00aaff; --accent-2: #00aaff; } */
 body.theme-blue 	{ --accent: #00aaff; --accent-2: #00aaff; }
 
 /* Nowe, dynamiczne dopasowanie menu do czerwonego motywu */
@@ -1013,54 +1051,49 @@ body.theme-green #main-nav a.active {
    Pływający przycisk powrotu na górę strony (Fixed)
    ========================================================================== */
 .floating-back-to-top {
-    position: fixed; /* Przykleja przycisk do ekranu, nie do zawartości strony */
-    bottom: 30px;    /* Odległość od dolnej krawędzi ekranu */
-    right: 30px;     /* Odległość od prawej krawędzi ekranu */
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
     width: 44px;
     height: 44px;
-    line-height: 42px; /* Centrowanie strzałki w pionie */
+    line-height: 42px;
     text-align: center;
-    background: #14171b; /* Identyczne tło jak karty, by nic nie prześwitywało */
+    background: #14171b;
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: var(--muted);
-    border-radius: 50%; /* Okrągły kształt */
+    border-radius: 50%;
     text-decoration: none;
     font-size: 1rem;
     font-weight: bold;
-    z-index: 1000;   /* Bardzo wysoki z-index, żeby strzałka była nad grami i sekcjami */
+    z-index: 1000;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
     cursor: pointer;
     
-    /* Stan początkowy: przycisk jest niewidoczny i lekko obniżony */
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
     transition: all 0.3s ease-in-out;
 }
 
-/* Klasa aktywowana przez JavaScript, gdy użytkownik przewinie stronę w dół */
 .floating-back-to-top.show {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0); /* Płynne wysunięcie do góry */
+    transform: translateY(0);
 }
 
-/* Efekt po najechaniu myszką */
 .floating-back-to-top:hover {
     color: var(--accent);
     border-color: var(--accent);
-    transform: translateY(-5px); /* Delikatne uniesienie (mikrointerakcja) */
+    transform: translateY(-5px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 
                 0 0 15px rgba(0, 170, 255, 0.3);
 }
 
-/* Dynamiczne dopasowanie do czerwonego motywu serwisu */
 body.theme-red .floating-back-to-top:hover {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 
                 0 0 15px rgba(255, 0, 0, 0.3) !important;
 }
 
-/* Dostosowanie wielkości przycisku na mniejszych ekranach (smartfony) */
 @media (max-width: 600px) {
     .floating-back-to-top {
         bottom: 20px;
@@ -1077,12 +1110,12 @@ body.theme-red .floating-back-to-top:hover {
 
 .about-me-layout {
     display: flex;
-    align-items: center; /* Wyśrodkowanie pionowe logo względem bloku tekstu */
-    gap: 30px;           /* Odstęp między zdjęciem a tekstem */
+    align-items: center;
+    gap: 30px;
 }
 
 .about-me-thumb {
-    flex: 0 0 180px;     /* Stała szerokość kolumny z logo na desktopie */
+    flex: 0 0 180px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1090,36 +1123,33 @@ body.theme-red .floating-back-to-top:hover {
 
 .about-me-logo {
     width: 100%;
-    max-width: 180px;    /* Bezpieczny wymiar grafiki */
+    max-width: 180px;
     height: auto;
-    border-radius: 16px; /* Pasujące zaokrąglenie do Twoich kart */
+    border-radius: 16px;
     border: 2px solid var(--border);
-    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 30%, transparent); /* Neonowy glow */
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 30%, transparent);
     object-fit: cover;
     transition: transform var(--transition), border-color var(--transition);
 }
 
 .about-me-text {
-    flex: 1;             /* Tekst zajmuje całą pozostałą przestrzeń */
+    flex: 1;
 }
 
-/* Zachowanie spójności akapitów wewnątrz bloku */
 .about-me-text p + p {
     margin-top: 12px;
 }
 
-/* Mikrointerakcja powiązana z hoverem całej karty (zgodnie z Twoim stylem) */
 .card:hover .about-me-logo {
-    transform: rotate(-3deg) scale(1.03); /* Delikatne wychylenie w lewo */
+    transform: rotate(-3deg) scale(1.03);
     border-color: var(--accent);
 }
 
-/* REPOZYTORIUM MOBILNE (Media Query dla ekranów mniejszych niż desktop) */
 @media screen and (max-width: 768px) {
     .about-me-layout {
-        flex-direction: column; /* Układ pionowy na smartfonach */
+        flex-direction: column;
         gap: 20px;
-        text-align: center;     /* Wyśrodkowanie tekstu i nagłówka */
+        text-align: center;
     }
 
     .about-me-thumb {
@@ -1127,7 +1157,7 @@ body.theme-red .floating-back-to-top:hover {
     }
 
     .about-me-logo {
-        max-width: 140px;       /* Nieco mniejsze logo na ekranach telefonów */
+        max-width: 140px;
     }
 }
 
@@ -1135,7 +1165,6 @@ body.theme-red .floating-back-to-top:hover {
    Stylizacja ujednoliconej listy źródeł audio (Sekcja #controls)
    ========================================================================== */
 
-/* Główna lista (Muzyka i Efekty) */
 #controls ul {
     list-style-type: none;
     padding-left: 0;
@@ -1147,11 +1176,10 @@ body.theme-red .floating-back-to-top:hover {
     line-height: 1.5;
 }
 
-/* Wewnętrzna podlista (konkretne akcje SFX) */
 #controls ul ul {
-    list-style-type: disc; /* Przywraca standardowe okrągłe kropki */
-    list-style-position: outside; /* Gwarantuje, że kropki stoją w równej kolumnie poza tekstem */
-    padding-left: 24px; /* Bezpieczne odsunięcie w prawo - kropki nie najeżdżają na tekst */
+    list-style-type: disc;
+    list-style-position: outside;
+    padding-left: 24px;
     margin-top: 6px;
     margin-bottom: 0;
 }
@@ -1162,7 +1190,6 @@ body.theme-red .floating-back-to-top:hover {
     padding-left: 4px;
 }
 
-/* Kolorowanie kropek podlisty na kolor akcentu (zgodnie z Twoim stylem list w specs) */
 #controls ul ul li::marker {
     color: var(--accent);
 }
@@ -1179,7 +1206,6 @@ section {
    ZAKAMUFLOWANY SYSTEM SKRÓTÓW STRONY (INDEX)
    ========================================================================== */
 
-/* Podział na wersje urządzeń */
 @media screen and (min-width: 1201px) {
     .pc-only { display: block !important; }
     .mobile-only { display: none !important; }
@@ -1189,9 +1215,8 @@ section {
     .mobile-only { display: block !important; }
 }
 
-/* Główne kontenery boczne (PC) */
 .site-shortcut-panel {
-    display: none; /* JS pokaże cały panel */
+    display: none;
     position: fixed;
     top: 15vh;
     width: 142px;
@@ -1202,7 +1227,6 @@ section {
     z-index: 999;
 }
 
-/* Zarządzanie widocznością kafelków wewnątrz kontenera */
 .shortcut-holder {
     width: 100%;
     height: 100%;
@@ -1210,13 +1234,13 @@ section {
 }
 
 .shortcut-item {
-    display: none; /* Domyślnie wszystkie kafelki są ukryte */
+    display: none;
     width: 100%;
     height: 100%;
 }
 
 .shortcut-item.is-active {
-    display: block !important; /* Pokazuje tylko wylosowany aktywowany kafelek */
+    display: block !important;
 }
 
 .shortcut-item a, .shortcut-item img {
@@ -1226,7 +1250,6 @@ section {
     object-fit: cover;
 }
 
-/* Przycisk zamknięcia panelu */
 .shortcut-close-trigger {
     position: absolute;
     top: 4px;
@@ -1250,7 +1273,6 @@ section {
     background: #ef4444;
 }
 
-/* WERSJA MOBILNA (Dolny pasek) */
 .mobile-navigation-bar {
     display: none !important;
     position: fixed;
@@ -1279,7 +1301,7 @@ section {
 @media screen and (max-width: 1200px) {
     .menu-icon { 
         display: block; 
-        color: var(--accent); /* Zmieniono z białego na kolor motywu strony */
+        color: var(--accent);
         font-weight: bold;
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(255, 255, 255, 0.05);
@@ -1293,24 +1315,23 @@ section {
         position: absolute;
         top: 100%;
         left: 0;
-        background: #14171b; /* var(--card) */
+        background: #14171b;
         padding: 20px;
         box-sizing: border-box;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         z-index: 499;
-        text-align: center; /* Wyśrodkowanie linków głównych */
+        text-align: center;
         max-height: calc(100vh - 72px);
         overflow-y: auto;
     }
 
-    /* Klasa aktywowana przez skrypt JS po kliknięciu hamburgera */
     #main-nav.show {
         display: flex;
     }
     
     .dropdown {
         width: 100%;
-        text-align: center; /* Wyśrodkowanie przycisków "Gry ▾" itp. */
+        text-align: center;
     }
 
     .dropdown-content { 
@@ -1322,29 +1343,23 @@ section {
         border: none;
         margin-top: 6px;
         border-radius: 8px;
-        
-        /* Wyłączenie desktopowych efektów najechania myszką */
         opacity: 1;
         visibility: visible;
         transform: none;
-        
-        /* Domyślnie ukryte na telefonie, dopóki użytkownik nie kliknie */
         display: none; 
-        text-align: center; /* Wyśrodkowanie linków wewnątrz podmenu */
+        text-align: center;
     }
 
-    /* Klasa sterowana za pomocą JS po kliknięciu w podkategorię */
     .dropdown.open .dropdown-content {
         display: block;
     }
 
-    /* Marginesy dla linków wewnątrz podmenu na telefonie */
     .dropdown-content a {
         padding: 12px 16px;
     }
     
     .dropdown-content a:hover {
-        padding-left: 16px; /* Wyłączenie przesunięcia w prawo na telefonie */
+        padding-left: 16px;
         background: rgba(255, 255, 255, 0.03);
     }
     
@@ -1377,13 +1392,12 @@ section {
         height: 200px; 
     }
     
-	.widget-margin-top {
-	margin-top: 20px;
-}
-	
+    .widget-margin-top {
+        margin-top: 20px;
+    }
+    
     .snapwidget-widget { 
         width: 100%; 
-        height: 1000px%; 
         aspect-ratio: 25 / 10; 
     }
 }
@@ -1392,7 +1406,6 @@ section {
    SEKCJA LICZNIKÓW NA ŻYWO (LIVECOUNTS)
    ========================================================================== */
 
-/* Kontener na liczniki Livecounts */
 .live-counters-container {
     display: flex;
     flex-wrap: wrap;
@@ -1401,11 +1414,38 @@ section {
     margin: 25px 0 10px 0;
 }
 
-/* Pojedyncza ramka z licznikiem */
 .counter-iframe {
     border: none;
     width: 280px;
     height: 80px;
     border-radius: 8px;
     overflow: hidden;
+}
+
+/* ==========================================================================
+   MENU PRZYKLEJONE - TYLKO KOMPUTERY
+   ========================================================================== */
+
+@media screen and (min-width: 1201px) {
+    #menu-placeholder {
+        position: sticky;
+        top: 0;
+        z-index: 9999;
+    }
+
+    #menu-placeholder > header {
+        position: static;
+    }
+}
+
+/* TELEFONY I TABLETY - MENU PRZEWIJA SIĘ NORMALNIE */
+
+@media screen and (max-width: 1200px) {
+    #menu-placeholder {
+        position: static;
+    }
+
+    #menu-placeholder > header {
+        position: static;
+    }
 }

@@ -3,7 +3,7 @@
  */
 
 const BOARD_SIZE = 10;
-const SHIPS_CONFIG = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]; 
+const SHIPS_CONFIG = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 
 // Elementy DOM
 const playerGrid = document.getElementById('player-grid');
@@ -19,7 +19,7 @@ const difficultySelect = document.getElementById('difficulty-select');
 const gameState = {
     active: false,
     playerTurn: true,
-    playerShips: [],    
+    playerShips: [],
     computerShips: [],
     playerHits: 0,
     computerHits: 0,
@@ -30,11 +30,11 @@ const gameState = {
     difficulty: 'easy' // NOWE: Domyślny poziom
 };
 
-// Dźwięki 
+// Dźwięki
 const audio = {
     music: new Audio("assets/sounds/statki/battle-bg.mp3"),
     hit: new Audio("assets/sounds/global/hit.mp3"),
-    splash: new Audio("assets/sounds/global/drop.mp3"), 
+    splash: new Audio("assets/sounds/global/drop.mp3"),
     win: new Audio("assets/sounds/global/success.mp3"),
     lose: new Audio("assets/sounds/global/gameover-sad.mp3")
 };
@@ -85,8 +85,8 @@ function resetData() {
     gameState.lastHit = null;
     gameState.huntDirection = null;
     gameState.playerTurn = true;
-    
-    logContent.classList.remove('mode-cheater'); 
+
+    logContent.classList.remove('mode-cheater');
     difficultySelect.disabled = false;
 
     btnStart.style.display = 'inline-block';
@@ -94,11 +94,9 @@ function resetData() {
     btnRandomize.disabled = false;
     computerGrid.classList.add('locked');
     turnStatus.textContent = "Rozstawianie Floty";
-    
+
     document.querySelectorAll('.cell').forEach(c => c.className = 'cell');
     logContent.innerHTML = '';
-    
-    difficultySelect.disabled = false;
 }
 
 function createEmptyBoard() {
@@ -113,7 +111,7 @@ function createGrid(container, owner) {
             cell.className = 'cell';
             cell.dataset.x = x;
             cell.dataset.y = y;
-            
+
             if (owner === 'computer') {
                 cell.addEventListener('click', handlePlayerShot);
             }
@@ -135,7 +133,7 @@ function randomizeShips(board) {
             const horizontal = Math.random() < 0.5;
             const x = Math.floor(Math.random() * BOARD_SIZE);
             const y = Math.floor(Math.random() * BOARD_SIZE);
-            
+
             if (canPlace(board, x, y, size, horizontal)) {
                 place(board, x, y, size, horizontal);
                 placed = true;
@@ -176,15 +174,19 @@ function place(board, x, y, size, horizontal) {
 function handlePlayerShot(e) {
     if (!gameState.active || !gameState.playerTurn) return;
 
-    const x = parseInt(e.target.dataset.x);
-    const y = parseInt(e.target.dataset.y);
+    const cell = e.target.closest('.cell');
+    if (!cell || !computerGrid.contains(cell)) return;
+
+    const x = parseInt(cell.dataset.x, 10);
+    const y = parseInt(cell.dataset.y, 10);
+    if (Number.isNaN(x) || Number.isNaN(y)) return;
 
     if (gameState.computerShips[y][x] >= 2) return;
 
     const isHit = (gameState.computerShips[y][x] === 1);
     gameState.computerShips[y][x] = isHit ? 3 : 2;
 
-    updateVisuals(e.target, isHit);
+    updateVisuals(cell, isHit);
 
     if (isHit) {
         gameState.computerHits++;
@@ -201,7 +203,7 @@ function handlePlayerShot(e) {
 
 function endTurn() {
     gameState.playerTurn = !gameState.playerTurn;
-    
+
     if (gameState.playerTurn) {
         turnStatus.textContent = "TWÓJ RUCH";
         turnStatus.style.color = "var(--accent)";
@@ -238,7 +240,7 @@ function botTurn() {
 
         if (playerShipCoordinates.length > 0) {
             target = playerShipCoordinates[Math.floor(Math.random() * playerShipCoordinates.length)];
-            
+
             // Inny komunikat dla trybu Cheater
             if (gameState.difficulty === 'cheater') {
                 log("!!! SYSTEMY ZAKŁÓCONE: Wróg namierzył Twój sygnał !!!", "enemy");
@@ -282,7 +284,7 @@ function botTurn() {
         gameState.playerHits++;
         log(`Wróg trafił [${x},${y}]!`, "enemy");
         playAudio('hit');
-        
+
         addSmartNeighbors(x, y);
         gameState.lastHit = { x, y };
         checkWin();
@@ -339,7 +341,7 @@ function isAreaClearForBot(x, y) {
 
     for (let d of diagonals) {
         if (d.x >= 0 && d.x < BOARD_SIZE && d.y >= 0 && d.y < BOARD_SIZE) {
-            if (gameState.playerShips[d.y][d.x] === 3) return false; 
+            if (gameState.playerShips[d.y][d.x] === 3) return false;
         }
     }
     return true;
@@ -360,7 +362,7 @@ function renderGrid(container, boardData, showShips) {
         const x = i % BOARD_SIZE;
         const y = Math.floor(i / BOARD_SIZE);
         const val = boardData[y][x];
-        
+
         cell.className = 'cell';
         if (val === 1 && showShips) cell.classList.add('ship');
         if (val === 2) cell.classList.add('miss');
@@ -380,15 +382,15 @@ function endGame(playerWon) {
     gameState.active = false;
     turnStatus.textContent = playerWon ? "ZWYCIĘSTWO!" : "PORAŻKA";
     turnStatus.style.color = playerWon ? "var(--accent-2)" : "#ff4d6d";
-    
+
     log(playerWon ? "GRATULACJE! Wroga flota zniszczona." : "MAYDAY! Nasza flota poszła na dno.", "victory");
-    
+
     if (playerWon) playAudio('win');
     else playAudio('lose');
 
     btnStart.style.display = 'none';
     btnRestart.style.display = 'inline-block';
-    
+
     renderGrid(computerGrid, gameState.computerShips, true);
 }
 
@@ -405,8 +407,8 @@ function playAudio(type) {
             audio[type].currentTime = 0;
             audio[type].play();
         }
-    } catch (e) { 
-        console.log("Audio error", e); 
+    } catch (e) {
+        console.log("Audio error", e);
     }
 }
 
@@ -421,7 +423,7 @@ btnRandomize.addEventListener('click', () => {
 btnStart.addEventListener('click', () => {
     gameState.active = true;
     gameState.difficulty = difficultySelect.value; // Pobieramy wybrany poziom
-    
+
     // --- NOWOŚĆ: Zarządzanie klasą wizualną logów ---
     if (gameState.difficulty === 'cheater') {
         logContent.classList.add('mode-cheater');
@@ -435,9 +437,9 @@ btnStart.addEventListener('click', () => {
     difficultySelect.disabled = true;
     btnRandomize.disabled = true;
     btnStart.style.display = 'none';
-    
+
     audio.music.play().catch(e => console.log("Muzyka wymaga interakcji", e));
-    
+
     log("Systemy bojowe aktywne. Wybierz cel.", "player");
     turnStatus.textContent = "TWÓJ RUCH";
 });

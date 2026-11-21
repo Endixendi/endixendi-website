@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Wspólna baza plików graficznych z Twojego folderu assets/images/gallery/
     const imageFiles = [
         'Orka_pola.webp',
-        'Żniwa_pełną_parą.webp',		
+        'Żniwa_pełną_parą.webp',
         'Massey_Ferguson_+_Samasz.webp',
         'Przejazd_przy_ulu.webp',
         'Sprzęt_do_obornika.webp',
@@ -15,45 +14,69 @@ document.addEventListener('DOMContentLoaded', () => {
         'Siewy_na_polu.webp'
     ];
 
+    function buildGallerySrc(fileName) {
+        return encodeURI(`assets/images/gallery/${fileName}`);
+    }
+
+    function formatCaption(fileName) {
+        const baseName = fileName.replace(/\.[^/.]+$/, '');
+        const cleanName = baseName.replace(/_/g, ' ').replace(/-/g, ' ');
+        return cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+    }
+
     // ==========================================================================
     // 1. GENEROWANIE PIERWSZEJ GALERII (Z NAZWAMI I ODLICZANIEM LOADERÓW)
     // ==========================================================================
     const galleryContainer = document.getElementById('dynamic-gallery');
     if (galleryContainer) {
         imageFiles.forEach(fileName => {
-            const cleanName = fileName.split('.')[0].replace(/_/g, ' ').replace(/-/g, ' ');
-            const description = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+            const description = formatCaption(fileName);
 
             const galleryItem = document.createElement('div');
             galleryItem.className = 'gallery-item';
-            
-            galleryItem.innerHTML = `
-                <div class="img-loader"></div>
-                <img src="assets/images/gallery/${fileName}" 
-                     alt="${description}" 
-                     loading="lazy" 
-                     style="opacity: 0; transition: opacity 0.8s ease;">
-                <p class="gallery-caption">${description}</p>
-            `;
 
-            const img = galleryItem.querySelector('img');
-            const loader = galleryItem.querySelector('.img-loader');
+            const loader = document.createElement('div');
+            loader.className = 'img-loader';
+
+            const img = document.createElement('img');
+            img.src = buildGallerySrc(fileName);
+            img.alt = description;
+            img.loading = 'lazy';
+            img.style.opacity = '0';
+            img.style.transition = 'opacity 0.8s ease';
+
+            const caption = document.createElement('p');
+            caption.className = 'gallery-caption';
+            caption.textContent = description;
 
             const handleImageLoad = () => {
                 img.style.opacity = '1';
-                if (loader) loader.style.display = 'none';
+                loader.style.display = 'none';
+            };
+
+            const handleImageError = () => {
+                img.style.opacity = '0.4';
+                loader.style.display = 'none';
             };
 
             if (img.complete) {
-                handleImageLoad();
+                if (img.naturalWidth > 0) {
+                    handleImageLoad();
+                } else {
+                    handleImageError();
+                }
             } else {
-                img.onload = handleImageLoad;
+                img.addEventListener('load', handleImageLoad, { once: true });
+                img.addEventListener('error', handleImageError, { once: true });
             }
 
-            img.addEventListener('click', function() {
+            img.addEventListener('click', function () {
                 createOverlay(this);
             });
 
+            galleryItem.appendChild(loader);
+            galleryItem.appendChild(img);
+            galleryItem.appendChild(caption);
             galleryContainer.appendChild(galleryItem);
         });
     }
@@ -64,13 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const cinemaContainer = document.getElementById('cinema-gallery-container');
     if (cinemaContainer && imageFiles.length > 0) {
         let currentIndex = 0;
+        let swapTimer = null;
 
-        // Budowa czystej struktury slidera
         cinemaContainer.innerHTML = `
             <div class="cinema-display">
-                <button class="cinema-arrow prev">&#10094;</button>
-                <img src="assets/images/gallery/${imageFiles[0]}" alt="Podgląd kinowy" id="cinema-main-img">
-                <button class="cinema-arrow next">&#10095;</button>
+                <button type="button" class="cinema-arrow prev" aria-label="Poprzednie zdjęcie">&#10094;</button>
+                <img src="${buildGallerySrc(imageFiles[0])}" alt="${formatCaption(imageFiles[0])}" id="cinema-main-img">
+                <button type="button" class="cinema-arrow next" aria-label="Następne zdjęcie">&#10095;</button>
             </div>
             <div class="cinema-thumbnails mt-16" id="cinema-thumbs-box"></div>
         `;
@@ -80,10 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const arrowPrev = cinemaContainer.querySelector('.cinema-arrow.prev');
         const arrowNext = cinemaContainer.querySelector('.cinema-arrow.next');
 
-        // Generowanie miniaturek pod spodem bez napisów
         imageFiles.forEach((fileName, index) => {
             const thumb = document.createElement('img');
-            thumb.src = `assets/images/gallery/${fileName}`;
+            thumb.src = buildGallerySrc(fileName);
+            thumb.alt = formatCaption(fileName);
             thumb.className = 'cinema-thumb';
             if (index === 0) thumb.classList.add('active');
 
@@ -95,19 +118,27 @@ document.addEventListener('DOMContentLoaded', () => {
             thumbsBox.appendChild(thumb);
         });
 
-        // Funkcja synchronizująca duże zdjęcie z miniaturami
         function updateCinemaGallery() {
-            mainImg.style.opacity = '0.3'; 
-            setTimeout(() => {
-                mainImg.src = `assets/images/gallery/${imageFiles[currentIndex]}`;
+            if (!mainImg || !thumbsBox) return;
+
+            if (swapTimer) {
+                clearTimeout(swapTimer);
+                swapTimer = null;
+            }
+
+            const selectedFile = imageFiles[currentIndex];
+            mainImg.style.opacity = '0.3';
+            swapTimer = setTimeout(() => {
+                mainImg.src = buildGallerySrc(selectedFile);
+                mainImg.alt = formatCaption(selectedFile);
                 mainImg.style.opacity = '1';
+                swapTimer = null;
             }, 120);
 
             const thumbs = thumbsBox.querySelectorAll('.cinema-thumb');
             thumbs.forEach((thumb, index) => {
                 if (index === currentIndex) {
                     thumb.classList.add('active');
-                    // Środkowanie miniatury na pasku jeśli przewijamy dalej
                     thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                 } else {
                     thumb.classList.remove('active');
@@ -115,28 +146,40 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Obsługa strzałek nawigacji
-        arrowPrev.addEventListener('click', () => {
-            currentIndex = (currentIndex === 0) ? imageFiles.length - 1 : currentIndex - 1;
-            updateCinemaGallery();
-        });
+        if (arrowPrev) {
+            arrowPrev.addEventListener('click', () => {
+                currentIndex = (currentIndex === 0) ? imageFiles.length - 1 : currentIndex - 1;
+                updateCinemaGallery();
+            });
+        }
 
-        arrowNext.addEventListener('click', () => {
-            currentIndex = (currentIndex === imageFiles.length - 1) ? 0 : currentIndex + 1;
-            updateCinemaGallery();
-        });
+        if (arrowNext) {
+            arrowNext.addEventListener('click', () => {
+                currentIndex = (currentIndex === imageFiles.length - 1) ? 0 : currentIndex + 1;
+                updateCinemaGallery();
+            });
+        }
 
-        // Otwieranie pełnego ekranu po kliknięciu w główne zdjęcie kinowe
-        mainImg.addEventListener('click', function() {
-            createOverlay(this);
-        });
+        if (mainImg) {
+            mainImg.addEventListener('click', function () {
+                createOverlay(this);
+            });
+        }
     }
 
     // ==========================================================================
     // 3. WSPÓLNY MODAL / OVERLAY (POWIĘKSZANIE ZDJĘĆ NA CAŁY EKRAN)
     // ==========================================================================
     function createOverlay(img) {
+        if (!img || !img.src) return;
+
+        const existingOverlay = document.getElementById('gallery-lightbox-overlay');
+        if (existingOverlay) {
+            existingOverlay.remove();
+        }
+
         const overlay = document.createElement('div');
+        overlay.id = 'gallery-lightbox-overlay';
         Object.assign(overlay.style, {
             position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
             background: 'rgba(0, 0, 0, 0.9)', display: 'flex', alignItems: 'center',
@@ -146,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const fullImg = document.createElement('img');
         fullImg.src = img.src;
+        fullImg.alt = img.alt || 'Podgląd zdjęcia';
         Object.assign(fullImg.style, {
             maxWidth: '90%', maxHeight: '90%', objectFit: 'contain',
             borderRadius: '8px', boxShadow: '0 0 40px rgba(0,0,0,0.6)'
@@ -154,21 +198,25 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.appendChild(fullImg);
         document.body.appendChild(overlay);
 
-        setTimeout(() => {
+        const fadeInTimer = setTimeout(() => {
             overlay.style.opacity = '1';
         }, 10);
 
+        let isClosing = false;
         const closeOverlay = () => {
+            if (isClosing) return;
+            isClosing = true;
+            clearTimeout(fadeInTimer);
+            document.removeEventListener('keydown', handleEsc);
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.remove();
             }, 300);
-            document.removeEventListener('keydown', handleEsc);
         };
 
-        const handleEsc = (e) => { 
+        const handleEsc = (e) => {
             if (e.key === 'Escape') {
-                closeOverlay(); 
+                closeOverlay();
             }
         };
 
