@@ -76,7 +76,7 @@
 
 .step-badge {
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #000;
+    color: var(--on-accent);
     font-weight: bold;
     padding: 4px 12px;
     border-radius: 4px;
@@ -106,17 +106,6 @@
 /* ==========================================================================
    SEKCJA FAQ, LINKI I PORADY GAMINGOWE
    ========================================================================== */
-
-.inline-link {
-    color: var(--accent);
-    text-decoration: none;
-    transition: var(--transition);
-}
-
-.inline-link:hover {
-    color: var(--accent-2);
-    text-decoration: underline;
-}
 
 .faq-item {
     margin-bottom: 16px;
@@ -164,7 +153,7 @@
 /* Profesjonalna wskazówka */
 .tip-box {
     border-left: 4px solid var(--accent);
-    background: rgba(0, 170, 255, 0.02);
+    background: color-mix(in srgb, var(--accent) 2%, transparent);
     margin-top: 24px;
 }
 
@@ -208,40 +197,12 @@
 .text-justify { text-align: justify; }
 .color-accent-2 { color: var(--accent-2); }
 
-/* ==========================================================================
-   Modyfikacja specyficzna dla CZERWONEGO MOTYWU (Ciało z klasą .theme-red)
-   ========================================================================== */
 
-body.theme-red .step-badge {
-    background: linear-gradient(135deg, #ff0000, #ff6666);
-    color: #fff;
+/* Wyjustowany tekst: dzielenie wyrazów, a na wąskich ekranach wyrównanie do lewej */
+.text-justify {
+    hyphens: auto;
 }
 
-body.theme-red .inline-link {
-    color: #ff0000;
-}
-
-body.theme-red .inline-link:hover {
-    color: #ff6666;
-}
-
-body.theme-red .faq-question {
-    color: #ff3333;
-}
-
-body.theme-red .color-accent-2 {
-    color: #ff3333;
-}
-
-body.theme-red .tool-card h4 {
-    color: #ff0000;
-}
-
-body.theme-red .tool-card:hover {
-    border-color: rgba(255, 0, 0, 0.4);
-}
-
-body.theme-red .tip-box {
-    border-left-color: #ff0000;
-    background: rgba(255, 0, 0, 0.02);
+@media (max-width: 600px) {
+    .text-justify { text-align: left; }
 }

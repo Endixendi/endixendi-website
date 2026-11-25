@@ -1,0 +1,18 @@
+# System
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# Edytory i IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Lokalne
+node_modules/
+*.log
+*.tmp
+.env

@@ -1,5 +1,5 @@
 /* =========================================================================
-   STYLE DLA PODSTRONY NARZĘDZI (tools-all.html)
+   STYLE DLA PODSTRON NARZĘDZI (tools-all.html, tools-rec.html)
    ========================================================================= */
 
 /* Sekcja Hero / Nagłówek strony */
@@ -77,7 +77,7 @@
     border-radius: 8px;
 }
 
-.video-iframe    { height: 200px; }
+.video-iframe { aspect-ratio: 16 / 9; height: auto; }
 .shorts-iframe   { height: 350px; }
 .playlist-iframe { height: 480px; }
 
@@ -142,8 +142,8 @@
 }
 
 .search-input:focus {
-    border-color: var(--accent, #ff0000);
-    box-shadow: 0 0 10px var(--accent-glow, rgba(255, 0, 0, 0.3));
+    border-color: var(--accent);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 /* Nagłówek karty z Badge'em */
@@ -217,13 +217,13 @@
 }
 /* TYLKO AKTYWNY PRZYCISK (podświetlony z dynamicznym kolorem motywu) */
 .filter-btn.active {
-    background: var(--accent, #00aaff) !important; /* Pełny kolor akcentu strony */
-    color: #000000 !important;                     /* Czarny, czytelny napis */
+    background: var(--accent, #00aaff); /* Pełny kolor akcentu strony */
+    color: var(--on-accent);                     /* Czarny, czytelny napis */
     font-weight: 700;
-    opacity: 1 !important;                         /* Pełna widoczność */
-    border: none !important;
+    opacity: 1;                         /* Pełna widoczność */
+    border: none;
     /* Dynamiczny cień idealnie pod kolor motywu (--accent) */
-    box-shadow: 0 0 16px color-mix(in srgb, var(--accent, #00aaff) 60%, transparent) !important;
+    box-shadow: 0 0 16px color-mix(in srgb, var(--accent, #00aaff) 60%, transparent);
     transform: translateY(-1px);
 }
 
@@ -264,15 +264,3 @@
     background-color: #2a2a32;
 }
 
-/* =========================================================================
-   CZERWONY MOTYW (.theme-red)
-   ========================================================================= */
-
-body.theme-red .tools-section-title,
-body.theme-red .tool-card h4 {
-    color: #ff0000;
-}
-
-body.theme-red .tool-card:hover {
-    border-color: rgba(255, 0, 0, 0.4);
-}

@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
             img.alt = description;
             img.loading = 'lazy';
             img.style.opacity = '0';
-            img.style.transition = 'opacity 0.8s ease';
 
             const caption = document.createElement('p');
             caption.className = 'gallery-caption';
@@ -70,8 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.addEventListener('error', handleImageError, { once: true });
             }
 
+            img.tabIndex = 0;
+            img.setAttribute('role', 'button');
             img.addEventListener('click', function () {
                 createOverlay(this);
+            });
+            img.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    createOverlay(this);
+                }
             });
 
             galleryItem.appendChild(loader);
@@ -108,6 +115,15 @@ document.addEventListener('DOMContentLoaded', () => {
             thumb.src = buildGallerySrc(fileName);
             thumb.alt = formatCaption(fileName);
             thumb.className = 'cinema-thumb';
+            thumb.tabIndex = 0;
+            thumb.setAttribute('role', 'button');
+            thumb.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    currentIndex = index;
+                    updateCinemaGallery();
+                }
+            });
             if (index === 0) thumb.classList.add('active');
 
             thumb.addEventListener('click', () => {
@@ -139,7 +155,11 @@ document.addEventListener('DOMContentLoaded', () => {
             thumbs.forEach((thumb, index) => {
                 if (index === currentIndex) {
                     thumb.classList.add('active');
-                    thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    // Przewija tylko pasek miniatur (scrollIntoView przewijałby też całą stronę)
+                    thumbsBox.scrollTo({
+                        left: thumb.offsetLeft - (thumbsBox.clientWidth - thumb.offsetWidth) / 2,
+                        behavior: 'smooth'
+                    });
                 } else {
                     thumb.classList.remove('active');
                 }
@@ -180,6 +200,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const overlay = document.createElement('div');
         overlay.id = 'gallery-lightbox-overlay';
+        overlay.setAttribute('role', 'dialog');
+        overlay.setAttribute('aria-modal', 'true');
+        overlay.setAttribute('aria-label', 'Podgląd zdjęcia (strzałki zmieniają zdjęcie, Escape zamyka)');
         Object.assign(overlay.style, {
             position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
             background: 'rgba(0, 0, 0, 0.9)', display: 'flex', alignItems: 'center',
@@ -214,9 +237,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 300);
         };
 
+        const sources = imageFiles.map(buildGallerySrc);
+        let overlayIndex = sources.findIndex(src => img.src.endsWith(src));
+
         const handleEsc = (e) => {
             if (e.key === 'Escape') {
                 closeOverlay();
+            } else if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && overlayIndex !== -1) {
+                const step = e.key === 'ArrowRight' ? 1 : -1;
+                overlayIndex = (overlayIndex + step + sources.length) % sources.length;
+                fullImg.src = sources[overlayIndex];
+                fullImg.alt = formatCaption(imageFiles[overlayIndex]);
             }
         };
 

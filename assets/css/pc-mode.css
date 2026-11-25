@@ -7,6 +7,7 @@
     padding: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden !important;
     background: #030408 !important;
     font-family: Inter, system-ui, -apple-system, sans-serif;
@@ -15,6 +16,7 @@
 .desktop-arena {
     width: 100vw;
     height: calc(100vh - 50px);
+    height: calc(100dvh - 50px);
     max-width: 100% !important;
     margin: 0 !important;
     padding: 40px !important;
@@ -455,6 +457,7 @@
     .desktop-arena { 
         padding: 15px !important; 
         height: calc(100vh - 55px);
+        height: calc(100dvh - 55px);
     }
     
     /* Ikony układają się w czytelną siatkę na telefonie */
@@ -525,6 +528,7 @@
     .sys-window, #win-notepad, #win-about, #win-browser, #win-term { 
         width: 100vw !important; 
         height: calc(100vh - 55px) !important; 
+        height: calc(100dvh - 55px) !important; 
         top: 0 !important; 
         left: 0 !important; 
         border-radius: 0 !important;
@@ -540,6 +544,7 @@
         right: 0 !important;
         width: 100vw !important;
         height: calc(100vh - 55px) !important;
+        height: calc(100dvh - 55px) !important;
         border-radius: 0 !important;
         border: none !important;
         flex-direction: column !important;

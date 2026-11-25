@@ -14,6 +14,21 @@
     margin-bottom: 20px;
 }
 
+.game-controls-bar .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.fullscreen-toggle-btn {
+    min-width: 38px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
 .status-indicator .highlight {
     color: var(--accent);
     font-weight: 700;
@@ -25,6 +40,21 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    min-width: 0;
+}
+
+/* Poziom, zasady i potwierdzanie strzału: zawijają się w kolejne wiersze zamiast rozpychać stronę */
+.settings-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.settings-row .ghost-select {
+    max-width: 100%;
 }
 
 .ghost-select {
@@ -57,16 +87,17 @@
 .boards-container {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 40px;
     flex-wrap: wrap;
-    width: 100%; /* Zabezpieczenie przed wychodzeniem */
+    width: 100%;
 }
 
 .board-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 100%; /* Bezpieczeństwo na małych ekranach */
+    max-width: 100%;
 }
 
 .board-header {
@@ -96,8 +127,8 @@
 
 .battleship-grid {
     display: grid;
-    grid-template-columns: repeat(10, 32px); 
-    grid-template-rows: repeat(10, 32px);
+    grid-template-columns: repeat(10, var(--cell, 32px)); 
+    grid-template-rows: repeat(10, var(--cell, 32px));
     gap: 2px;
     background: rgba(0, 0, 0, 0.3);
     padding: 5px;
@@ -105,20 +136,22 @@
     border: 1px solid var(--border);
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
     transition: border-color var(--transition);
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-/* Zmiana koloru obramowania siatki po najechaniu, dopasowana do motywu */
 .battleship-grid:hover {
     border-color: color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 /* Komórka planszy */
 .cell {
-    width: 32px;
-    height: 32px;
+    width: var(--cell, 32px);
+    height: var(--cell, 32px);
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.03);
     cursor: crosshair;
+    touch-action: manipulation;
     transition: all 0.2s ease;
     position: relative;
 }
@@ -139,14 +172,12 @@
    Stany komórek (Statki, Trafienia, Pudła)
    ========================================================================== */
 
-/* Statek gracza */
 .player-grid .cell.ship {
     background: color-mix(in srgb, var(--accent) 20%, transparent);
     border-color: var(--accent);
     box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 15%, transparent);
 }
 
-/* Pudło (Miss) */
 .cell.miss::after {
     content: '';
     position: absolute;
@@ -159,11 +190,10 @@
     border-radius: 50%;
 }
 
-/* Trafienie (Hit) */
-.cell.hit {
-    background: rgba(255, 77, 109, 0.15) !important;
-    border-color: #ff4d6d !important;
-    box-shadow: inset 0 0 15px rgba(255, 77, 109, 0.4);
+.battleship-grid .cell.hit {
+    background: color-mix(in srgb, var(--danger) 15%, transparent);
+    border-color: var(--danger);
+    box-shadow: inset 0 0 15px color-mix(in srgb, var(--danger) 40%, transparent);
     animation: flashHit 0.3s ease-out;
 }
 
@@ -174,29 +204,27 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 0.6rem; /* Skalowanie iksa do wielkości komórki */
+    font-size: 0.75rem;
     font-weight: bold;
 }
 
 .cell.hit::before {
-    color: #ff4d6d;
+    color: var(--danger);
 }
 
-/* Zatopiony statek (Sunk) */
-.cell.sunk {
-    background: #ff4d6d !important;
-    border-color: #ff4d6d !important;
-    box-shadow: 0 0 15px rgba(255, 77, 109, 0.6);
+.battleship-grid .cell.sunk {
+    background: var(--danger);
+    border-color: var(--danger);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--danger) 60%, transparent);
 }
 
 .cell.sunk::before {
     color: #000;
 }
 
-/* Animacja trafienia */
 @keyframes flashHit {
     0% { background-color: #fff; }
-    100% { background-color: rgba(255, 77, 109, 0.15); }
+    100% { background-color: color-mix(in srgb, var(--danger) 15%, transparent); }
 }
 
 /* ==========================================================================
@@ -210,7 +238,7 @@
     padding: 0;
     overflow: hidden;
     font-family: 'Courier New', Courier, monospace;
-    width: 100%; /* Bezpieczna szerokość */
+    width: 100%;
     margin-top: 15px;
 }
 
@@ -246,7 +274,7 @@
 }
 
 .log-entry.enemy {
-    color: #ff4d6d;
+    color: var(--danger);
 }
 
 .log-entry.victory {
@@ -254,7 +282,6 @@
     font-weight: bold;
 }
 
-/* Animacja dla logów w trybie Cheater */
 @keyframes glitchText {
     0% { text-shadow: 2px 0 red; }
     50% { text-shadow: -2px 0 blue; }
@@ -267,54 +294,620 @@
     color: #ff0033 !important;
 }
 
-/* ==========================================================================
-   Wsparcie dla CZERWONEGO MOTYWU (Ciało z klasą .theme-red)
-   ========================================================================== */
-
-/* Zmiana podświetleń suwaków zunifikowanych na czerwone */
-body.theme-red .volume-control input[type="range"]::-webkit-slider-thumb {
-    background: #ff0000 !important;
-    box-shadow: 0 0 8px #ff0000 !important;
-}
-
-body.theme-red .volume-control input[type="range"]::-moz-range-thumb {
-    background: #ff0000 !important;
-    box-shadow: 0 0 8px #ff0000 !important;
-}
-
-body.theme-red .player-grid .cell.ship {
-    background: rgba(255, 0, 0, 0.15);
-    border-color: #ff0000;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+/* Własna plansza nie jest klikalna */
+.player-grid .cell {
+    cursor: default;
 }
 
 /* ==========================================================================
-   Responsywność (Media Queries)
+   NOWE ELEMENTY: osie, lista floty, rozstawianie, kadłuby, efekty, statystyki
    ========================================================================== */
 
+/* Osie A-J / 1-10 (litery i cyfry są wewnątrz komórek pierwszego rzędu i kolumny) */
+.board-box .battleship-grid {
+    margin-top: 16px;
+    margin-left: 16px;
+}
+
+.cell .axis {
+    position: absolute;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--muted);
+    pointer-events: none;
+    line-height: 1;
+}
+
+.cell .axis-x {
+    top: -15px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.cell .axis-y {
+    left: -17px;
+    width: 12px;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Lista floty (ikony statków) */
+.fleet-tracker {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 8px;
+    max-width: 100%;
+    margin: 0 0 4px;
+}
+
+.fleet-chip {
+    appearance: none;
+    -webkit-appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    padding: 2px 3px;
+	min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--glass);
+    cursor: default;
+    position: relative;
+    font: inherit;
+    color: inherit;
+}
+
+.fleet-chip .seg {
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--accent);
+}
+
+.fleet-chip.sunk {
+    opacity: 0.5;
+    border-color: var(--danger);
+}
+
+.fleet-chip.sunk .seg {
+    background: var(--danger);
+}
+
+.fleet-chip.sunk::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    top: 50%;
+    height: 2px;
+    background: #fff;
+    transform: rotate(-8deg);
+}
+
+.fleet-chip.placed {
+    opacity: 0.3;
+}
+
+.fleet-chip.selectable {
+    cursor: pointer;
+}
+
+.fleet-chip.selectable:hover {
+    border-color: var(--accent);
+}
+
+.fleet-chip.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+/* Rozstawianie floty */
+.player-grid.placing .cell {
+    cursor: pointer;
+}
+
+.player-grid .cell.preview-ok {
+    background: color-mix(in srgb, var(--accent) 35%, transparent);
+    border-color: var(--accent);
+}
+
+.player-grid .cell.preview-bad {
+    background: color-mix(in srgb, var(--danger) 30%, transparent);
+    border-color: var(--danger);
+}
+
+/* Kadłuby: zaokrąglone tylko końce statku (n-l/n-r/n-t/n-b = sąsiedni segment po danej stronie) */
+.battleship-grid .cell.ship,
+.battleship-grid .cell.hit,
+.battleship-grid .cell.sunk {
+    border-radius: 9px;
+}
+
+.battleship-grid .cell.n-l { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.battleship-grid .cell.n-r { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.battleship-grid .cell.n-t { border-top-left-radius: 0; border-top-right-radius: 0; }
+.battleship-grid .cell.n-b { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+/* Ujawnione statki wroga po zakończeniu gry */
+#computer-grid .cell.ship {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Celowanie (potwierdzenie strzału) i kursor klawiatury */
+#computer-grid .cell.aim {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+    background: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+#computer-grid .cell.kbd {
+    outline: 2px dashed var(--accent);
+    outline-offset: -2px;
+}
+
+/* Bez ramki fokusa wokół całej planszy (kursor klawiatury jest rysowany na polu) */
+#computer-grid:focus,
+#computer-grid:focus-visible {
+    outline: none;
+}
+
+/* Efekty: plusk, wybuch, wstrząs planszy */
+.cell .fx {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.cell .fx-miss {
+    border: 2px solid rgba(120, 180, 255, 0.85);
+    border-radius: 50%;
+    animation: bsRipple 0.65s ease-out forwards;
+}
+
+.cell .fx-hit {
+    background: radial-gradient(circle, #fff 0%, #ffb000 35%, #ff3b3b 60%, transparent 72%);
+    animation: bsBoom 0.5s ease-out forwards;
+}
+
+.cell .fx-sunk {
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 80, 80, 0.5) 55%, transparent 70%);
+    animation: bsBoom 0.7s ease-out forwards;
+}
+
+@keyframes bsRipple {
+    from { transform: scale(0.2); opacity: 1; }
+    to { transform: scale(1.7); opacity: 0; }
+}
+
+@keyframes bsBoom {
+    from { transform: scale(0.3); opacity: 1; }
+    to { transform: scale(2); opacity: 0; }
+}
+
+.battleship-grid.shake {
+    animation: bsShake 0.45s ease-in-out;
+}
+
+@keyframes bsShake {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-4px, 2px); }
+    40% { transform: translate(4px, -2px); }
+    60% { transform: translate(-3px, -2px); }
+    80% { transform: translate(3px, 2px); }
+}
+
+/* Dodatkowe kontrolki w pasku sterowania */
+.bs-label {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.bs-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+#btn-start:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   ROZMIAR KOMÓREK I UKŁAD NA TELEFONACH
+   --cell-base to rozmiar komórki dla danego ekranu, a --cell faktycznie używany przez planszę
+   (własna plansza podczas gry bywa mniejsza). Plansza = 10 komórek + osie i ramki (~46 px).
+   ========================================================================== */
+
+.game-wrapper {
+    --cell-base: 32px;
+    --cell: var(--cell-base);
+}
+
+/* Lista floty nie rozpycha planszy: jej szerokość wynika z planszy, a ikony zawijają się w kolejne wiersze */
+.fleet-tracker {
+    width: 0;
+    min-width: 100%;
+}
+
+/* Telefon w pionie i małe ekrany */
 @media (max-width: 768px) {
+    .game-wrapper {
+        --cell-base: min(30px, calc((100vw - 120px) / 10));
+    }
+
     .game-controls-bar {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         gap: 10px;
     }
-    
-    .battleship-grid {
-        grid-template-columns: repeat(10, 26px);
-        grid-template-rows: repeat(10, 26px);
-    }
-    
-    .cell {
-        width: 26px;
-        height: 26px;
-    }
-    
-    .boards-container {
-        gap: 20px;
+
+    .game-controls-bar .buttons {
+        width: 100%;
     }
 
-    /* Dopasowanie zunifikowanego bloku audio na pełną szerokość */
+    /* Poziom i Zasady obok siebie (etykieta nad listą), "Potwierdź strzał" pod spodem */
+    .settings-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 10px;
+        width: 100%;
+    }
+
+    .settings-row .difficulty-box {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+    }
+
+    .settings-row .ghost-select {
+        width: 100%;
+    }
+
+    .settings-row .bs-check {
+        grid-column: 1 / -1;
+    }
+
+    .game-controls-bar .buttons .btn,
+    .game-controls-bar .buttons .ghost {
+        padding: 8px 12px;
+        font-size: 0.88rem;
+    }
+
+    .boards-container {
+        gap: 18px;
+    }
+
     .audio-settings {
         width: 100%;
+    }
+}
+
+/* Po starcie rozstawianie jest zakończone, więc "Losuj Ustawienie" znika */
+.game-wrapper.is-playing #btn-randomize {
+    display: none;
+}
+
+/* Podczas gry ustawienia są zablokowane, więc na małych ekranach znikają (więcej miejsca na plansze) */
+@media (max-width: 768px), (max-height: 620px) {
+    .game-wrapper.is-playing .settings-row {
+        display: none;
+    }
+}
+
+/* Plansze jedna pod drugą: ważniejsza w danej chwili jest duża, druga to podgląd
+   - rozstawianie: duża własna plansza, wroga mała
+   - walka: duża plansza wroga (tam się strzela), własna jako podgląd */
+@media (max-width: 768px) and (orientation: portrait) {
+    .game-wrapper:not(.is-playing) .enemy-grid {
+        --cell: calc(var(--cell-base) * 0.55);
+    }
+
+    .game-wrapper.is-playing .player-grid {
+        --cell: calc(var(--cell-base) * 0.72);
+    }
+}
+
+@media (max-width: 400px) {
+    .fleet-chip .seg {
+        width: 7px;
+        height: 7px;
+    }
+}
+
+/* Telefon w poziomie, zwykły widok: obie plansze obok siebie i mieszczą się w wysokości ekranu */
+@media (pointer: coarse) and (orientation: landscape) and (max-height: 620px) {
+    .game-wrapper:not(.is-fullscreen):not(:fullscreen) {
+        --cell-base: clamp(18px, min(calc((100vw - 190px) / 20), calc((100dvh - 120px) / 10)), 32px);
+        padding: 10px 14px;
+    }
+
+    .game-wrapper:not(.is-fullscreen):not(:fullscreen) .boards-container {
+        flex-wrap: nowrap;
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .game-wrapper:not(.is-fullscreen):not(:fullscreen) .board-box {
+        flex: 0 0 auto;
+    }
+
+    .game-wrapper:not(.is-fullscreen):not(:fullscreen) .game-log-container {
+        margin-top: 10px;
+    }
+
+    .game-wrapper:not(.is-fullscreen):not(:fullscreen) .log-content {
+        height: 80px;
+    }
+}
+
+/* ==========================================================================
+   TRYB PEŁNOEKRANOWY (Natywny Fullscreen API + Fallback dla iOS)
+   Kontener to kolumna: pasek sterowania / plansze (wypełniają resztę) / dziennik
+   ========================================================================== */
+
+.game-wrapper.is-fullscreen,
+.game-wrapper:fullscreen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    margin: 0;
+    border-radius: 0;
+    background: #0a0c10;
+    z-index: 99999;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    /* pion, rozstawianie: duża własna plansza + mała wroga (rozmiar ogranicza szerokość i wysokość ekranu) */
+    --cell-base: clamp(20px, min(calc((100vw - 70px) / 10), calc((100dvh - 410px) / 15)), 36px);
+}
+
+/* pion, walka: duża plansza wroga + mała własna */
+@media (orientation: portrait) {
+    .game-wrapper.is-fullscreen,
+    .game-wrapper:fullscreen {
+        --cell-base: clamp(16px, min(calc((100vw - 70px) / 10), calc((100dvh - 455px) / 15.5)), 36px);
+    }
+
+    .game-wrapper.is-fullscreen.is-playing,
+    .game-wrapper:fullscreen.is-playing {
+        --cell-base: clamp(16px, min(calc((100vw - 70px) / 10), calc((100dvh - 350px) / 17.2)), 36px);
+    }
+
+    /* rozstawianie: dziennik i lista floty wroga są zbędne, a liczy się każdy piksel wysokości */
+    .game-wrapper.is-fullscreen:not(.is-playing) .game-log-container,
+    .game-wrapper:fullscreen:not(.is-playing) .game-log-container,
+    .game-wrapper.is-fullscreen:not(.is-playing) .enemy-fleet,
+    .game-wrapper:fullscreen:not(.is-playing) .enemy-fleet {
+        display: none;
+    }
+
+    @media (max-height: 700px) {
+        .game-wrapper.is-fullscreen:not(.is-playing) .board-box:nth-child(2),
+        .game-wrapper:fullscreen:not(.is-playing) .board-box:nth-child(2) {
+            display: none;
+        }
+    }
+
+    /* walka: status i przyciski w jednym wierszu, bez listy floty własnej i nagłówka dziennika */
+    .game-wrapper.is-fullscreen.is-playing .game-controls-bar,
+    .game-wrapper:fullscreen.is-playing .game-controls-bar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 6px;
+    }
+
+    .game-wrapper.is-fullscreen.is-playing .game-controls-bar .buttons,
+    .game-wrapper:fullscreen.is-playing .game-controls-bar .buttons {
+        width: auto;
+    }
+
+    .game-wrapper.is-fullscreen.is-playing .player-fleet,
+    .game-wrapper:fullscreen.is-playing .player-fleet,
+    .game-wrapper.is-fullscreen.is-playing .log-header,
+    .game-wrapper:fullscreen.is-playing .log-header {
+        display: none;
+    }
+
+    .game-wrapper.is-fullscreen.is-playing .log-content,
+    .game-wrapper:fullscreen.is-playing .log-content {
+        height: 52px;
+    }
+}
+
+.game-wrapper.is-fullscreen .game-controls-bar,
+.game-wrapper:fullscreen .game-controls-bar {
+    padding-bottom: 8px;
+    margin-bottom: 0;
+    gap: 6px 12px;
+}
+
+.game-wrapper.is-fullscreen .boards-container,
+.game-wrapper:fullscreen .boards-container {
+    flex: 1 1 auto;
+    margin-top: 0;
+    gap: 10px 40px;
+    align-content: center;
+    align-items: center;
+}
+
+/* w pionie podczas walki plansza wroga jest na górze */
+@media (orientation: portrait) {
+    .game-wrapper.is-fullscreen.is-playing .board-box:nth-child(2),
+    .game-wrapper:fullscreen.is-playing .board-box:nth-child(2) {
+        order: -1;
+    }
+}
+
+.game-wrapper.is-fullscreen .board-header,
+.game-wrapper:fullscreen .board-header {
+    margin-bottom: 4px;
+    padding-bottom: 2px;
+}
+
+.game-wrapper.is-fullscreen .game-log-container,
+.game-wrapper:fullscreen .game-log-container {
+    flex: 0 0 auto;
+    margin-top: 0;
+}
+
+.game-wrapper.is-fullscreen .log-content,
+.game-wrapper:fullscreen .log-content {
+    height: 60px;
+    font-size: 12px;
+    padding: 6px 8px;
+}
+
+/* Poziom (telefon i tablet): plansze obok siebie, komórki skalują się do wysokości i szerokości */
+@media (orientation: landscape) {
+    .game-wrapper.is-fullscreen,
+    .game-wrapper:fullscreen {
+        --cell-base: clamp(16px, min(calc((100vw - 24px - 108px) / 20), calc((100dvh - 250px) / 10)), 44px);
+    }
+
+    .game-wrapper.is-fullscreen .boards-container,
+    .game-wrapper:fullscreen .boards-container {
+        flex-wrap: nowrap;
+        gap: min(5vw, 56px);
+    }
+}
+
+/* Niski ekran w poziomie (telefon): pasek sterowania zmienia się w kolumnę po lewej,
+   a cała reszta wysokości idzie na plansze i dziennik */
+@media (orientation: landscape) and (max-height: 620px) {
+    .game-wrapper.is-fullscreen,
+    .game-wrapper:fullscreen {
+        --cell-base: clamp(16px, min(calc((100vw - 330px) / 20), calc((100dvh - 128px) / 10)), 36px);
+        display: grid;
+        grid-template-columns: 176px minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "bar boards"
+            "bar log";
+        gap: 6px 12px;
+        padding: 6px 10px;
+        overflow: hidden;
+    }
+
+    .game-wrapper.is-fullscreen .game-controls-bar,
+    .game-wrapper:fullscreen .game-controls-bar {
+        grid-area: bar;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 8px;
+        margin: 0;
+        padding: 0 10px 0 0;
+        border-bottom: 0;
+        border-right: 1px solid var(--border);
+        overflow-y: auto;
+    }
+
+    .game-wrapper.is-fullscreen:not(.is-playing) .settings-row,
+    .game-wrapper:fullscreen:not(.is-playing) .settings-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+
+    .game-wrapper.is-fullscreen .settings-row .difficulty-box,
+    .game-wrapper:fullscreen .settings-row .difficulty-box {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .game-wrapper.is-fullscreen .settings-row .ghost-select,
+    .game-wrapper:fullscreen .settings-row .ghost-select {
+        width: 104px;
+        min-width: 0;
+        padding: 4px 6px;
+        font-size: 0.82rem;
+    }
+
+    /* przyciski w siatce 2 kolumn: Obróć i Wyczyść obok siebie, reszta na całą szerokość */
+    .game-wrapper.is-fullscreen .game-controls-bar .buttons,
+    .game-wrapper:fullscreen .game-controls-bar .buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+        width: 100%;
+        gap: 6px;
+    }
+
+    .game-wrapper.is-fullscreen .buttons #btn-randomize,
+    .game-wrapper:fullscreen .buttons #btn-randomize,
+    .game-wrapper.is-fullscreen .buttons #btn-start,
+    .game-wrapper:fullscreen .buttons #btn-start,
+    .game-wrapper.is-fullscreen .buttons #btn-restart,
+    .game-wrapper:fullscreen .buttons #btn-restart,
+    .game-wrapper.is-fullscreen .buttons #btn-fullscreen,
+    .game-wrapper:fullscreen .buttons #btn-fullscreen {
+        grid-column: 1 / -1;
+    }
+
+    .game-wrapper.is-fullscreen .game-controls-bar .buttons .btn,
+    .game-wrapper.is-fullscreen .game-controls-bar .buttons .ghost,
+    .game-wrapper:fullscreen .game-controls-bar .buttons .btn,
+    .game-wrapper:fullscreen .game-controls-bar .buttons .ghost {
+        padding: 6px 10px;
+        font-size: 0.82rem;
+    }
+
+    .game-wrapper.is-fullscreen .boards-container,
+    .game-wrapper:fullscreen .boards-container {
+        grid-area: boards;
+        gap: 16px;
+        margin: 0;
+    }
+
+    .game-wrapper.is-fullscreen .game-log-container,
+    .game-wrapper:fullscreen .game-log-container {
+        grid-area: log;
+    }
+
+    /* lista floty zajmuje cenną wysokość - zostaje liczba statków w nagłówku planszy */
+    .game-wrapper.is-fullscreen .fleet-tracker,
+    .game-wrapper:fullscreen .fleet-tracker {
+        display: none;
+    }
+
+    .game-wrapper.is-fullscreen .board-box .battleship-grid,
+    .game-wrapper:fullscreen .board-box .battleship-grid {
+        margin-top: 14px;
+        margin-left: 14px;
+    }
+
+    .game-wrapper.is-fullscreen .log-header,
+    .game-wrapper:fullscreen .log-header {
+        display: none;
+    }
+
+    .game-wrapper.is-fullscreen .log-content,
+    .game-wrapper:fullscreen .log-content {
+        height: 44px;
+        padding: 4px 8px;
     }
 }

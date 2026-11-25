@@ -1,634 +1,562 @@
 /**
  * Główny skrypt strony Endixendi
- * Ładuje częściowe szablony, obsługuje menu i podstawowe funkcje
+ * Ładuje częściowe szablony (menu, stopka), obsługuje nawigację, motywy,
+ * efekty sezonowe i panele skrótów. Wymaga wcześniej załadowanego storage.js.
  */
-
-// Globalne zmienne dla interwału i ikony, aby były dostępne wszędzie
-let particleInterval = null;
-let currentSeasonalIcon = "😎"; // Domyślna ikona awaryjna
-
 (function () {
   'use strict';
 
-  // Ścieżki do plików częściowych
-  const MENU_PATH = "menu.html";
-  const FOOTER_PATH = "footer.html";
+  /* =========================
+     Stałe i stan
+     ========================= */
+  const MENU_PATH = 'menu.html';   
+  const FOOTER_PATH = 'footer.html';
+  const MOBILE_BP = 1200;              // poniżej: menu hamburger
+  const PANELS_BP = 1450;              // powyżej: boczne panele skrótów (mieszczą się obok treści)
+  const MIN_LOADER_MS = 150;
+  const MAX_LOADER_MS = 3000;
 
-  const MANUAL_THEMES = ["", "theme-red", "theme-green", "theme-blue"];
+  const GAME_PAGES = ['dino', 'tetris', 'shooter', 'battleship', 'pc-mode'];
+  const TOOL_PAGES = ['tools-rec', 'tools-all', 'linux'];
+
+  const MANUAL_THEMES = ['theme-red', 'theme-green', 'theme-blue'];
   const SEASONAL_THEMES = [
-    "theme-birthday",
-    "theme-new",
-    "theme-winter",
-    "theme-spring",
-    "theme-summer",
-    "theme-autumn",
-    "theme-patriotic",
-    "theme-youtube"
+    'theme-birthday', 'theme-new', 'theme-winter', 'theme-spring',
+    'theme-summer', 'theme-autumn', 'theme-patriotic', 'theme-youtube'
+  ];
+  const THEME_CYCLE = [
+    { cls: '', text: 'Styl: Kalendarz' },
+    { cls: 'theme-red', text: 'Styl: Czerwony' },
+    { cls: 'theme-green', text: 'Styl: Zielony' },
+    { cls: 'theme-blue', text: 'Styl: Niebieski' }
   ];
 
-  // Stan aplikacji
-  const state = {
-    menuLoaded: false,
-    footerLoaded: false
-  };
+  const state = { particleInterval: null, seasonalIcon: '😎' };
 
   /* =========================
-     Helper: wczytaj HTML do kontenera
+     Pomocnicze
      ========================= */
-  function loadHTML(targetId, path) {
-    return new Promise((resolve, reject) => {
-      const target = document.getElementById(targetId);
-      if (!target) {
-        resolve();
-        return;
-      }
+  const $ = (id) => document.getElementById(id);
+  const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      fetch(path)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Fetch ${path} failed: ${response.status}`);
-          }
-          return response.text();
-        })
-        .then(html => {
-          target.innerHTML = html;
-          resolve();
-        })
-        .catch(error => {
-          console.error("Błąd ładowania:", path, error);
-          reject(error);
-        });
-    });
+  // "/index.html" == "/", "/dino.html" == "/dino"
+  function normalizePath(path) {
+    return path.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '').replace(/\/+$/, '') || '/';
+  }
+
+  function currentPage() {
+    return normalizePath(window.location.pathname).split('/').pop().toLowerCase(); // '' = strona główna
   }
 
   /* =========================
-     Ładowanie partiali (menu + footer)
+     Ładowanie partiali (menu + stopka)
      ========================= */
+  function loadHTML(targetId, path) {
+    const target = $(targetId);
+    if (!target) return Promise.resolve();
+
+    return fetch(path)
+      .then((response) => {
+        if (!response.ok) throw new Error(`Fetch ${path} failed: ${response.status}`);
+        return response.text();
+      })
+      .then((html) => { target.innerHTML = html; })
+      .catch((error) => { console.error('Błąd ładowania:', path, error); });
+  }
+
   function loadPartials() {
-    Promise.all([
-      loadHTML("menu-placeholder", MENU_PATH).then(() => {
-        state.menuLoaded = true;
+    return Promise.all([
+      loadHTML('menu-placeholder', MENU_PATH).then(() => {
         initMenuToggle();
         highlightActiveNav();
       }),
-      loadHTML("footer-placeholder", FOOTER_PATH).then(() => {
-        state.footerLoaded = true;
+      loadHTML('footer-placeholder', FOOTER_PATH).then(() => {
         updateFloatingTopBtn();
       })
-    ]).catch(error => {
-      console.error("Błąd podczas ładowania partiali:", error);
-    });
+    ]);
   }
 
-  /* ==========================================================================
-     Pływający przycisk "Wróć na górę" z płynnym przewijaniem
-     ========================================================================== */
-  function updateFloatingTopBtn() {
-    const floatingTopBtn = document.getElementById('js-floating-top');
-    if (!floatingTopBtn) return;
+  function hideLoader() {
+    const loader = $('loader');
+    if (loader) loader.classList.add('loader-hidden');
+  }
 
-    // Jeśli strona ma własny przycisk back-to-top (np. tools-all.html), nie dublujemy go
-    const localBackToTop = document.getElementById('back-to-top-btn');
-    if (localBackToTop) {
-      floatingTopBtn.classList.remove('show');
-      floatingTopBtn.style.display = 'none';
+  /* =========================
+     Pływający przycisk "Wróć na górę"
+     ========================= */
+  function updateFloatingTopBtn() {
+    const btn = $('js-floating-top');
+    if (!btn) return;
+
+    // Strona z własnym przyciskiem (tools-all.html) - nie dublujemy
+    if ($('back-to-top-btn')) {
+      btn.classList.remove('show');
+      btn.style.display = 'none';
       return;
     }
 
-    floatingTopBtn.style.display = '';
-    if (window.scrollY > 300) {
-      floatingTopBtn.classList.add('show');
-    } else {
-      floatingTopBtn.classList.remove('show');
-    }
+    btn.style.display = '';
+    btn.classList.toggle('show', window.scrollY > 300);
   }
 
   function initFloatingTopBtn() {
     window.addEventListener('scroll', updateFloatingTopBtn, { passive: true });
     window.addEventListener('resize', updateFloatingTopBtn, { passive: true });
-
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest('#js-floating-top');
-      if (!btn) return;
-      e.preventDefault();
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-
     updateFloatingTopBtn();
   }
 
   /* =========================
-     Inicjalizacja toggle menu (hamburger) i rozwijanie grup na mobilkach
+     Menu: hamburger, dropdowny, dostępność
      ========================= */
-  function closeMobileMenu() {
-    const menuToggle = document.getElementById("menu-toggle");
-    const mainNav = document.getElementById("main-nav");
-
-    if (mainNav) {
-      mainNav.classList.remove("show");
-      mainNav.style.display = "";
-    }
-    if (menuToggle) {
-      menuToggle.textContent = "☰";
-    }
-    document.querySelectorAll(".dropdown.open").forEach(drop => {
-      drop.classList.remove("open");
+  function closeDropdowns() {
+    document.querySelectorAll('.dropdown.open').forEach((drop) => {
+      drop.classList.remove('open');
+      const btn = drop.querySelector('.dropbtn');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
     });
+  }
+
+  function setMenuOpen(open) {
+    const toggle = $('menu-toggle');
+    const nav = $('main-nav');
+    if (!toggle || !nav) return;
+
+    nav.classList.toggle('show', open);
+    toggle.textContent = open ? '✕' : '☰';
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Zamknij menu nawigacji' : 'Otwórz menu nawigacji');
+    if (!open) closeDropdowns();
   }
 
   function initMenuToggle() {
-    const menuToggle = document.getElementById("menu-toggle");
-    const mainNav = document.getElementById("main-nav");
-    if (!menuToggle || !mainNav) return;
+    const toggle = $('menu-toggle');
+    const nav = $('main-nav');
+    if (!toggle || !nav) return;
 
-    const handleResize = () => {
-      if (window.innerWidth > 1200) {
-        closeMobileMenu();
-      }
-    };
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (window.innerWidth > MOBILE_BP) return;
+      setMenuOpen(!nav.classList.contains('show'));
+    });
 
-    if (!menuToggle.dataset.bound) {
-      menuToggle.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (window.innerWidth > 1200) return;
-
-        const isOpen = mainNav.classList.toggle("show");
-        mainNav.style.display = "";
-        menuToggle.textContent = isOpen ? "✕" : "☰";
+    nav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= MOBILE_BP) setMenuOpen(false);
       });
-      menuToggle.dataset.bound = "true";
-    }
+    });
 
-    if (!mainNav.dataset.linksBound) {
-      mainNav.querySelectorAll("a").forEach(link => {
-        link.addEventListener("click", () => {
-          if (window.innerWidth <= 1200) {
-            closeMobileMenu();
-          }
-        });
-      });
-      mainNav.dataset.linksBound = "true";
-    }
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > MOBILE_BP) setMenuOpen(false);
+    });
 
-    if (!window.__menuResizeBound) {
-      window.addEventListener("resize", handleResize);
-      window.__menuResizeBound = true;
-    }
-
-    handleResize();
+    setMenuOpen(false);
   }
 
-  function initDropdownDelegation() {
-    if (document.__dropdownDelegationBound) return;
-    document.__dropdownDelegationBound = true;
+  function initMenuGlobalHandlers() {
+    // Dropdowny na mobile: klik rozwija/zwija grupę
+    document.addEventListener('click', (e) => {
+      const dropBtn = e.target.closest('.dropbtn');
 
-    document.addEventListener("click", (e) => {
-      const dropBtn = e.target.closest(".dropbtn");
-      if (dropBtn && window.innerWidth <= 1200) {
+      if (dropBtn && window.innerWidth <= MOBILE_BP) {
         e.preventDefault();
-        const parentDropdown = dropBtn.closest(".dropdown");
-        if (parentDropdown) {
-          document.querySelectorAll(".dropdown").forEach(drop => {
-            if (drop !== parentDropdown) {
-              drop.classList.remove("open");
-            }
-          });
-          parentDropdown.classList.toggle("open");
-        }
+        const parent = dropBtn.closest('.dropdown');
+        if (!parent) return;
+        const willOpen = !parent.classList.contains('open');
+        closeDropdowns();
+        parent.classList.toggle('open', willOpen);
+        dropBtn.setAttribute('aria-expanded', String(willOpen));
+        return;
+      }
+
+      // Klik poza nagłówkiem zamyka menu mobilne
+      const nav = $('main-nav');
+      if (nav && nav.classList.contains('show') && !e.target.closest('header')) {
+        setMenuOpen(false);
       }
     });
+
+    // Escape zamyka menu
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const nav = $('main-nav');
+      if (nav && nav.classList.contains('show')) {
+        setMenuOpen(false);
+        const toggle = $('menu-toggle');
+        if (toggle) toggle.focus();
+      }
+      closeDropdowns();
+    });
+
+    // Desktop: aria-expanded zgodne z hoverem / fokusem
+    const syncDesktop = (e, expanded) => {
+      if (window.innerWidth <= MOBILE_BP || !e.target.closest) return;
+      const drop = e.target.closest('.dropdown');
+      if (!drop) return;
+      if (!expanded && drop.contains(e.relatedTarget)) return;
+      const btn = drop.querySelector('.dropbtn');
+      if (btn) btn.setAttribute('aria-expanded', String(expanded));
+    };
+    ['mouseover', 'focusin'].forEach((t) => document.addEventListener(t, (e) => syncDesktop(e, true)));
+    ['mouseout', 'focusout'].forEach((t) => document.addEventListener(t, (e) => syncDesktop(e, false)));
   }
 
   /* =========================
-     Redirecty (hash i ścieżki)
+     Przekierowania i Donate
      ========================= */
   function checkForRedirects() {
     const shouldRedirect = (
-      location.hash === "#social" ||
-      location.hash === "#media" ||
-      location.pathname.endsWith("/social")
+      location.hash === '#social' ||
+      location.hash === '#media' ||
+      location.pathname.endsWith('/social')
     );
-
-    if (shouldRedirect) {
-      window.location.replace("https://linktr.ee/endixendi");
-    }
+    if (shouldRedirect) window.location.replace('https://linktr.ee/endixendi');
   }
 
-  /* =========================
-     Obsługa przycisku Donate
-     ========================= */
   function initDonateButton() {
-    const donateBtn = document.getElementById("donate-btn");
+    const donateBtn = $('donate-btn');
     if (donateBtn && !donateBtn.dataset.bound) {
-      donateBtn.addEventListener("click", () => {
-        window.open("https://tipply.pl/@endixendi", "_blank");
+      donateBtn.addEventListener('click', () => {
+        window.open('https://tipply.pl/@endixendi', '_blank', 'noopener');
       });
-      donateBtn.dataset.bound = "true";
+      donateBtn.dataset.bound = 'true';
     }
   }
 
   /* =========================
-     Smooth scroll
+     Smooth scroll (linki #kotwice na tej samej stronie)
      ========================= */
   function initSmoothScroll() {
-    if (document.__smoothScrollBound) return;
-    document.__smoothScrollBound = true;
+    document.addEventListener('click', (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
-    document.addEventListener("click", function (e) {
-      const trigger = e.target.closest("a, [data-scroll]");
+      const trigger = e.target.closest('a, [data-scroll]');
       if (!trigger) return;
 
-      let targetHash = trigger.getAttribute("data-scroll");
+      let hash = trigger.getAttribute('data-scroll');
 
-      if (!targetHash && trigger.tagName === "A") {
-        const href = trigger.getAttribute("href");
-        if (!href || !href.includes("#")) return;
+      if (!hash && trigger.tagName === 'A') {
+        const href = trigger.getAttribute('href');
+        if (!href || !href.includes('#')) return;
 
+        let url;
         try {
-          const url = new URL(href, window.location.href);
-          if (url.pathname !== window.location.pathname) return;
-          targetHash = url.hash;
+          url = new URL(href, window.location.href);
         } catch (error) {
-          console.error("Błąd parsowania URL:", error);
           return;
         }
+        if (url.origin !== window.location.origin) return;
+        if (normalizePath(url.pathname) !== normalizePath(window.location.pathname)) return;
+        hash = url.hash;
       }
 
-      if (!targetHash || targetHash === "#") return;
+      if (!hash || hash === '#') return;
 
-      const targetElement = document.querySelector(targetHash);
-      if (!targetElement) return;
+      let id;
+      try {
+        id = decodeURIComponent(hash.slice(1));
+      } catch (error) {
+        return;
+      }
+
+      const behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+      const target = $(id);
+
+      if (!target) {
+        if (id === 'top') {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior });
+        }
+        return;
+      }
 
       e.preventDefault();
-      targetElement.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
+      target.scrollIntoView({ behavior, block: 'start' });
+      history.pushState(null, '', hash);
+      highlightActiveNav();
 
-      history.pushState(null, null, targetHash);
-      if (typeof highlightActiveNav === "function") {
-        highlightActiveNav();
-      }
+      if (window.innerWidth <= MOBILE_BP) setMenuOpen(false);
+    });
+  }
 
-      if (window.innerWidth <= 1200) {
-        closeMobileMenu();
+  /* =========================
+     Podświetlanie aktywnej zakładki w menu
+     ========================= */
+  function highlightActiveNav() {
+    const page = currentPage();
+    const hash = window.location.hash.toLowerCase();
+
+    const ids = ['nav-home', 'nav-o-mnie', 'nav-kontakt', 'nav-profile', 'nav-tools', 'nav-games', 'nav-socials'];
+    ids.forEach((id) => {
+      const el = $(id);
+      if (el) {
+        el.classList.remove('active');
+        el.removeAttribute('aria-current');
       }
     });
+
+    let activeId = null;
+
+    if (GAME_PAGES.includes(page)) activeId = 'nav-games';
+    else if (TOOL_PAGES.includes(page)) activeId = 'nav-tools';
+    else if (page === 'gallery') activeId = 'nav-profile';
+    else if (page === 'media') activeId = 'nav-socials';
+    else if (page === '' || page === 'index') {
+      if (hash === '#o-mnie') activeId = 'nav-o-mnie';
+      else if (hash === '#kontakt') activeId = 'nav-kontakt';
+      else if (hash === '#pc' || hash === '#tworczosc') activeId = 'nav-profile';
+      else activeId = 'nav-home';
+    }
+    // polityka, regulamin, 404 - brak podświetlenia
+
+    const active = activeId && $(activeId);
+    if (active) {
+      active.classList.add('active');
+      if (active.tagName === 'A') active.setAttribute('aria-current', 'page');
+    }
   }
 
   /* =========================
      Motywy: ręczne i sezonowe
      ========================= */
-  function clearManualThemes() {
-    document.body.classList.remove("theme-red", "theme-green", "theme-blue");
-  }
-
-  function clearSeasonalThemes() {
-    document.body.classList.remove(...SEASONAL_THEMES);
-  }
-
   function initThemeSystem() {
-    const themes = [
-      { class: "", text: "Styl: Kalendarz" },
-      { class: "theme-red", text: "Styl: Czerwony" },
-      { class: "theme-green", text: "Styl: Zielony" },
-      { class: "theme-blue", text: "Styl: Niebieski" }
-    ];
+    let index = parseInt(store.get('theme-cycle-index', '0'), 10);
+    if (isNaN(index) || index < 0 || index >= THEME_CYCLE.length) index = 0;
 
-    let currentThemeIndex = parseInt(localStorage.getItem("theme-cycle-index") || "0", 10);
-    if (isNaN(currentThemeIndex) || currentThemeIndex < 0 || currentThemeIndex >= themes.length) {
-      currentThemeIndex = 0;
-    }
+    const themeBtn = $('red-theme-btn');
 
-    const redBtn = document.getElementById("red-theme-btn");
-
-    const applyManualTheme = (index) => {
-      clearManualThemes();
-      clearSeasonalThemes();
-      if (themes[index].class) {
-        document.body.classList.add(themes[index].class);
-      }
-      localStorage.setItem("theme-cycle-index", String(index));
-
-      if (redBtn) {
-        const nextIndex = (index + 1) % themes.length;
-        redBtn.textContent = themes[nextIndex].text;
-      }
-
-      if (typeof highlightActiveNav === "function") {
-        highlightActiveNav();
-      }
+    const applyManualTheme = (i) => {
+      document.body.classList.remove(...MANUAL_THEMES, ...SEASONAL_THEMES);
+      if (THEME_CYCLE[i].cls) document.body.classList.add(THEME_CYCLE[i].cls);
+      store.set('theme-cycle-index', i);
+      if (themeBtn) themeBtn.textContent = THEME_CYCLE[(i + 1) % THEME_CYCLE.length].text;
     };
 
-    if (currentThemeIndex > 0) {
-      applyManualTheme(currentThemeIndex);
-      initSeasonalSystem(); // Upewnia się, że cząsteczki i święto są wyłączone
+    if (index > 0) {
+      applyManualTheme(index);
+      initSeasonalSystem(); // wyłącza cząsteczki przy ręcznym motywie
     } else {
-      const isSpecialDayActive = initSeasonalSystem();
-      if (!isSpecialDayActive) {
-        applyManualTheme(0);
-      } else if (redBtn) {
-        redBtn.textContent = themes[1].text;
-      }
+      const special = initSeasonalSystem();
+      if (!special) applyManualTheme(0);
+      else if (themeBtn) themeBtn.textContent = THEME_CYCLE[1].text;
     }
 
-    if (redBtn && !redBtn.dataset.bound) {
-      redBtn.addEventListener("click", () => {
-        currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    if (themeBtn && !themeBtn.dataset.bound) {
+      themeBtn.addEventListener('click', () => {
+        index = (index + 1) % THEME_CYCLE.length;
 
-        if (currentThemeIndex === 0) {
-          localStorage.setItem("theme-cycle-index", "0");
-          clearManualThemes();
-          const isSpecialDayActive = initSeasonalSystem();
-          if (!isSpecialDayActive) {
-            applyManualTheme(0);
-          } else {
-            redBtn.textContent = themes[1].text;
-            if (typeof highlightActiveNav === "function") {
-              highlightActiveNav();
-            }
-          }
+        if (index === 0) {
+          store.set('theme-cycle-index', 0);
+          document.body.classList.remove(...MANUAL_THEMES);
+          const special = initSeasonalSystem();
+          if (!special) applyManualTheme(0);
+          else themeBtn.textContent = THEME_CYCLE[1].text;
         } else {
-          applyManualTheme(currentThemeIndex);
+          applyManualTheme(index);
           initSeasonalSystem();
         }
+        highlightActiveNav();
       });
-      redBtn.dataset.bound = "true";
+      themeBtn.dataset.bound = 'true';
     }
   }
 
   /* =========================
-     Inicjalizacja wszystkich komponentów
+     Efekty sezonowe
      ========================= */
-  function init() {
-    const loader = document.getElementById("loader");
-    if (loader) {
-      setTimeout(() => {
-        loader.classList.add("loader-hidden");
-      }, 150);
+  function getEaster(year) {
+    const a = year % 19, b = Math.floor(year / 100), c = year % 100,
+      d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25),
+      g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30,
+      i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7,
+      m = Math.floor((a + 11 * h + 22 * l) / 451),
+      month = Math.floor((h + l - 7 * m + 114) / 31),
+      day = ((h + l - 7 * m + 114) % 31) + 1;
+    return new Date(year, month - 1, day);
+  }
+
+  function stopParticles() {
+    if (state.particleInterval) {
+      clearInterval(state.particleInterval);
+      state.particleInterval = null;
     }
-
-    loadPartials();
-    checkForRedirects();
-    initDonateButton();
-    initSmoothScroll();
-    initFloatingTopBtn();
-    initDropdownDelegation();
-    initThemeSystem();
-
-    window.addEventListener("hashchange", checkForRedirects);
+    document.querySelectorAll('.seasonal-particle').forEach((p) => p.remove());
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-})();
-
-// --- FUNKCJA OBLICZAJĄCA WIELKANOC ---
-function getEaster(year) {
-  const a = year % 19, b = Math.floor(year / 100), c = year % 100,
-    d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25),
-    g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30,
-    i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7,
-    m = Math.floor((a + 11 * h + 22 * l) / 451),
-    month = Math.floor((h + l - 7 * m + 114) / 31),
-    day = ((h + l - 7 * m + 114) % 31) + 1;
-  return new Date(year, month - 1, day);
-}
-
-function stopParticles() {
-  if (particleInterval) {
-    clearInterval(particleInterval);
-    particleInterval = null;
-  }
-  document.querySelectorAll('.seasonal-particle').forEach(p => p.remove());
-}
-
-function initSeasonalSystem() {
-  const currentThemeIndex = parseInt(localStorage.getItem("theme-cycle-index") || "0", 10);
-  const toggleBtn = document.getElementById('toggle-effects-btn');
-
-  // Jeśli użytkownik wybrał ręcznie kolor, kalendarz nie nadpisuje motywu
-  if (currentThemeIndex > 0) {
+  function startParticles(icon) {
     stopParticles();
-    if (toggleBtn) toggleBtn.style.display = 'none';
-    return false;
+
+    // Bez cząsteczek w grach / PC Mode i przy ograniczonym ruchu w systemie
+    if (GAME_PAGES.includes(currentPage()) || prefersReducedMotion()) return;
+    if (document.body.classList.contains('effects-off')) return;
+
+    state.particleInterval = setInterval(() => {
+      if (document.hidden) return;
+      if (document.body.classList.contains('effects-off')) {
+        stopParticles();
+        return;
+      }
+
+      const p = document.createElement('div');
+      p.className = 'seasonal-particle';
+      p.textContent = icon;
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      p.style.fontSize = (Math.random() * 15 + 10) + 'px';
+      document.body.appendChild(p);
+
+      setTimeout(() => p.remove(), 5000);
+    }, 400);
   }
 
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1;
-  const day = now.getDate();
-  const dateStr = `${day.toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}`;
+  function getSeasonalEvent(now) {
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    const dateStr = `${String(day).padStart(2, '0')}.${String(month).padStart(2, '0')}`;
 
-  const easter = getEaster(year);
-  const easterMon = new Date(easter); easterMon.setDate(easter.getDate() + 1);
-  const zieloneSwiatki = new Date(easter); zieloneSwiatki.setDate(easter.getDate() + 49);
-  const bozeCialo = new Date(easter); bozeCialo.setDate(easter.getDate() + 60);
+    const easter = getEaster(year);
+    const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+    const sameDay = (a, b) => a.toDateString() === b.toDateString();
 
-  const isSameDay = (d1, d2) => d1.toDateString() === d2.toDateString();
+    const fixed = {
+      '07.06': ['theme-birthday', '🎁'], '01.01': ['theme-new', '🎆'], '06.01': ['theme-winter', '👑'],
+      '01.05': ['theme-patriotic', '🛠️'], '03.05': ['theme-patriotic', '🇵🇱'], '07.07': ['theme-youtube', '🎬'],
+      '15.08': ['theme-patriotic', '🎖️'], '01.11': ['theme-autumn', '🕯️'], '11.11': ['theme-patriotic', '🇵🇱'],
+      '24.12': ['theme-winter', '🎄'], '25.12': ['theme-winter', '🎅'], '26.12': ['theme-winter', '🎅'],
+      '21.03': ['theme-spring', '🌱'], '21.06': ['theme-summer', '☀️'], '23.09': ['theme-autumn', '🍂'],
+      '21.12': ['theme-winter', '❄️']
+    };
 
-  let eventInfo = { theme: "", icon: "", active: false };
+    if (fixed[dateStr]) return { theme: fixed[dateStr][0], icon: fixed[dateStr][1] };
+    if (sameDay(now, easter)) return { theme: 'theme-spring', icon: '🐣' };
+    if (sameDay(now, addDays(easter, 1))) return { theme: 'theme-spring', icon: '💧' };
+    if (sameDay(now, addDays(easter, 49))) return { theme: 'theme-spring', icon: '🌿' };
+    if (sameDay(now, addDays(easter, 60))) return { theme: 'theme-spring', icon: '🌸' };
+    return null;
+  }
 
-  if (dateStr === "07.06") eventInfo = { theme: "theme-birthday", icon: "🎁", active: true };
-  else if (dateStr === "01.01") eventInfo = { theme: "theme-new", icon: "🎆", active: true };
-  else if (dateStr === "06.01") eventInfo = { theme: "theme-winter", icon: "👑", active: true };
-  else if (isSameDay(now, easter)) eventInfo = { theme: "theme-spring", icon: "🐣", active: true };
-  else if (isSameDay(now, easterMon)) eventInfo = { theme: "theme-spring", icon: "💧", active: true };
-  else if (dateStr === "01.05") eventInfo = { theme: "theme-patriotic", icon: "🛠️", active: true };
-  else if (dateStr === "03.05") eventInfo = { theme: "theme-patriotic", icon: "🇵🇱", active: true };
-  else if (isSameDay(now, zieloneSwiatki)) eventInfo = { theme: "theme-spring", icon: "🌿", active: true };
-  else if (isSameDay(now, bozeCialo)) eventInfo = { theme: "theme-spring", icon: "🌸", active: true };
-  else if (dateStr === "07.07") eventInfo = { theme: "theme-youtube", icon: "🎬", active: true };
-  else if (dateStr === "15.08") eventInfo = { theme: "theme-patriotic", icon: "🎖️", active: true };
-  else if (dateStr === "01.11") eventInfo = { theme: "theme-autumn", icon: "🕯️", active: true };
-  else if (dateStr === "11.11") eventInfo = { theme: "theme-patriotic", icon: "🇵🇱", active: true };
-  else if (dateStr === "24.12") eventInfo = { theme: "theme-winter", icon: "🎄", active: true };
-  else if (dateStr === "25.12" || dateStr === "26.12") eventInfo = { theme: "theme-winter", icon: "🎅", active: true };
-  else {
-    if (month === 3 && day === 21) {
-      eventInfo = { theme: "theme-spring", icon: "🌱", active: true };
-    } else if (month === 6 && day === 21) {
-      eventInfo = { theme: "theme-summer", icon: "☀️", active: true };
-    } else if (month === 9 && day === 23) {
-      eventInfo = { theme: "theme-autumn", icon: "🍂", active: true };
-    } else if (month === 12 && day === 21) {
-      eventInfo = { theme: "theme-winter", icon: "❄️", active: true };
+  // Zwraca true, jeśli dziś trwa wydarzenie sezonowe
+  function initSeasonalSystem() {
+    const manualIndex = parseInt(store.get('theme-cycle-index', '0'), 10);
+    const toggleBtn = $('toggle-effects-btn');
+
+    // Ręcznie wybrany kolor ma pierwszeństwo przed kalendarzem
+    if (manualIndex > 0) {
+      stopParticles();
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      return false;
     }
-  }
 
-  if (eventInfo.active) {
-    document.body.classList.remove("theme-red", "theme-green", "theme-blue");
-    document.body.classList.remove(
-      "theme-birthday", "theme-new", "theme-winter", "theme-spring",
-      "theme-summer", "theme-autumn", "theme-patriotic", "theme-youtube"
-    );
+    const event = getSeasonalEvent(new Date());
 
-    document.body.classList.add(eventInfo.theme);
-    currentSeasonalIcon = eventInfo.icon;
+    if (!event) {
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      stopParticles();
+      return false;
+    }
+
+    document.body.classList.remove(...MANUAL_THEMES, ...SEASONAL_THEMES);
+    document.body.classList.add(event.theme);
+    state.seasonalIcon = event.icon;
 
     if (toggleBtn) toggleBtn.style.display = 'block';
 
-    if (localStorage.getItem('effects-disabled') === 'true') {
+    if (store.get('effects-disabled') === 'true') {
       document.body.classList.add('effects-off');
-      if (toggleBtn) toggleBtn.innerText = "Włącz efekty";
+      if (toggleBtn) toggleBtn.textContent = 'Włącz efekty';
       stopParticles();
     } else {
       document.body.classList.remove('effects-off');
-      if (toggleBtn) toggleBtn.innerText = "Wyłącz efekty";
-      startParticles(currentSeasonalIcon);
+      if (toggleBtn) toggleBtn.textContent = 'Wyłącz efekty';
+      startParticles(state.seasonalIcon);
     }
 
     return true;
   }
 
-  if (toggleBtn) toggleBtn.style.display = 'none';
-  stopParticles();
-  return false;
-}
+  function toggleEffects() {
+    const isOff = document.body.classList.toggle('effects-off');
+    store.set('effects-disabled', isOff);
 
-function startParticles(icon) {
-  stopParticles();
+    const btn = $('toggle-effects-btn');
+    if (btn) btn.textContent = isOff ? 'Włącz efekty' : 'Wyłącz efekty';
 
-  if (document.body.classList.contains('effects-off')) return;
+    if (isOff) stopParticles();
+    else startParticles(state.seasonalIcon);
+  }
 
-  particleInterval = setInterval(() => {
-    if (document.body.classList.contains('effects-off')) {
-      stopParticles();
-      return;
+  /* =========================
+     Panele skrótów (strona główna)
+     ========================= */
+  function initSitePanels() {
+    const leftPanel = $('navigation-left-panel');
+    const rightPanel = $('navigation-right-panel');
+    const mobilePanel = $('mobile-sticky-footer');
+    const ids = ['goldsaver', 'dc', 'instant', 'tipply', 'cs'];
+    const pick = () => ids[Math.floor(Math.random() * ids.length)];
+
+    if (leftPanel && rightPanel && window.innerWidth > PANELS_BP) {
+      const left = pick();
+      let right = pick();
+      while (right === left) right = pick();
+
+      const l = leftPanel.querySelector(`.shortcut-item[data-id="${left}"]`);
+      const r = rightPanel.querySelector(`.shortcut-item[data-id="${right}"]`);
+      if (l) l.classList.add('is-active');
+      if (r) r.classList.add('is-active');
+
+      leftPanel.style.display = 'block';
+      rightPanel.style.display = 'block';
     }
 
-    const p = document.createElement('div');
-    p.className = 'seasonal-particle';
-    p.innerText = icon;
-    p.style.left = Math.random() * 100 + "vw";
-    p.style.animationDuration = (Math.random() * 3 + 2) + "s";
-    p.style.fontSize = (Math.random() * 15 + 10) + "px";
-    document.body.appendChild(p);
+    if (mobilePanel && window.innerWidth <= MOBILE_BP) {
+      setTimeout(() => {
+        const m = mobilePanel.querySelector(`.shortcut-item[data-id="${pick()}"]`);
+        if (m) m.classList.add('is-active');
+        mobilePanel.classList.add('is-open');
+      }, 50);
+    }
+  }
 
-    setTimeout(() => p.remove(), 5000);
-  }, 400);
-}
+  function dismissPanel(elementId) {
+    const target = $(elementId);
+    if (target) target.style.setProperty('display', 'none', 'important');
+  }
 
-function toggleEffects() {
-  const isOff = document.body.classList.toggle('effects-off');
-  localStorage.setItem('effects-disabled', String(isOff));
+  /* =========================
+     Inicjalizacja
+     ========================= */
+  function init() {
+    const started = performance.now();
 
-  const btn = document.getElementById('toggle-effects-btn');
+    // Loader znika dopiero po załadowaniu menu i stopki (z limitem czasu)
+    setTimeout(hideLoader, MAX_LOADER_MS);
+    loadPartials().finally(() => {
+      const left = Math.max(0, MIN_LOADER_MS - (performance.now() - started));
+      setTimeout(hideLoader, left);
+    });
 
-  if (isOff) {
-    if (btn) btn.innerText = "Włącz efekty";
-    stopParticles();
+    checkForRedirects();
+    initDonateButton();
+    initSmoothScroll();
+    initFloatingTopBtn();
+    initMenuGlobalHandlers();
+    initThemeSystem();
+    initSitePanels();
+
+    window.addEventListener('hashchange', () => {
+      checkForRedirects();
+      highlightActiveNav();
+    });
+  }
+
+  // Funkcje wywoływane z atrybutów onclick w HTML
+  window.toggleEffects = toggleEffects;
+  window.dismissPanel = dismissPanel;
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    if (btn) btn.innerText = "Wyłącz efekty";
-    startParticles(currentSeasonalIcon);
+    init();
   }
-}
-
-window.toggleEffects = toggleEffects;
-
-/* ==========================================================================
-   SYSTEM PODŚWIETLANIA AKTYWNEJ ZAKŁADKI W MENU
-   ========================================================================== */
-function highlightActiveNav() {
-  const currentPath = window.location.pathname.toLowerCase();
-  const currentHash = window.location.hash.toLowerCase();
-
-  const allLinks = [
-    "nav-home", "nav-tworczosc", "nav-pc", "nav-o-mnie",
-    "nav-kontakt", "nav-gallery", "nav-tools", "nav-socials", "nav-games"
-  ];
-  allLinks.forEach(id => {
-    const link = document.getElementById(id);
-    if (link) {
-      link.style.color = "";
-      link.style.textShadow = "";
-      link.style.opacity = "";
-    }
-  });
-
-  if (currentPath.includes("dino.html") || currentPath.includes("tetris.html") || currentPath.includes("shooter.html") || currentPath.includes("statki.html")) {
-    setActiveLink("nav-games");
-  } else if (currentPath.includes("tools-rec.html") || currentPath.includes("tools-all.html") || currentPath.includes("linux.html")) {
-    setActiveLink("nav-tools");
-  } else if (currentPath.includes("gallery.html")) {
-    setActiveLink("nav-gallery");
-  } else if (currentHash === "#tworczosc") {
-    setActiveLink("nav-tworczosc");
-  } else if (currentHash === "#pc") {
-    setActiveLink("nav-pc");
-  } else if (currentHash === "#o-mnie") {
-    setActiveLink("nav-o-mnie");
-  } else if (currentHash === "#kontakt") {
-    setActiveLink("nav-kontakt");
-  } else if (currentHash === "#spotify") {
-    setActiveLink("nav-socials");
-  } else if (currentPath === "/" || currentPath.includes("index.html") || currentHash === "#home" || currentHash === "") {
-    setActiveLink("nav-home");
-  }
-
-  function setActiveLink(activeId) {
-    const link = document.getElementById(activeId);
-    if (link) {
-      link.style.color = "var(--accent)";
-      link.style.textShadow = "0 0 10px var(--accent)";
-      link.style.opacity = "1";
-    }
-  }
-}
-
-window.addEventListener("hashchange", highlightActiveNav);
-
-// --- SYSTEM ZAKAMUFLOWANEGO INTERFEJSU PANELÓW (INDEX) ---
-function initSitePanels() {
-  const leftPanel = document.getElementById("navigation-left-panel");
-  const rightPanel = document.getElementById("navigation-right-panel");
-  const mobilePanel = document.getElementById("mobile-sticky-footer");
-
-  const availableIds = ["goldsaver", "dc", "instant", "tipply", "cs"];
-
-  if (leftPanel && rightPanel && window.innerWidth > 1200) {
-    const idLeft = availableIds[Math.floor(Math.random() * availableIds.length)];
-    let idRight = availableIds[Math.floor(Math.random() * availableIds.length)];
-
-    if (availableIds.length > 1 && idLeft === idRight) {
-      while (idLeft === idRight) {
-        idRight = availableIds[Math.floor(Math.random() * availableIds.length)];
-      }
-    }
-
-    const activeLeft = leftPanel.querySelector(`.shortcut-item[data-id="${idLeft}"]`);
-    if (activeLeft) activeLeft.classList.add("is-active");
-
-    const activeRight = rightPanel.querySelector(`.shortcut-item[data-id="${idRight}"]`);
-    if (activeRight) activeRight.classList.add("is-active");
-
-    leftPanel.style.display = "block";
-    rightPanel.style.display = "block";
-  }
-
-  if (mobilePanel && window.innerWidth <= 1200) {
-    setTimeout(() => {
-      const idMobile = availableIds[Math.floor(Math.random() * availableIds.length)];
-      const activeMobile = mobilePanel.querySelector(`.shortcut-item[data-id="${idMobile}"]`);
-
-      if (activeMobile) activeMobile.classList.add("is-active");
-
-      mobilePanel.style.setProperty("display", "block", "important");
-    }, 50);
-  }
-}
-
-function dismissPanel(elementId) {
-  const target = document.getElementById(elementId);
-  if (target) {
-    target.style.setProperty("display", "none", "important");
-  }
-}
-
-document.addEventListener("DOMContentLoaded", initSitePanels);
+})();

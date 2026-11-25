@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Statki online: bitwa morska z komputerem na czterech poziomach trudności, w tym Cheater, z ręcznym rozstawianiem floty i trzema zasadami gry.">
     <title>Endixendi - Statki</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/games.css">
     <link rel="stylesheet" href="assets/css/battleship.css">
     
-    <link rel="icon" href="assets/images/kolo.png" type="image/png">
+    <link rel="icon" href="assets/images/logo-kolo.png" type="image/png">
+    <noscript><style>#loader { display: none; }</style></noscript>
 </head>
 <body id="top">
 
@@ -24,30 +27,45 @@
             <div class="card">
                 <h1>Statki — Bitwa Morska</h1>
                 <p class="lead">
-                    Klasyczna, turowa gra strategiczna w nowoczesnej, neonowej oprawie. Rozmieść swoją flotę na mapie, wybierz poziom trudności i stań do pojedynku z komputerem. Analizuj Dziennik Pokładowy, namierzaj pozycje wroga i zatop wszystkie okręty przeciwnika, zanim on odkryje Twoje pozycje! ⚓
+                    Klasyczna, turowa gra strategiczna w nowoczesnej, neonowej oprawie. Rozmieść swoją flotę na mapie, wybierz poziom trudności i stań do pojedynku z komputerem. Analizuj Dziennik Pokładowy, namierzaj pozycje wroga i zatop wszystkie okręty przeciwnika, zanim on odkryje Twoje pozycje!
                 </p>
             </div>
         </section>
 
         <section class="mt-22">
-            <div class="card game-wrapper">
+            <div class="card game-wrapper" id="battleshipContainer">
         
                 <div class="game-controls-bar">
                     <div class="status-indicator">
                         <span class="muted">Tura:</span> <span id="turn-status" class="highlight">Oczekiwanie...</span>
                     </div>
-                    <div class="difficulty-box">
-                        <label class="muted">Poziom:</label>
-                        <select id="difficulty-select" class="ghost-select">
-                            <option value="easy">Łatwy</option>
-                            <option value="hard">Trudny</option>
-                            <option value="cheater">Cheater</option>
-                        </select>
+                    <div class="settings-row">
+                        <div class="difficulty-box">
+                            <label class="muted" for="difficulty-select">Poziom:</label>
+                            <select id="difficulty-select" class="ghost-select">
+                                <option value="easy">Łatwy</option>
+                                <option value="medium">Normalny</option>
+                                <option value="hard">Trudny</option>
+                                <option value="cheater">Cheater</option>
+                            </select>
+                        </div>
+                        <div class="difficulty-box">
+                            <label class="muted" for="rules-select">Zasady:</label>
+                            <select id="rules-select" class="ghost-select">
+                                <option value="classic">Klasyczne</option>
+                                <option value="noextra">Bez dodatkowego ruchu</option>
+                                <option value="salvo">Salwa</option>
+                            </select>
+                        </div>
+                        <label class="bs-check"><input type="checkbox" id="confirm-shot"> Potwierdź strzał</label>
                     </div>
                     <div class="buttons">
                         <button id="btn-randomize" class="ghost">Losuj Ustawienie</button>
+                        <button id="btn-rotate" class="ghost">Obróć (R)</button>
+                        <button id="btn-clear" class="ghost">Wyczyść</button>
                         <button id="btn-start" class="btn">Start Gry</button>
                         <button id="btn-restart" class="ghost" style="display:none;">Restart</button>
+                        <button id="btn-fullscreen" class="ghost fullscreen-toggle-btn" title="Pełny ekran" aria-label="Pełny ekran">⛶ Pełny ekran</button>
                     </div>
                 </div>
 
@@ -79,13 +97,15 @@
             </div>
         </section>
 		
-		<section id="dino-game" class="card mt-22">	
+		<section id="battleship-rules" class="card mt-22">	
 		
 			<div class="controls-grid mt-16">
 				<div class="controls-left">
 					<h3>Zasady i Interfejs</h3>
 						<ul>
-							<li><strong>Rozpoczęcie gry</strong> – Wybierz poziom trudności (Łatwy, Trudny, Cheater), wylosuj swoją flotę przyciskiem <strong>„Losuj Ustawienie”</strong>, a następnie kliknij „Start Gry”.</li>
+							<li><strong>Rozpoczęcie gry</strong> – Wybierz poziom trudności (Łatwy, Normalny, Trudny, Cheater) i zasady, rozstaw flotę, a następnie kliknij „Start Gry”.</li>
+							<li><strong>Rozstawianie floty</strong> – Kliknij pole na swojej planszy, aby postawić kolejny statek. <strong>R</strong>, prawy przycisk myszy lub „Obróć” obraca statek, kliknięcie postawionego statku pozwala go przenieść, a „Losuj Ustawienie” i „Wyczyść” przyspieszają całość.</li>
+							<li><strong>Zasady</strong> – <em>Klasyczne</em>: trafienie daje kolejny strzał. <em>Bez dodatkowego ruchu</em>: strzał co turę. <em>Salwa</em>: w turze oddajesz tyle strzałów, ile masz żywych statków.</li>
 							<li><strong>Prowadzenie ostrzału</strong> – Klikaj na prawą planszę („Komputer”), aby namierzać statki wroga. Czerwone pole z iksem <span style="color: var(--danger, #ff4d6d);">[X]</span> oznacza trafienie, a szara kropka [•] oznacza pudło.</li>
 							<li><strong>Dziennik Pokładowy</strong> – Śledź dolny panel komunikatów, gdzie na bieżąco wyświetlają się współrzędne strzałów oraz meldunki o ruchach Twoich i przeciwnika.</li>
 						</ul>
@@ -98,20 +118,31 @@
 					</div>
 					<div class="volume-control">
 						<label for="volume-effects" class="muted">Głośność efektów</label>
-						<input id="volume-effects" type="range" min="0" max="1" step="0.01" value="0.3">
+						<input id="volume-effects" type="range" min="0" max="1" step="0.01" value="0.1">
 					</div>
 				</div>
 
 			</div>					
 		</section>				
 	
-		<section id="controls" class="card mt-16">
+		<section id="battleship-achievements" class="card mt-22">
+			<h3>Osiągnięcia</h3>
+			<p class="muted" id="achievementsProgress"></p>
+			<p class="muted" id="achievementsStats"></p>
+			<p class="muted" id="achievementsLevels"></p>
+			<ul id="achievementsList" class="achievements-list"></ul>
+			<div class="achievements-actions">
+				<button type="button" id="resetProgressBtn" class="ghost">Wyzeruj rekord i osiągnięcia</button>
+			</div>
+		</section>
+
+		<section id="audio-credits" class="card mt-16">
 			<div>
 				<h3>Źródła dźwięków i muzyki:</h3>
-				<ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+				<ul>
 					<li><strong>Muzyka:</strong> Pirate Ship Battle | Alex_Besss (pixabay.com)</li>
 					<li><strong>Efekty dźwiękowe:</strong>
-						<ul style="margin-top: 5px; padding-left: 20px;">
+						<ul>
 							<li>Trafienie: UI Designed Hit | RescopicSound (pixabay.com)</li>
 							<li>Splash/Drop: Arcade UI 2 | floraphonic (pixabay.com)</li>
 							<li>Wygrana: Victory | Surn_Thing (pixabay.com)</li>
@@ -126,7 +157,10 @@
 
     <div id="footer-placeholder"></div>
 
+    <script src="assets/js/storage.js"></script>
+
     <script src="assets/js/script.js"></script>
+    <script src="assets/js/fullscreen.js"></script>
     <script src="assets/js/battleship.js"></script>
 
 </body>

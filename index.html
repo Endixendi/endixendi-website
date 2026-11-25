@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="icon" href="assets/images/logo-kolo.png" type="image/png">
+    <noscript><style>#loader { display: none; }</style></noscript>
 </head>
 <body id="top">
 
@@ -29,7 +30,7 @@
 
                 <div class="cta">
                     <button class="btn" data-scroll="#tworczosc">Zobacz filmy</button>
-                    <button class="btn" id="red-theme-btn">Włącz czerwony styl</button>
+                    <button class="btn" id="red-theme-btn">Styl: Czerwony</button>
                     <button class="btn" id="toggle-effects-btn" onclick="toggleEffects()">Wyłącz efekty</button>
                 </div>
 
@@ -70,22 +71,21 @@
 
         <section id="tworczosc" class="card mt-22">
             <h2>Twórczość — filmy</h2>
-            <p class="muted">Pierwszy materiał z kanału YouTube <a class="inline-link" href="https://www.youtube.com/c/Endixendi?sub_confirmation=1">(@Endixendi)</a> który zaczął moją przygodę z nagrywaniem to MTA.</p>
-
+			<p class="muted">Pierwszy materiał z kanału YouTube <a class="inline-link" href="https://www.youtube.com/c/Endixendi?sub_confirmation=1" target="_blank" rel="noopener">(@Endixendi)</a> który zaczął moją przygodę z nagrywaniem to MTA.</p>
             <div class="videos" id="videos">
                 <div class="video card">
-                    <iframe src="https://www.youtube.com/embed/eXZwitHgwZM" title="YouTube video" allowfullscreen></iframe>
+                    <iframe loading="lazy" src="https://www.youtube.com/embed/eXZwitHgwZM" title="YouTube video" allowfullscreen></iframe>
                     <div class="video-title">Poznaj Moją Twórczość</div>
                 </div>
                 <div class="video card">
-                    <iframe src="https://www.youtube.com/embed/lqi6XXv5g10" title="YouTube video" allowfullscreen></iframe>
+                    <iframe loading="lazy" src="https://www.youtube.com/embed/lqi6XXv5g10" title="YouTube video" allowfullscreen></iframe>
                     <div class="video-title">Pierwszy Film Który Zachęcił Mnie Do Nagrywania</div>
                 </div>
             </div>
             <a class="mt-12 btn-full-width btn" href="https://www.youtube.com/c/Endixendi?sub_confirmation=1" target="_blank" rel="noopener">Odwiedź mój kanał: Endixendi</a>
         </section>
 
-	<section id="pc" class="controls-left card mt-22">
+	<section id="pc" class="card mt-22">
 		<h2 class="mt-18">Specyfikacja</h2>
 	
 		<h3 class="mt-18">PC</h3>
@@ -237,39 +237,41 @@
 		<div id="navigation-left-panel" class="site-shortcut-panel pc-only" style="left: 20px;">
 			<button class="shortcut-close-trigger" onclick="dismissPanel('navigation-left-panel')">×</button>
 			<div class="shortcut-holder">
-				<div class="shortcut-item" data-id="goldsaver"><a href="https://goldsaver.pl/pl/kod/4TK7PP" target="_blank" rel="noopener"><img src="assets/images/promos/goldsaver.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="dc"><a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener"><img src="assets/images/promos/dc.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="instant"><a href="https://www.instant-gaming.com/pl/?igr=endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/instantgaming.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="tipply"><a href="https://tipply.pl/@endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/tipply.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="cs"><a href="https://csgo-skins.com/?ref=ENDIXENDI" target="_blank" rel="noopener"><img src="assets/images/promos/cs.jpg" alt="Navigation"></a></div>
+				<div class="shortcut-item" data-id="goldsaver"><a href="https://goldsaver.pl/pl/kod/4TK7PP" target="_blank" rel="noopener"><img src="assets/images/promos/goldsaver.jpg" alt="GoldSaver"></a></div>
+				<div class="shortcut-item" data-id="dc"><a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener"><img src="assets/images/promos/dc.jpg" alt="Discord"></a></div>
+				<div class="shortcut-item" data-id="instant"><a href="https://www.instant-gaming.com/pl/?igr=endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/instantgaming.jpg" alt="Instant Gaming"></a></div>
+				<div class="shortcut-item" data-id="tipply"><a href="https://tipply.pl/@endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/tipply.jpg" alt="Tipply"></a></div>
+				<div class="shortcut-item" data-id="cs"><a href="https://csgo-skins.com/?ref=ENDIXENDI" target="_blank" rel="noopener"><img src="assets/images/promos/cs.jpg" alt="CSGO-Skins"></a></div>
 			</div>
 		</div>
 
 		<div id="navigation-right-panel" class="site-shortcut-panel pc-only" style="right: 20px;">
 			<button class="shortcut-close-trigger" onclick="dismissPanel('navigation-right-panel')">×</button>
 			<div class="shortcut-holder">
-				<div class="shortcut-item" data-id="goldsaver"><a href="https://goldsaver.pl/pl/kod/4TK7PP" target="_blank" rel="noopener"><img src="assets/images/promos/goldsaver.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="dc"><a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener"><img src="assets/images/promos/dc.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="instant"><a href="https://www.instant-gaming.com/pl/?igr=endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/instantgaming.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="tipply"><a href="https://tipply.pl/@endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/tipply.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="cs"><a href="https://csgo-skins.com/?ref=ENDIXENDI" target="_blank" rel="noopener"><img src="assets/images/promos/cs.jpg" alt="Navigation"></a></div>
+				<div class="shortcut-item" data-id="goldsaver"><a href="https://goldsaver.pl/pl/kod/4TK7PP" target="_blank" rel="noopener"><img src="assets/images/promos/goldsaver.jpg" alt="GoldSaver"></a></div>
+				<div class="shortcut-item" data-id="dc"><a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener"><img src="assets/images/promos/dc.jpg" alt="Discord"></a></div>
+				<div class="shortcut-item" data-id="instant"><a href="https://www.instant-gaming.com/pl/?igr=endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/instantgaming.jpg" alt="Instant Gaming"></a></div>
+				<div class="shortcut-item" data-id="tipply"><a href="https://tipply.pl/@endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/tipply.jpg" alt="Tipply"></a></div>
+				<div class="shortcut-item" data-id="cs"><a href="https://csgo-skins.com/?ref=ENDIXENDI" target="_blank" rel="noopener"><img src="assets/images/promos/cs.jpg" alt="CSGO-Skins"></a></div>
 			</div>
 		</div>
 
 		<div id="mobile-sticky-footer" class="mobile-navigation-bar mobile-only">
 			<button class="shortcut-close-trigger" onclick="dismissPanel('mobile-sticky-footer')">×</button>
 			<div class="shortcut-holder">
-				<div class="shortcut-item" data-id="goldsaver"><a href="https://goldsaver.pl/pl/kod/4TK7PP" target="_blank" rel="noopener"><img src="assets/images/promos/mcs.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="dc"><a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener"><img src="assets/images/promos/mdc.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="instant"><a href="https://www.instant-gaming.com/pl/?igr=endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/minstantgaming.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="tipply"><a href="https://tipply.pl/@endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/mtipply.jpg" alt="Navigation"></a></div>
-				<div class="shortcut-item" data-id="cs"><a href="https://csgo-skins.com/?ref=ENDIXENDI" target="_blank" rel="noopener"><img src="assets/images/promos/mcs.jpg" alt="Navigation"></a></div>
+				<div class="shortcut-item" data-id="goldsaver"><a href="https://goldsaver.pl/pl/kod/4TK7PP" target="_blank" rel="noopener"><img src="assets/images/promos/mcs.jpg" alt="GoldSaver"></a></div>
+				<div class="shortcut-item" data-id="dc"><a href="https://discord.com/invite/MwGVnXWUaW" target="_blank" rel="noopener"><img src="assets/images/promos/mdc.jpg" alt="Discord"></a></div>
+				<div class="shortcut-item" data-id="instant"><a href="https://www.instant-gaming.com/pl/?igr=endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/minstantgaming.jpg" alt="Instant Gaming"></a></div>
+				<div class="shortcut-item" data-id="tipply"><a href="https://tipply.pl/@endixendi" target="_blank" rel="noopener"><img src="assets/images/promos/mtipply.jpg" alt="Tipply"></a></div>
+				<div class="shortcut-item" data-id="cs"><a href="https://csgo-skins.com/?ref=ENDIXENDI" target="_blank" rel="noopener"><img src="assets/images/promos/mcs.jpg" alt="CSGO-Skins"></a></div>
 			</div>
 		</div>
 		
     </main>
 
     <div id="footer-placeholder"></div>
+
+    <script src="assets/js/storage.js"></script>
 
     <script src="assets/js/script.js"></script>
 

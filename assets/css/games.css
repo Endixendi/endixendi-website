@@ -1,0 +1,107 @@
+/* ==========================================================================
+   WSPÓLNE STYLE GIER (dino, tetris, shooter, statki)
+   Ładować PO style.css, a PRZED plikiem danej gry.
+   ========================================================================== */
+
+/* Przycisk pełnego ekranu - pozycję ustawia plik konkretnej gry */
+.fullscreen-btn {
+    position: absolute;
+    z-index: 25;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: rgba(15, 17, 21, 0.78);
+    color: #ffffff;
+    font-size: 1.1rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    transition: transform 0.15s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.fullscreen-btn:hover {
+    background: var(--accent);
+    color: var(--on-accent);
+    transform: scale(1.05);
+}
+
+.fullscreen-btn:active {
+    transform: scale(0.95);
+}
+
+/* ==========================================================================
+   LISTA OSIĄGNIĘĆ (sekcja "Osiągnięcia" w każdej grze)
+   Znaczniki: ul.achievements-list > li.achievement[.unlocked] > .achievement-icon + .achievement-body
+   ========================================================================== */
+
+.achievements-list {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+}
+
+.achievement {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    opacity: 0.65;
+}
+
+.achievement.unlocked {
+    opacity: 1;
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.achievement-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.achievement-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    flex: 1;
+}
+
+.achievement-body small {
+    color: var(--muted);
+}
+
+.achievement-bar {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    margin-top: 2px;
+}
+
+.achievement-bar-fill {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+}
+
+/* Przycisk "Wyzeruj rekord i osiągnięcia" pod listą */
+.achievements-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 14px;
+}

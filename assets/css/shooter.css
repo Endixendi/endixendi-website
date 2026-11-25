@@ -2,10 +2,11 @@
    GŁÓWNE STYLE GRY SHOOTER
    ========================================================================== */
 
-:root {
-    /* Gra korzysta bezpośrednio z globalnych zmiennych Twojej strony */
-    --danger: #ff4d6d;
-    --warning: #ff9f1c;
+.shooter-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .shooter-container {
@@ -14,7 +15,9 @@
     justify-content: center;
     align-items: center;
     margin: 0 auto;
+    width: 100%;
     max-width: 800px;
+    aspect-ratio: 4 / 3;
     background: #000;
     border-radius: 12px;
     overflow: hidden;
@@ -29,9 +32,14 @@
 #gameCanvas {
     display: block;
     width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
+    height: 100%;
     cursor: crosshair;
+}
+
+/* Przycisk Fullscreen (baza w games.css) */
+.fullscreen-btn {
+    top: 14px;
+    right: 42px;
 }
 
 /* ==========================================================================
@@ -45,10 +53,9 @@
     font-weight: bold;
     z-index: 10;
     text-shadow: 0 2px 4px black;
-    font-size: 18px;
+    font-size: 15px;
 }
 
-/* Pionowy pasek temperatury po lewej stronie */
 #heatBar {
     position: absolute;
     top: 15px;
@@ -64,14 +71,13 @@
 
 #heatFillBar {
     width: 100%;
-    height: 0%; 
+    height: 0%;
     position: absolute;
     bottom: 0;
     background: var(--accent-2);
     transition: height 0.1s linear, background 0.3s ease;
 }
 
-/* Pionowy pasek zdrowia po prawej stronie */
 #healthBar {
     position: absolute;
     top: 15px;
@@ -98,8 +104,7 @@
    MENUS (START / GAME OVER)
    ========================================================================== */
 
-/* Wspólne pozycjonowanie dla obu okien */
-#menu, 
+#menu,
 #gameOverMenu {
     position: absolute;
     top: 50%;
@@ -112,7 +117,10 @@
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
 }
 
-/* Dedykowane, odchudzone style tylko dla menu START */
+#gameOverMenu.hidden {
+    display: none;
+}
+
 #menu {
     padding: 20px;
     border-radius: 12px;
@@ -122,7 +130,6 @@
     align-items: center;
 }
 
-/* Dedykowane style dla menu GAME OVER (zostaje duże, bo ma tekst) */
 #gameOverMenu {
     padding: 30px;
     border-radius: 16px;
@@ -143,37 +150,155 @@
 }
 
 /* ==========================================================================
+   TRYB PEŁNOEKRANOWY (Natywny Fullscreen API + Fallback dla iOS)
+   ========================================================================== */
+
+.shooter-stage.is-fullscreen,
+.shooter-stage:fullscreen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    background: #0a0c10;
+    z-index: 99999;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+}
+
+/* Telefon / mały ekran po obróceniu w POZIOM w trybie pełnoekranowym */
+@media (max-width: 900px) and (orientation: landscape) {
+    .shooter-stage.is-fullscreen .shooter-container,
+    .shooter-stage:fullscreen .shooter-container {
+        width: auto;
+        max-width: 92vw;
+        height: calc(100dvh - 82px);
+        max-height: calc(100dvh - 82px);
+        aspect-ratio: 4 / 3;
+        flex: 0 0 auto;
+    }
+
+    .shooter-stage.is-fullscreen .mobile-controls,
+    .shooter-stage:fullscreen .mobile-controls {
+        display: flex;
+        width: 100%;
+        max-width: 520px;
+        padding: 4px 10px;
+        gap: 14px;
+        margin-top: 0;
+        flex: 0 0 auto;
+    }
+
+    .shooter-stage.is-fullscreen #touchSliderArea,
+    .shooter-stage:fullscreen #touchSliderArea {
+        width: 240px;
+        max-width: 240px;
+        flex: 0 1 240px;
+        height: 50px;
+        border-radius: 25px;
+    }
+
+    .shooter-stage.is-fullscreen #sliderHandle,
+    .shooter-stage:fullscreen #sliderHandle {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .shooter-stage.is-fullscreen .mobile-btn-shoot,
+    .shooter-stage:fullscreen .mobile-btn-shoot {
+        flex: 0 0 56px;
+        width: 56px;
+        height: 56px;
+        font-size: 12px;
+    }
+
+    .shooter-stage.is-fullscreen #heatBar,
+    .shooter-stage:fullscreen #heatBar,
+    .shooter-stage.is-fullscreen #healthBar,
+    .shooter-stage:fullscreen #healthBar {
+        height: 80px;
+    }
+}
+
+/* Telefon / mały ekran w PIONIE w trybie pełnoekranowym */
+@media (max-width: 768px) and (orientation: portrait) {
+    .shooter-stage.is-fullscreen .shooter-container,
+    .shooter-stage:fullscreen .shooter-container {
+        width: min(94vw, calc((100dvh - 135px) * (4 / 3)));
+        max-width: 100%;
+        aspect-ratio: 4 / 3;
+        flex: 0 0 auto;
+    }
+
+    .shooter-stage.is-fullscreen .mobile-controls,
+    .shooter-stage:fullscreen .mobile-controls {
+        display: flex;
+        width: 100%;
+        max-width: 650px;
+        margin-top: 0;
+        padding: 6px 10px;
+        flex: 0 0 auto;
+    }
+}
+
+/* Duży ekran / PC w poziomie w trybie pełnoekranowym */
+@media (min-width: 901px) and (orientation: landscape) {
+    .shooter-stage.is-fullscreen .shooter-container,
+    .shooter-stage:fullscreen .shooter-container {
+        width: min(88vw, calc((100dvh - 36px) * (4 / 3)));
+        max-width: none;
+        aspect-ratio: 4 / 3;
+        flex: 0 0 auto;
+    }
+}
+
+/* ==========================================================================
    STEROWANIE MOBILNE (DLA EKRANÓW DOTYKOWYCH)
    ========================================================================== */
 
 .mobile-controls {
     display: none;
+    justify-content: center;
+    width: 100%;
+    max-width: 800px;
     padding: 15px;
-    gap: 15px;
+    gap: 16px;
     align-items: center;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 15px;
     margin-top: 15px;
     user-select: none;
+    -webkit-user-select: none;
+    box-sizing: border-box;
 }
 
 #touchSliderArea {
-    flex: 1;
+    width: 240px;
+    max-width: 62%;
+    flex: 0 1 240px;
     background: rgba(0, 0, 0, 0.6);
     border: 2px solid var(--border);
     position: relative;
     display: flex;
     align-items: center;
     touch-action: none;
-    height: 80px;
-    border-radius: 40px;
+    height: 74px;
+    border-radius: 37px;
     padding: 0 10px;
+    box-sizing: border-box;
 }
 
 #sliderHandle {
-    width: 60px;
-    height: 60px;
-    background: radial-gradient(circle, var(--accent), var(--accent));
+    width: 56px;
+    height: 56px;
+    background: var(--accent);
     border-radius: 50%;
     position: absolute;
     top: 50%;
@@ -211,14 +336,15 @@
 }
 
 .mobile-btn-shoot {
-    flex: 0 0 100px;
-    height: 100px;
+    flex: 0 0 92px;
+    width: 92px;
+    height: 92px;
     border-radius: 50%;
     border: none;
-    background: linear-gradient(#ff4d6d, #a30b2e); 
-    color: white; 
+    background: linear-gradient(#ff4d6d, #a30b2e);
+    color: white;
     font-weight: 900;
-    font-size: 16px;
+    font-size: 15px;
     text-transform: uppercase;
     box-shadow: 0 6px 0 #6d1526, 0 10px 20px rgba(0, 0, 0, 0.4);
     display: flex;
@@ -227,6 +353,7 @@
     transition: all 0.05s;
     user-select: none;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 .mobile-btn-shoot:active {
@@ -235,37 +362,16 @@
 }
 
 /* ==========================================================================
-   WSPARCIE DLA CZERWONEGO MOTYWU (Ciało z klasą .theme-red)
-   ========================================================================== */
-
-body.theme-red .shooter-container:hover {
-    border-color: #ff0000;
-}
-
-body.theme-red #sliderHandle {
-    background: radial-gradient(circle, #ff0000, #ff0000);
-    box-shadow: 0 0 20px #ff0000;
-}
-
-body.theme-red .mobile-btn-shoot {
-    background: linear-gradient(#ff3333, #b30000) !important;
-    color: #ffffff !important;
-    box-shadow: 0 6px 0 #660000, 0 10px 20px rgba(0, 0, 0, 0.4) !important;
-}
-
-body.theme-red .mobile-btn-shoot:active {
-    box-shadow: 0 2px 0 #660000, 0 5px 10px rgba(0, 0, 0, 0.4) !important;
-}
-
-/* ==========================================================================
    RESPONSYWNOŚĆ (MEDIA QUERIES)
    ========================================================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (pointer: coarse) {
     .mobile-controls {
         display: flex;
     }
-    
+}
+
+@media (max-width: 768px) {
     .controls-grid {
         display: grid;
         grid-template-columns: 1fr;
@@ -273,23 +379,345 @@ body.theme-red .mobile-btn-shoot:active {
         margin-top: 10px;
     }
 
-    #score { 
-        font-size: 16px; 
+    #score {
+		top: 15px;
+        font-size: 10px;
     }
 }
 
 @media (max-width: 480px) {
-    /* Dopasowanie wielkości przycisku na bardzo wąskich ekranach */
     .mobile-btn-shoot {
-        flex: 0 0 85px;
-        height: 85px;
+        flex: 0 0 80px;
+        width: 80px;
+        height: 80px;
         font-size: 14px;
     }
     #touchSliderArea {
-        height: 70px;
+        width: 210px;
+        max-width: 62%;
+        flex: 0 1 210px;
+        height: 66px;
     }
     #sliderHandle {
-        width: 50px;
-        height: 50px;
+        width: 48px;
+        height: 48px;
+    }
+}
+/* Wynik wyśrodkowany jawnie (wcześniej tylko przypadkiem przez flex rodzica) */
+#score {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ==========================================================================
+   ROZBUDOWA: pauza, menu startowe, podsumowanie, osiągnięcia, ustawienia
+   ========================================================================== */
+
+/* Przycisk pauzy obok przycisku pełnego ekranu */
+.pause-btn {
+    top: 14px;
+    right: 84px;
+}
+
+.pause-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Menu startowe z wyborem poziomu trudności i statku */
+#menu {
+    flex-direction: column;
+    justify-content: flex-start;   /* bez centrowania we flexboxie: przy przepełnieniu góra byłaby nieosiągalna */
+    align-items: stretch;
+    gap: 14px;
+    width: min(94%, 470px);
+    top: calc(50% + 24px);          /* miejsce na przyciski pauzy i pełnego ekranu */
+    max-height: calc(100% - 64px);
+    overflow-y: auto;
+    padding: 18px 20px;
+    box-sizing: border-box;
+}
+
+#menu .btn {
+    align-self: center;
+}
+
+#menu h2 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.menu-row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.menu-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: left;
+}
+
+.choice-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+}
+
+.choice {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    text-align: left;
+    font: inherit;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.choice:hover {
+    border-color: var(--accent);
+}
+
+.choice.active {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.choice:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.choice-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.choice-desc {
+    font-size: 0.72rem;
+    color: var(--muted);
+}
+
+/* Ekran końca gry z podsumowaniem */
+#gameOverMenu {
+    width: min(94%, 380px);
+    max-height: 94%;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.game-summary {
+    display: grid;
+    gap: 4px;
+    margin: 12px 0;
+    font-size: 0.88rem;
+    text-align: left;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.summary-row strong {
+    text-align: right;
+    color: #fff;
+}
+
+.menu-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Powiadomienie o osiągnięciu */
+.achievement-toast {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    z-index: 30;
+    max-width: 90%;
+    padding: 10px 16px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #fff;
+    background: rgba(15, 17, 21, 0.92);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    opacity: 0;
+    transform: translate(-50%, 16px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.achievement-toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* Sekcja ustawień */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px 24px;
+    align-items: center;
+}
+
+.option-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    .choice-desc { display: none; }
+    #menu { gap: 6px; padding: 8px 10px; }
+    #menu h2 { display: none; }
+    .choice-group { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .choice { padding: 6px 4px; text-align: center; }
+    .choice-name { font-size: 0.74rem; }
+    .menu-label { font-size: 0.72rem; }
+    .menu-row { gap: 4px; }
+    #menu .btn { padding: 7px 22px; }
+    #gameOverMenu { top: calc(50% + 24px); max-height: calc(100% - 64px); padding: 14px; }
+}
+
+/* ==========================================================================
+   TELEFON W POZIOMIE (niska wysokość ekranu)
+   Plansza pośrodku, suwak ruchu po lewej, przycisk strzału po prawej (oba kciuki mają swoje miejsce)
+   ========================================================================== */
+@media (pointer: coarse) and (orientation: landscape) and (max-height: 620px) {
+    .shooter-stage,
+    .shooter-stage.is-fullscreen,
+    .shooter-stage:fullscreen {
+        --slider-w: clamp(130px, 22vw, 210px);
+        --shoot-w: clamp(56px, 10vw, 76px);
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* zwykły widok: mniej miejsca na boki (marginesy strony i karty) */
+    .shooter-stage:not(.is-fullscreen):not(:fullscreen) .shooter-container {
+        height: min(calc(100dvh - 34px), calc((100vw - var(--slider-w) - var(--shoot-w) - 130px) * 0.75));
+    }
+
+    .shooter-stage.is-fullscreen .shooter-container,
+    .shooter-stage:fullscreen .shooter-container {
+        height: min(calc(100dvh - 22px), calc((100vw - var(--slider-w) - var(--shoot-w) - 60px) * 0.75));
+    }
+
+    .shooter-stage .shooter-container {
+        width: auto;
+        max-width: none;
+        max-height: none;
+        aspect-ratio: 4 / 3;
+        flex: 0 0 auto;
+    }
+
+    /* sterowanie "rozbite" na boki planszy */
+    .shooter-stage .mobile-controls,
+    .shooter-stage.is-fullscreen .mobile-controls,
+    .shooter-stage:fullscreen .mobile-controls {
+        display: contents;
+    }
+
+    .shooter-stage #touchSliderArea,
+    .shooter-stage.is-fullscreen #touchSliderArea,
+    .shooter-stage:fullscreen #touchSliderArea {
+        order: -1;
+        width: var(--slider-w);
+        max-width: var(--slider-w);
+        flex: 0 0 var(--slider-w);
+        height: 58px;
+        border-radius: 29px;
+    }
+
+    .shooter-stage #sliderHandle,
+    .shooter-stage.is-fullscreen #sliderHandle,
+    .shooter-stage:fullscreen #sliderHandle {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+
+    .shooter-stage #slider-label {
+        display: none;
+    }
+
+    .shooter-stage .mobile-btn-shoot,
+    .shooter-stage.is-fullscreen .mobile-btn-shoot,
+    .shooter-stage:fullscreen .mobile-btn-shoot {
+        order: 1;
+        flex: 0 0 var(--shoot-w);
+        width: var(--shoot-w);
+        height: var(--shoot-w);
+        font-size: 11px;
+    }
+
+    #shooter-game {
+        padding: 8px !important;
+    }
+
+    #heatBar,
+    #healthBar,
+    .shooter-stage.is-fullscreen #heatBar,
+    .shooter-stage:fullscreen #heatBar,
+    .shooter-stage.is-fullscreen #healthBar,
+    .shooter-stage:fullscreen #healthBar {
+        height: clamp(56px, 34%, 100px);
+    }
+
+    /* menu startowe i podsumowanie w kompaktowej wersji (plansza jest niska) */
+    .choice-desc { display: none; }
+    #menu { gap: 6px; padding: 8px 10px; top: 50%; max-height: calc(100% - 12px); }
+    #menu h2 { display: none; }
+    .choice-group { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .choice { padding: 6px 4px; text-align: center; }
+    .choice-name { font-size: 0.74rem; }
+    .menu-label { font-size: 0.72rem; }
+    .menu-row { gap: 4px; }
+    #menu .btn { padding: 7px 22px; }
+
+    #gameOverMenu {
+        top: 50%;
+        max-height: calc(100% - 12px);
+        padding: 10px 14px;
+    }
+    #gameOverMenu h2 { margin-bottom: 4px; font-size: 1.2rem; }
+    #gameOverMenu p { margin: 0; font-size: 0.85rem; }
+    .game-summary {
+        grid-template-columns: 1fr 1fr;
+        gap: 2px 14px;
+        margin: 6px 0;
+        font-size: 0.76rem;
+    }
+}
+
+/* Pełny ekran w pionie: podpis suwaka nie może nachodzić na dolną krawędź planszy */
+.shooter-stage.is-fullscreen #slider-label,
+.shooter-stage:fullscreen #slider-label {
+    display: none;
+}
+
+/* Tablet w poziomie (ekran dotykowy większy niż telefon): w pełnym ekranie zostaw miejsce na przyciski sterowania */
+@media (pointer: coarse) and (min-width: 901px) and (orientation: landscape) and (min-height: 621px) {
+    .shooter-stage.is-fullscreen .shooter-container,
+    .shooter-stage:fullscreen .shooter-container {
+        width: min(88vw, calc((100dvh - 170px) * (4 / 3)));
     }
 }

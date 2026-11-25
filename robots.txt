@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Fragmenty wstrzykiwane przez JavaScript (menu i stopka), bez własnej wartości dla wyszukiwarek
+Disallow: /menu.html
+Disallow: /footer.html
+
+Sitemap: https://endixendi.pl/sitemap.xml

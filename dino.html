@@ -2,14 +2,17 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dino Game: darmowa gra zręcznościowa w przeglądarce. Skacz, kucaj i bij rekordy na PC i telefonie.">
     <title>Endixendi - Dino</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/games.css">
     <link rel="stylesheet" href="assets/css/dino.css">
     <link rel="icon" href="assets/images/logo-kolo.png" type="image/png">
+    <noscript><style>#loader { display: none; }</style></noscript>
 </head>
-<body>
+<body id="top">
 
     <div id="loader">
         <img src="assets/images/logo-kolo.png" alt="Loading..." class="loader-logo">
@@ -23,7 +26,7 @@
             <div class="card">
                 <h1>Dino Game</h1>
                 <p class="lead">
-                    Minimalistyczna, zręcznościowa gra retro inspirowana klasycznym biegaczem. Sterujesz <strong>kwadratowym Dino</strong>, który musi przetrwać na pełnym przeszkód, stale przyspieszającym torze. Sprawdź swój refleks, unikaj geometrycznych kaktusów i zdobywaj jak najwyższy wynik! 🦖
+                    Minimalistyczna, zręcznościowa gra retro inspirowana klasycznym biegaczem. Sterujesz <strong>kwadratowym Dino</strong>, który musi przetrwać na pełnym przeszkód, stale przyspieszającym torze. Sprawdź swój refleks, unikaj geometrycznych kaktusów i zdobywaj jak najwyższy wynik!
                 </p>
             </div>
         </section>
@@ -33,9 +36,11 @@
         </div>
 
         <section id="dino-game" class="card mt-22">
-            <div class="dino-container">
+            <div class="dino-container" id="dinoContainer">
 
                 <div class="board-container">
+                    <button id="fullscreenBtn" class="fullscreen-btn" title="Pełny ekran" aria-label="Pełny ekran">⛶</button>
+                    <button id="pauseBtn" class="fullscreen-btn pause-btn" title="Pauza (P)" aria-label="Pauza">⏸</button>
                     <canvas id="gameCanvas"></canvas>
 
                     <div class="overlay" id="menu">
@@ -44,11 +49,20 @@
                         </div>
                     </div>
 
+                    <div class="overlay hidden" id="pauseMenu">
+                        <div class="modal">
+                            <h2>Pauza</h2>
+                            <button id="resumeBtn" class="btn">Wznów</button>
+                        </div>
+                    </div>
+
                     <div class="overlay hidden" id="gameOverMenu">
                         <div class="modal">
                             <h2>Game Over!</h2>
                             <p>Wynik: <span id="finalScore">0</span></p>
                             <p>Rekord: <span id="finalHighScore">0</span></p>
+                            <p id="runStats" class="game-stats"></p>
+                            <p id="totalStats" class="game-stats"></p>
                             <button id="restartBtn" class="btn">Zagraj ponownie</button>
                         </div>
                     </div>
@@ -62,39 +76,55 @@
             </div>
         </section>
 		
-		<section id="dino-game" class="card mt-22">
+		<section id="dino-controls-info" class="card mt-22">
 		
 				<div class="controls-grid mt-16">
 					<div class="controls-left">
 						<h3>Sterowanie i Interfejs</h3>
 						<ul>
-							<li><strong>Spacja / W / ↑</strong> – Skok nad przeszkodami</li>
-							<li><strong>S / ↓</strong> – Kucanie pod ptakami</li>
+							<li><strong>Spacja / W / ↑</strong> – Skok (przytrzymaj = wyższy skok)</li>
+							<li><strong>S / ↓</strong> – Kucanie pod dronami (w powietrzu: szybkie opadanie)</li>
+							<li><strong>P</strong> – Pauza (gra pauzuje się też po zmianie karty)</li>
+							<li><strong>Power-upy</strong> – <strong>M</strong> magnes, <strong>S</strong> spowolnienie czasu, <strong>x2</strong> podwójne punkty. Fioletowe kryształy ładują tarczę.</li>
 							<li><strong>Punkty</strong> – Naliczane automatycznie w miarę biegu. Gra przyspiesza wraz z Twoim postępem!</li>
 						</ul>
 					</div>
 
 					<div class="audio-settings mt-16">
+						<div class="volume-control skin-control">
+							<label for="skinSelect">Skórka Dino</label>
+							<select id="skinSelect"></select>
+						</div>
 						<div class="volume-control">
 							<label for="volume-music">Głośność muzyki</label>
-							<input id="volume-music" type="range" min="0" max="1" step="0.01" value="0.3">
+							<input id="volume-music" type="range" min="0" max="1" step="0.01" value="0.1">
 						</div>
 						<div class="volume-control">
 							<label for="volume-effects">Głośność efektów</label>
-							<input id="volume-effects" type="range" min="0" max="1" step="0.01" value="0.3">
+							<input id="volume-effects" type="range" min="0" max="1" step="0.01" value="0.1">
 						</div>
 					</div>
 				</div>		
 		
 		</section>
 		
-		<section id="controls" class="card mt-16">
+		<section id="dino-achievements" class="card mt-22">
+			<h3>Osiągnięcia</h3>
+			<p class="muted" id="achievementsProgress"></p>
+			<p class="muted" id="achievementsStats"></p>
+			<ul id="achievementsList" class="achievements-list"></ul>
+			<div class="achievements-actions">
+				<button type="button" id="resetProgressBtn" class="ghost">Wyzeruj rekord i osiągnięcia</button>
+			</div>
+		</section>
+
+		<section id="audio-credits" class="card mt-16">
 			<div>
 				<h3>Źródła dźwięków i muzyki:</h3>
-				<ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+				<ul>
 					<li><strong>Muzyka:</strong> Stealth | Aakash Gandhi (YouTube Audio Library)</li>
 					<li><strong>Efekty dźwiękowe:</strong>
-						<ul style="margin-top: 5px; padding-left: 20px;">
+						<ul>
 							<li>Skok: SFX_Jump_07 | jalastram (pixabay.com)</li>
 							<li>Game Over: gameover | makkuzu (pixabay.com)</li>
 							<li>Punkt: Level Up 05 | Universfield (pixabay.com)</li>
@@ -110,7 +140,10 @@
 
     <div id="footer-placeholder"></div>
 
+    <script src="assets/js/storage.js"></script>
+
     <script src="assets/js/script.js"></script>
+    <script src="assets/js/fullscreen.js"></script>
     <script src="assets/js/dino.js"></script>
 
 </body>

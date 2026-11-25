@@ -12,6 +12,9 @@
     --glass: rgba(255, 255, 255, 0.03); /* Efekt szkła */
     --maxw: 1100px;           /* Maksymalna szerokość kontenera */
     --transition: 0.25s ease;
+    --danger: #ff4d6d;        /* Kolor błędu / trafienia / przegranej */
+    --warning: #ff9f1c;       /* Kolor ostrzeżenia */
+    --on-accent: #000;        /* Kolor tekstu na tle --accent */
     font-family: Inter, system-ui, -apple-system, Arial, sans-serif;
 }
 
@@ -31,6 +34,9 @@ body {
     color: #e6eef6;
     line-height: 1.5;
     min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
     overflow-x: clip;
     color-scheme: dark;
 }
@@ -155,7 +161,7 @@ header {
 /* Wsparcie dla linku aktywnego (wskazywanego przez podstronę) */
 #main-nav a.active {
     color: var(--accent);
-    background: rgba(0, 170, 255, 0.06);
+    background: color-mix(in srgb, var(--accent) 6%, transparent);
 }
 
 /* ==========================================================================
@@ -231,7 +237,7 @@ header {
 }
 
 .dropdown-content a:hover {
-    background: rgba(0, 170, 255, 0.08);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
     color: #fff;
     padding-left: 20px; /* Eleganckie przesunięcie w prawo podczas hoveru */
 }
@@ -277,7 +283,7 @@ header {
     height: 300px;
     animation: spin 3s linear infinite;
     object-fit: contain;
-    filter: drop-shadow(0 0 150px rgba(29, 63, 143, 1.0));
+    filter: drop-shadow(0 0 40px rgba(29, 63, 143, 0.9));
 }
 
 @keyframes spin {
@@ -292,7 +298,9 @@ header {
 /* Klasa do ukrycia loadera przez JS */
 .loader-hidden {
     opacity: 0;
+    visibility: hidden;      /* zatrzymuje animację i render po zniknięciu */
     pointer-events: none;
+    transition: opacity 0.5s ease, visibility 0s linear 0.5s;
 }
 
 /* ==========================================================================
@@ -301,8 +309,10 @@ header {
 
 main {
     max-width: var(--maxw);
+    width: 100%;
     margin: 28px auto;
     padding: 0 16px;
+    flex: 1 0 auto;
 }
 
 .hero {
@@ -313,14 +323,9 @@ main {
 }
 
 .hero > .card-container {
-    flex: 2;
     display: grid;
     grid-template-columns: 1fr 1fr; /* Dwie karty w rzędzie */
     gap: 16px;
-}
-
-.hero > aside { 
-    flex: 1; 
 }
 
 .hero > * {
@@ -342,7 +347,7 @@ main {
 .card:hover {
     transform: translateY(-4px);
     box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 
-                0 0 20px rgba(0, 170, 255, 0.15); 
+                0 0 20px color-mix(in srgb, var(--accent) 15%, transparent); 
     border-color: var(--accent); 
     opacity: 1;
 }
@@ -388,14 +393,6 @@ a.btn:active,
     transform: scale(0.96);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     opacity: 0.9;
-}
-
-/* Efekty hover zunifikowane pod kątem wydajności przejść */
-.btn:hover,
-a.btn:hover,
-.ghost:hover,
-a.inline-link:hover {
-    transition: all 0.2s ease-in-out;
 }
 
 .btn:hover,
@@ -529,7 +526,7 @@ footer {
     margin-top: 80px; 
     padding: 60px 20px;
     background: linear-gradient(180deg, #14171b 0%, #050505 100%);
-    border-top: 1px solid rgba(0, 170, 255, 0.1); 
+    border-top: 1px solid color-mix(in srgb, var(--accent) 10%, transparent); 
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
     position: relative;
 }
@@ -541,7 +538,7 @@ footer {
 }
 
 /* Kolumna z marką i opisem */
-.footer-brand .brand-name {
+.brand-column .brand-name {
     display: block;
     font-size: 1.5rem;
     font-weight: 800;
@@ -645,7 +642,7 @@ footer {
 
 /* Smartfony i ekrany mobilne */
 @media screen and (max-width: 600px) {
-    .footer-brand .brand-name {
+    .brand-column .brand-name {
         text-align: center;
     }
 
@@ -675,18 +672,11 @@ footer {
 }
 
 /* ==========================================================================
-   Widgety zewnętrzne (Snapwidget, Spotify) i Klasy pomocnicze
+   Widgety zewnętrzne (Behold, Spotify) i Klasy pomocnicze
    ========================================================================== */
 
 .widget-margin-top {
 	margin-top: 20px;
-}
-
-.snapwidget-widget {
-    border: none;
-    overflow: hidden;
-    width: 100%;
-    margin-top: 20px;
 }
 
 .muted { 
@@ -696,16 +686,21 @@ footer {
 a.inline-link {
     color: var(--accent);
     text-decoration: none;
+    transition: color var(--transition);
 }
 
-a.inline-link:hover { 
-    text-decoration: underline; 
+a.inline-link:hover {
+    color: var(--accent-2);
+    text-decoration: underline;
 }
 
 .mt-12 { margin-top: 12px; }
 .mt-16 { margin-top: 16px; }
 .mt-18 { margin-top: 18px; }
 .mt-22 { margin-top: 22px; }
+.mt-15 { margin-top: 15px; }
+.mb-0 { margin-bottom: 0; }
+.text-center { text-align: center; }
 
 /* ==========================================================================
    Struktury list (Tekst specyfikacji PC itp.)
@@ -739,15 +734,22 @@ li {
     font-weight: bold;
 }
 
+.controls-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 .controls-left ul {
-    margin: 0;
-    padding-left: 18px;
+    margin: 12px 0 0 0;
+    padding-left: 24px;
     list-style: none;
 }
 
 .controls-left li {
-    margin: 8px 0;
+    margin: 10px 0;
     font-size: 16px;
+    line-height: 1.5;
     position: relative;
     padding-left: 8px;
 }
@@ -755,26 +757,8 @@ li {
 .controls-left li:before {
     content: "•";
     position: absolute;
-    left: -12px;
-    color: var(--accent);
-}
-
-.side.left ul {
-    margin: 12px 0;
-    padding-left: 20px;
-    list-style: none;
-}
-
-.side.left li {
-    margin: 8px 0;
-    position: relative;
-    padding-left: 8px;
-}
-
-.side.left li:before {
-    content: "•";
-    position: absolute;
-    left: -12px;
+    left: -18px;
+    top: 0;
     color: var(--accent);
     font-weight: bold;
 }
@@ -862,16 +846,6 @@ li {
     z-index: 1;
 }
 
-.controls-left::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 12px;
-    pointer-events: none;
-    z-index: -1;
-    opacity: 0.7;
-}
-
 .ssd-list {
     white-space: pre-line;
 }
@@ -955,11 +929,11 @@ li {
    ========================================================================== */
 
 .seasonal-particle {
-    position: fixed;
-    top: -30px;
-    pointer-events: none;
-    z-index: 9999;
-    animation: fall linear forwards;
+	position: fixed;
+	top: -30px;
+	pointer-events: none;
+	z-index: 400;
+	animation: fall linear forwards;
 }
 
 @keyframes fall {
@@ -987,7 +961,7 @@ body.theme-youtube    { --accent: #ff1606; --accent-2: #ffffff; }
 body.theme-new        { --accent: #ffff06; --accent-2: #ffa12c; }
 
 /* Motyw: CZERWONY (Jednolity) */
-body.theme-red	 	{ --accent: #ff0000; --accent-2: #ff0000; }
+body.theme-red { --accent: #ff0000; --accent-2: #ff0000; --on-accent: #ffffff; }
 
 /* Motyw: ZIELONY (Jednolity) */
 body.theme-green 	{ --accent: #00dc04; --accent-2: #00dc04; }
@@ -1086,12 +1060,7 @@ body.theme-green #main-nav a.active {
     border-color: var(--accent);
     transform: translateY(-5px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 
-                0 0 15px rgba(0, 170, 255, 0.3);
-}
-
-body.theme-red .floating-back-to-top:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 
-                0 0 15px rgba(255, 0, 0, 0.3) !important;
+                0 0 15px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 @media (max-width: 600px) {
@@ -1162,21 +1131,21 @@ body.theme-red .floating-back-to-top:hover {
 }
 
 /* ==========================================================================
-   Stylizacja ujednoliconej listy źródeł audio (Sekcja #controls)
+   Stylizacja ujednoliconej listy źródeł audio (Sekcja #audio-credits)
    ========================================================================== */
 
-#controls ul {
+#audio-credits ul {
     list-style-type: none;
     padding-left: 0;
     margin: 12px 0 0 0;
 }
 
-#controls ul li {
+#audio-credits ul li {
     margin: 6px 0;
     line-height: 1.5;
 }
 
-#controls ul ul {
+#audio-credits ul ul {
     list-style-type: disc;
     list-style-position: outside;
     padding-left: 24px;
@@ -1184,23 +1153,19 @@ body.theme-red .floating-back-to-top:hover {
     margin-bottom: 0;
 }
 
-#controls ul ul li {
+#audio-credits ul ul li {
     margin: 4px 0;
     position: relative;
     padding-left: 4px;
 }
 
-#controls ul ul li::marker {
+#audio-credits ul ul li::marker {
     color: var(--accent);
 }
 
 /* ==========================================================================
-   RESPONSYWNOŚĆ I MEDIA QUERIES (Mobilne Menu Hamburgerowe)
+   RESPONSYWNOŚĆ I MEDIA QUERIES
    ========================================================================== */
-
-section { 
-    scroll-margin-top: 90px; 
-}
 
 /* ==========================================================================
    ZAKAMUFLOWANY SYSTEM SKRÓTÓW STRONY (INDEX)
@@ -1209,10 +1174,6 @@ section {
 @media screen and (min-width: 1201px) {
     .pc-only { display: block !important; }
     .mobile-only { display: none !important; }
-}
-@media screen and (max-width: 1200px) {
-    .pc-only { display: none !important; }
-    .mobile-only { display: block !important; }
 }
 
 .site-shortcut-panel {
@@ -1274,19 +1235,23 @@ section {
 }
 
 .mobile-navigation-bar {
-    display: none !important;
-    position: fixed;
-    bottom: 20px;
-    left: 5%;
-    width: 90%;
-    height: 76px;
-    background: rgba(20, 24, 33, 0.95);
-    border: 2px dashed var(--accent);
-    border-radius: 8px;
-    z-index: 9999;
-    overflow: hidden;
-    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
-    animation: triggerMobileSlide 0.4s ease-out forwards;
+	display: none;
+	position: fixed;
+	bottom: 20px;
+	left: 5%;
+	width: 90%;
+	height: 76px;
+	background: rgba(20, 24, 33, 0.95);
+	border: 2px dashed var(--accent);
+	border-radius: 8px;
+	z-index: 9999;
+	overflow: hidden;
+	box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+	animation: triggerMobileSlide 0.4s ease-out forwards;
+}
+
+.mobile-navigation-bar.is-open {
+    display: block;
 }
 
 @keyframes triggerMobileSlide {
@@ -1295,10 +1260,33 @@ section {
 }
 
 /* ==========================================================================
-   WERSJA MOBILNA
+   WERSJA MOBILNA I TABLETY (max-width: 1200px)
    ========================================================================== */
 
 @media screen and (max-width: 1200px) {
+    .pc-only { display: none !important; }
+    .mobile-only { display: block !important; }
+
+    #menu-placeholder {
+        position: relative;
+        z-index: 9500;
+    }
+
+    #menu-placeholder > header,
+    header {
+        position: relative;
+        z-index: 9500;
+    }
+
+    .nav {
+        flex-wrap: wrap;
+    }
+
+    main {
+        position: relative;
+        z-index: 1;
+    }
+
     .menu-icon { 
         display: block; 
         color: var(--accent);
@@ -1310,38 +1298,46 @@ section {
     #main-nav {
         display: none;            
         flex-direction: column;   
-        gap: 12px;
+        gap: 8px;
         width: 100%;
-        position: absolute;
-        top: 100%;
-        left: 0;
+        flex-basis: 100%;
+        position: static;
         background: #14171b;
-        padding: 20px;
+        margin-top: 12px;
+        padding: 16px;
+        border-radius: 12px;
         box-sizing: border-box;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        z-index: 499;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        z-index: 9600;
         text-align: center;
-        max-height: calc(100vh - 72px);
-        overflow-y: auto;
     }
 
     #main-nav.show {
         display: flex;
     }
+
+    #main-nav > a,
+    #main-nav .dropbtn {
+        width: 100%;
+        justify-content: center;
+    }
     
     .dropdown {
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
     }
 
     .dropdown-content { 
-        position: relative; 
+        position: static; 
         box-shadow: none;
         width: 100%;
-        top: 0;
-        background: rgba(0, 0, 0, 0.2);
-        border: none;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
         margin-top: 6px;
+        padding: 4px 0;
         border-radius: 8px;
         opacity: 1;
         visibility: visible;
@@ -1355,12 +1351,12 @@ section {
     }
 
     .dropdown-content a {
-        padding: 12px 16px;
+        padding: 10px 14px;
     }
     
     .dropdown-content a:hover {
-        padding-left: 16px;
-        background: rgba(255, 255, 255, 0.03);
+        padding-left: 14px;
+        background: rgba(255, 255, 255, 0.05);
     }
     
     .hero {
@@ -1396,10 +1392,6 @@ section {
         margin-top: 20px;
     }
     
-    .snapwidget-widget { 
-        width: 100%; 
-        aspect-ratio: 25 / 10; 
-    }
 }
 
 /* ==========================================================================
@@ -1437,15 +1429,89 @@ section {
         position: static;
     }
 }
+/* ==========================================================================
+   POPRAWKI (hover na dotyku, dostępność menu, panele, ruch)
+   ========================================================================== */
 
-/* TELEFONY I TABLETY - MENU PRZEWIJA SIĘ NORMALNIE */
+/* Karty nie unoszą się na urządzeniach dotykowych (lepki :hover psuł pełny ekran gier w iOS) */
+@media (hover: none) {
+    .card:hover { transform: none; }
+}
 
-@media screen and (max-width: 1200px) {
-    #menu-placeholder {
-        position: static;
+/* Karty z grami nie unoszą się w trakcie rozgrywki (transform przesuwałby element fixed w pełnym ekranie) */
+#dino-game:hover,
+#shooter-game:hover,
+#tetris-game:hover,
+.game-wrapper:hover {
+    transform: none;
+}
+
+/* Dropdown: mostek nad szczeliną, żeby menu nie znikało w drodze do linku */
+.dropdown-content::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -8px;
+    height: 8px;
+}
+
+/* Dropdown dostępny z klawiatury */
+.dropdown:focus-within .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Aktywna zakładka menu (klasa .active ustawiana w script.js, działa z każdym motywem) */
+#main-nav .dropbtn.active,
+#main-nav a.active {
+    color: var(--accent);
+    text-shadow: 0 0 10px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+/* Wideo 16:9 na tabletach: bez sztywnej wysokości */
+@media (max-width: 900px) {
+    .video iframe { height: auto; }
+}
+
+/* Boczne panele skrótów tylko tam, gdzie mieszczą się obok treści (1100 px + 2 x panel) */
+@media (min-width: 1201px) and (max-width: 1449px) {
+    .pc-only { display: none !important; }
+}
+
+/* Mobilny pasek skrótów nie zasłania przycisku "do góry" */
+body:has(.mobile-navigation-bar.is-open) .floating-back-to-top {
+    bottom: 110px;
+}
+
+/* Kolor tekstu na przyciskach z motywu (jasny/ciemny akcent) */
+.btn,
+a.btn {
+    color: var(--on-accent);
+}
+
+/* Ograniczony ruch: wyłącza animacje, przejścia i płynne przewijanie */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
+    html { scroll-behavior: auto; }
+    .seasonal-particle { display: none !important; }
+}
 
-    #menu-placeholder > header {
-        position: static;
-    }
+/* ==========================================================================
+   PEŁNY EKRAN GIER (tryb zastępczy z klasą .is-fullscreen, np. iOS bez Fullscreen API)
+   ========================================================================== */
+
+/* Na ekranach do 1200 px main ma z-index: 1 i tworzy własny kontekst nakładania, więc kontener gry
+   (z-index: 99999) był w nim uwięziony, a nagłówek (z-index: 9500) zasłaniał górę planszy.
+   Na czas pełnego ekranu main nie tworzy już kontekstu i gra leży ponad nagłówkiem,
+   pływającym przyciskiem "do góry" oraz paskiem skrótów. */
+body:has(.is-fullscreen) main,
+body:has(.is-fullscreen) #home {
+    z-index: auto;
 }

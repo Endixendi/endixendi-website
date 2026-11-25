@@ -25,10 +25,15 @@ function updateClockAndDate() {
         const options = { weekday: 'long', day: 'numeric', month: 'long' };
         popupDateEl.textContent = now.toLocaleDateString('pl-PL', options);
     }
+
+    // Kalendarz odświeża się po zmianie dnia (np. o północy)
+    if (window.__calendarDay !== now.getDate()) {
+        window.__calendarDay = now.getDate();
+        generateDynamicCalendar();
+    }
 }
 setInterval(updateClockAndDate, 1000);
 updateClockAndDate();
-generateDynamicCalendar();
 
 // --- 1.1 DYNAMICZNY GENERATOR KALENDARZA ---
 function generateDynamicCalendar() {
@@ -111,7 +116,7 @@ function openWindow(id) {
 
     if (id === 'win-notepad') {
         const notepadText = document.getElementById('notepad-text');
-        const savedNote = localStorage.getItem('gamingOS_note');
+        const savedNote = store.get('gamingOS_note');
         if (notepadText && savedNote !== null) {
             notepadText.value = savedNote;
         }
@@ -157,7 +162,7 @@ function dragWindow(e, id) {
 
     const arenaRect = arena.getBoundingClientRect();
 
-    document.onmousemove = function(e) {
+    const onMove = function(e) {
         const diffX = posX - e.clientX;
         const diffY = posY - e.clientY;
         posX = e.clientX;
@@ -175,17 +180,20 @@ function dragWindow(e, id) {
         win.style.left = newLeft + "px";
     };
 
-    document.onmouseup = function() {
-        document.onmousemove = null;
-        document.onmouseup = null;
+    const onUp = function() {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
     };
+
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
 }
 
 // --- 5. LOGIKA NOTATNIKA ---
 function saveNote() {
     const notepadText = document.getElementById('notepad-text');
     if (!notepadText) return;
-    localStorage.setItem('gamingOS_note', notepadText.value);
+    store.set('gamingOS_note', notepadText.value);
     const status = document.getElementById('notepad-status');
     if (status) {
         status.textContent = "Zapisano!";
@@ -201,8 +209,10 @@ function exportNote() {
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = 'notatka.txt';
+    document.body.appendChild(link);
     link.click();
-    URL.revokeObjectURL(link.href);
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 }
 
 // --- INTEGRACJA: EKSPLORATOR -> NOTATNIK ---
@@ -268,6 +278,8 @@ function handleTerminalCommand(e) {
 }
 
 // --- LOGIKA EMULACJI PRZEGLĄDARKI (PODSTRONY STEROWANE KLASAMI) ---
+let browserNavTimer = null;
+
 function changeBrowserContent(page) {
     const homeTab = document.getElementById('web-page-home');
     const newsTab = document.getElementById('web-page-news');
@@ -284,7 +296,8 @@ function changeBrowserContent(page) {
     if (indicator) indicator.style.background = '#ff006e';
     stopBrowserDinoLoop();
 
-    setTimeout(() => {
+    clearTimeout(browserNavTimer);
+    browserNavTimer = setTimeout(() => {
         if (indicator) indicator.style.background = '#39ff14';
 
         if (page === 'home') {
@@ -313,6 +326,7 @@ let gameSpeed = 4.5; // Prędkość poruszania kaktusa
 let dinoScore = 0;
 let bIsGameOver = false;
 let dinoAnimationId = null;
+let dinoLastTs = 0;
 
 function jumpBrowserDino() {
     if (isJumping || bIsGameOver) return;
@@ -321,12 +335,16 @@ function jumpBrowserDino() {
 }
 
 // Przechwytywanie spacji globalnie
+// Spacja skacze tylko, gdy okno przeglądarki jest otwarte, a fokus nie jest w polu tekstowym
 window.addEventListener('keydown', function(e) {
+    if (e.key !== ' ') return;
+    const browserWin = document.getElementById('win-browser');
     const arcadeTab = document.getElementById('web-page-arcade');
-    if (e.key === ' ' && arcadeTab && arcadeTab.classList.contains('browser-tab-active')) {
-        e.preventDefault();
-        jumpBrowserDino();
-    }
+    const browserOpen = browserWin && getComputedStyle(browserWin).display !== 'none';
+    if (!browserOpen || !arcadeTab || !arcadeTab.classList.contains('browser-tab-active')) return;
+    if (e.target.closest && e.target.closest('input, textarea')) return;
+    e.preventDefault();
+    jumpBrowserDino();
 });
 
 function resetBrowserDino(event) {
@@ -334,6 +352,7 @@ function resetBrowserDino(event) {
     stopBrowserDinoLoop();
 
     bIsGameOver = false;
+    dinoLastTs = 0;
     dinoScore = 0;
     dinoY = 0;
     dinoVelocity = 0;
@@ -364,13 +383,18 @@ function stopBrowserDinoLoop() {
     }
 }
 
-function updateBrowserDinoGameLoop() {
+function updateBrowserDinoGameLoop(ts) {
     if (bIsGameOver) return;
+
+    // Fizyka niezależna od liczby klatek (1.0 = 60 FPS)
+    const dt = Math.min((ts - (dinoLastTs || ts)) / 1000, 0.05);
+    dinoLastTs = ts;
+    const f = dt * 60;
 
     // 1. Fizyka skoku dinozaura
     if (isJumping) {
-        dinoY += dinoVelocity;
-        dinoVelocity += gravity;
+        dinoY += dinoVelocity * f;
+        dinoVelocity += gravity * f;
 
         if (dinoY <= 0) {
             dinoY = 0;
@@ -382,7 +406,7 @@ function updateBrowserDinoGameLoop() {
     if (dinoEl) dinoEl.style.transform = `translateY(${-dinoY}px)`;
 
     // 2. Ruch kaktusa
-    cactusX -= gameSpeed;
+    cactusX -= gameSpeed * f;
     if (cactusX < -20) {
         cactusX = 450; // Reset pozycji kaktusa wewnątrz kontenera
         dinoScore += 10;

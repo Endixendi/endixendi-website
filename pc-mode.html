@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PC Mode: interaktywny symulator systemu operacyjnego Endixendi z oknami, Notatnikiem i mini-grą.">
     <title>PC Mode - Gaming OS</title>
     <link rel="stylesheet" href="assets/css/style.css"> 
-    <link rel="stylesheet" href="assets/css/pc-mode.css"> 
+    <link rel="stylesheet" href="assets/css/pc-mode.css">
+    <link rel="icon" href="assets/images/logo-kolo.png" type="image/png"> 
+    <noscript><style>#loader { display: none; }</style></noscript>
 </head>
 <body class="pc-mode-body">
 
@@ -15,7 +18,7 @@
 
     <div class="crt-lines"></div>
 
-    <main class="desktop-arena">
+    <div class="desktop-arena">
         
         <div class="nebula-glow"></div>
         <div class="fullscreen-grid-3d"></div>
@@ -210,7 +213,7 @@
                     
                     <div class="file-item" onclick="openStaticFile('cheats.txt', '=== GAMINGOS RETRO CHEATS CORNER ===\\n\\n[TETRIS RETRO]\\n- noclip     : klocki przenikaja przez siebie\\n- lives99    : nieskonczone szanse\\n- slowmo      : spowolnienie czasu o 50%\\n\\n[DINO GAME]\\n- godmode    : niesmiertelnosc na kaktusy\\n- superjump  : wysoki skok (klawisz Space)\\n\\n[SHOOTER]\\n- laser_mega : zmienia podstawowy pistolet w laser\\n- noreload   : brak przeladowania')">📄 cheats.txt</div>
                     
-                    <div class="file-item" onclick="window.open('https://www.youtube.com/watch?v=jNQXAC9IVRw', '_blank')">📁 fotki_z_imprezy_18+</div>
+                    <div class="file-item" onclick="window.open('https://www.youtube.com/watch?v=jNQXAC9IVRw', '_blank', 'noopener')">📁 fotki_z_wakacji</div>
                 </div>
             </div>
         </div>
@@ -294,7 +297,6 @@ Wpisz 'help', aby zobaczyć listę komend.</div>
                     </div>
                 </div>
             </div>
-        </div>
 		
 		<div id="win-virus" class="sys-window virus-window" onmousedown="focusWindow(this)">
             <div class="window-header virus-header">
@@ -322,9 +324,9 @@ Wpisz 'help', aby zobaczyć listę komend.</div>
             </div>
         </div>
 
-    </main>
+    </div>
 
-    <footer class="pc-taskbar">
+    <div class="pc-taskbar">
         <div class="taskbar-left">
             <button class="taskbar-start-btn" onclick="toggleStartMenu(event)">
                 <span class="start-icon">🎮</span> Start
@@ -352,7 +354,9 @@ Wpisz 'help', aby zobaczyć listę komend.</div>
                 <span id="pc-date">01.01.2026</span>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <script src="assets/js/storage.js"></script>
 
     <script src="assets/js/pc-mode.js"></script>
     <script src="assets/js/script.js"></script>
