@@ -1367,13 +1367,13 @@
         if (state.wave > 0) {
             ctx.font = 'bold 12px system-ui, sans-serif';
             ctx.fillStyle = 'rgba(255,255,255,0.85)';
-            ctx.fillText('Fala ' + state.wave, V_WIDTH / 2, 56);
+            ctx.fillText('Fala ' + state.wave, V_WIDTH / 2, 72);
         }
         if (state.combo >= 2) {
             const mult = comboMultiplier();
             ctx.font = 'bold ' + (16 + mult * 2) + 'px system-ui, sans-serif';
             ctx.fillStyle = mult >= 4 ? '#ff6b35' : '#ffd24d';
-            ctx.fillText('COMBO x' + mult + ' (' + state.combo + ')', V_WIDTH / 2, 80);
+            ctx.fillText('COMBO x' + mult + ' (' + state.combo + ')', V_WIDTH / 2, 96);
         }
 
         // Pasek życia bossa z nazwą i znacznikami faz
