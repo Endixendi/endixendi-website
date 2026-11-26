@@ -20,13 +20,13 @@ Strona używa czystego JavaScriptu do dynamicznego wstrzykiwania powtarzalnych e
 * **Statki — Bitwa Morska (`battleship.html`)** — gra planszowa z komputerem na czterech poziomach (*Łatwy*, *Normalny*, *Trudny*, *Cheater*) i w trzech wariantach zasad (klasyczne, bez dodatkowego ruchu, salwa). Ręczne rozstawianie floty, wykrywanie zatopień, oznaczanie pól wokół zatopionych statków, statystyki i osiągnięcia.
 * **PC Mode (`pc-mode.html`)** — symulator systemu operacyjnego: okna z przeciąganiem, menu Start, Notatnik z zapisem, konsola poleceń, przeglądarka z mini-grą, mikser głośności i kalendarz.
 
-> **Wspólne moduły gier:** przycisk pełnego ekranu i jego style współdzielone są przez `assets/css/games.css` (Dino, Tetris, Shooter), a obsługa trybu pełnoekranowego (Fullscreen API + fallback dla iOS) przez `assets/js/fullscreen.js` (wszystkie gry z przyciskiem pełnego ekranu, w tym Statki). Przycisk **„Wyzeruj rekord i osiągnięcia”** w sekcji Osiągnięcia każdej gry jest wstrzykiwany przez `assets/js/progress-reset.js` (patrz niżej).
+> **Wspólne moduły gier:** przycisk pełnego ekranu i jego style współdzielone są przez `assets/css/games.css` (Dino, Tetris, Shooter), a obsługa trybu pełnoekranowego (Fullscreen API + fallback dla iOS) przez `assets/js/fullscreen.js` (wszystkie gry z przyciskiem pełnego ekranu, w tym Statki). Przycisk **„Wyzeruj rekord i osiągnięcia”** znajduje się w sekcji Osiągnięcia każdej gry.
 
 #### 📱 Układ na telefonach
 Każda gra ma osobne reguły dla widoku zwykłego i pełnoekranowego, w pionie i w poziomie. Telefon w poziomie jest rozpoznawany po **niskiej wysokości ekranu** (`max-height: 560px`), a nie po szerokości, ponieważ współczesne telefony w poziomie często mają ponad 900 px szerokości. Planszę zawsze liczy się z dostępnej wysokości i szerokości okna (`dvh`), z zachowaniem proporcji.
 
 #### 🏆 Osiągnięcia i reset postępu
-Dino, Tetris, Shooter i Statki mają taki sam wygląd listy osiągnięć (`#achievementsList`) i taki sam przycisk resetu. Reset usuwa rekordy, statystyki, osiągnięcia i wybraną skórkę danej gry (ustawienia, takie jak głośność, tryb czy poziom trudności, zostają), a następnie przeładowuje stronę.
+Dino, Tetris, Shooter i Statki mają taki sam wygląd listy osiągnięć (`#achievementsList`) i taki sam przycisk resetu (`#resetProgressBtn`). Reset usuwa rekordy, statystyki, osiągnięcia i wybraną skórkę danej gry (ustawienia, takie jak głośność, tryb czy poziom trudności, zostają), a następnie przeładowuje stronę.
 
 ### 📱 Informacje i multimedia
 * **Strona główna (`index.html`)** — sekcja „O mnie”, pełna specyfikacja PC i peryferiów, odnośniki do social mediów, najnowsze filmy z YouTube, skróty do partnerów.

@@ -9,7 +9,7 @@
   /* =========================
      Stałe i stan
      ========================= */
-  const MENU_PATH = 'menu.html';   
+  const MENU_PATH = 'menu.html';
   const FOOTER_PATH = 'footer.html';
   const MOBILE_BP = 1200;              // poniżej: menu hamburger
   const PANELS_BP = 1450;              // powyżej: boczne panele skrótów (mieszczą się obok treści)
@@ -71,6 +71,8 @@
         highlightActiveNav();
       }),
       loadHTML('footer-placeholder', FOOTER_PATH).then(() => {
+        const yr = $('footer-year');
+        if (yr) yr.textContent = String(new Date().getFullYear());
         updateFloatingTopBtn();
       })
     ]);
@@ -272,7 +274,7 @@
       e.preventDefault();
       target.scrollIntoView({ behavior, block: 'start' });
       history.pushState(null, '', hash);
-      highlightActiveNav();
+      highlightActiveNav(hash);
 
       if (window.innerWidth <= MOBILE_BP) setMenuOpen(false);
     });
@@ -281,11 +283,21 @@
   /* =========================
      Podświetlanie aktywnej zakładki w menu
      ========================= */
-  function highlightActiveNav() {
+  function highlightActiveNav(overrideHash) {
     const page = currentPage();
-    const hash = window.location.hash.toLowerCase();
+    const hash = (typeof overrideHash === 'string' ? overrideHash : window.location.hash).toLowerCase();
 
-    const ids = ['nav-home', 'nav-o-mnie', 'nav-kontakt', 'nav-profile', 'nav-tools', 'nav-games', 'nav-socials'];
+    const ids = [
+      'nav-home',
+      'nav-o-mnie',
+      'nav-kontakt',
+      'nav-creative',
+      'nav-profile',
+      'nav-tools',
+      'nav-games',
+      'nav-socials'
+    ];
+
     ids.forEach((id) => {
       const el = $(id);
       if (el) {
@@ -298,15 +310,14 @@
 
     if (GAME_PAGES.includes(page)) activeId = 'nav-games';
     else if (TOOL_PAGES.includes(page)) activeId = 'nav-tools';
-    else if (page === 'gallery') activeId = 'nav-profile';
-    else if (page === 'media') activeId = 'nav-socials';
+    else if (page === 'gallery' || page === 'media') activeId = 'nav-creative';
     else if (page === '' || page === 'index') {
       if (hash === '#o-mnie') activeId = 'nav-o-mnie';
       else if (hash === '#kontakt') activeId = 'nav-kontakt';
-      else if (hash === '#pc' || hash === '#tworczosc') activeId = 'nav-profile';
+      else if (hash === '#tworczosc') activeId = 'nav-creative';
+      else if (hash === '#pc') activeId = 'nav-tools';
       else activeId = 'nav-home';
     }
-    // polityka, regulamin, 404 - brak podświetlenia
 
     const active = activeId && $(activeId);
     if (active) {

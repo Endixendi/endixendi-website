@@ -248,7 +248,7 @@ header {
 
 .menu-icon {
     display: none;
-    font-size: 24px;
+    font-size: 15px;
     color: #fff;
     cursor: pointer;
     padding: 4px 8px;
@@ -519,6 +519,76 @@ table.specs th {
 }
 
 /* ==========================================================================
+   Strona 404 - animacja pod kartą
+   ========================================================================== */
+
+.cta-center {
+    justify-content: center;
+}
+
+.not-found-anim {
+    padding: 20px 12px 8px;
+}
+
+.not-found-beacon {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+	margin-top: 30px;
+	margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.not-found-beacon::before,
+.not-found-beacon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    opacity: 0;
+    animation: beaconPulse 2.6s ease-out infinite;
+    pointer-events: none;
+}
+
+.not-found-beacon::after {
+    animation-delay: 1.3s;
+}
+
+.not-found-logo {
+    position: relative;
+    z-index: 1;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    animation: beaconFloat 3.2s ease-in-out infinite;
+}
+
+@keyframes beaconPulse {
+    0% {
+        transform: scale(0.75);
+        opacity: 0.75;
+    }
+    100% {
+        transform: scale(1.65);
+        opacity: 0;
+    }
+}
+
+@keyframes beaconFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* ==========================================================================
    Stopka globalna (Nowoczesny układ wielokolumnowy)
    ========================================================================== */
 
@@ -626,6 +696,73 @@ footer {
     color: var(--muted);
     font-size: 13px;
     opacity: 0.7;
+}
+
+.footer-social {
+    display: flex;
+    gap: 12px;
+    margin: 14px 0;
+    font-size: 1.4rem;
+}
+
+.footer-social a {
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.footer-social a:hover {
+    transform: translateY(-3px);
+}
+
+.footer-column a.footer-cta {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: #5865F2;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.footer-column a.footer-cta:hover {
+    background: #4752c4;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.footer-legal {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.footer-legal a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+.footer-legal a:hover {
+    color: var(--accent);
+}
+
+.counter-iframe {
+    width: 280px;
+    max-width: 100%;
+    height: 120px;
+    border: 0;
+}
+
+@media (max-width: 700px) {
+    .live-counters-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-legal {
+        justify-content: center;
+    }
 }
 
 /* ==========================================================================

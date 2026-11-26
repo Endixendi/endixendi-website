@@ -11,7 +11,25 @@ document.addEventListener('DOMContentLoaded', () => {
         'Samozbierająca_w_akcj_z_trawą.webp',
         'Samozbierająca_w_akcj_ze_słomą.webp',
         'Talerzowanie_pola.webp',
-        'Siewy_na_polu.webp'
+        'Siewy_na_polu.webp',
+		'Gospodarz_i_jego_maszyna.webp',
+		'Piękne_prasowanie_trawy.webp',
+		'Polski_zestaw.webp',
+		'Sprzedaż_zrębek.webp',
+		'Talerzowanie_na_dwa_zestawy.webp',
+		'Zetor_i_Ursus.webp',
+		'Żniwa_na_Solku.webp',
+		'Bizon_w_drodze.webp',
+		'Bizon_w_drodze_wiosna.webp',
+		'John_i_Słonecznik.webp',
+		'Major_i_Ursus.webp',
+		'Opryski_na_chwasty.webp',
+		'Siewy_pola.webp',
+		'Ursus_c360.webp',
+		'W_drodze_na_pole.webp',
+		'Zestaw_pod_siewnik.webp',
+		'Zimowa_sprzedaż.webp',
+		'Zbiory_topoli.webp'
     ];
 
     function buildGallerySrc(fileName) {
